@@ -1,0 +1,15 @@
+# 应用服务 WEB 访问端口
+server:
+  port=8080
+# spring数据库
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dextea?useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  #目的是为了省略resultType里的代码量
+  type-aliases-package: com.dextea.pojo

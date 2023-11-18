@@ -47,4 +47,25 @@ public class StoreServiceImpl implements StoreService {
         res.put("data",data);
         return res;
     }
+    /**
+     * 更新营业区域
+     * @param data 营业区域
+     * @return 更新结果
+     */
+    @Override
+    public JSONObject updateOpenArea(JSONArray data) {
+        JSONObject res=new JSONObject();
+        Setting setting=new Setting();
+        setting.setKey("open_area");
+        setting.setValue(data.toJSONString());
+        int result=settingMapper.update(setting);
+        if(result==1){
+            res.put("code",200);
+            res.put("msg","成功");
+        }else{
+            res.put("code",500);
+            res.put("msg","失败");
+        }
+        return res;
+    }
 }

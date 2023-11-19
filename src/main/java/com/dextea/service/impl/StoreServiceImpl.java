@@ -18,13 +18,6 @@ public class StoreServiceImpl implements StoreService {
     StoreMapper storeMapper;
     @Autowired
     SettingMapper settingMapper;
-    @Override
-    public JSONObject getAll(){
-        JSONObject res=new JSONObject();
-        List<Store> list=storeMapper.getAll();
-        res.put("tabledata",list);
-        return res;
-    }
 
     /**
      * 获取营业区域
@@ -47,6 +40,7 @@ public class StoreServiceImpl implements StoreService {
         res.put("data",data);
         return res;
     }
+
     /**
      * 更新营业区域
      * @param data 营业区域
@@ -66,6 +60,46 @@ public class StoreServiceImpl implements StoreService {
             res.put("code",500);
             res.put("msg","失败");
         }
+        return res;
+    }
+
+    /**
+     * 获取所有店铺
+     * @return 所有店铺
+     */
+    @Override
+    public JSONObject getAllStore() {
+        JSONObject res=new JSONObject();
+        res.put("code",200);
+        res.put("msg","成功");
+        //获取所有店铺
+        List<Store> stores=storeMapper.getAllStore();
+        JSONObject data=new JSONObject();
+        data.put("stores",stores);
+        //获取营业区域
+        Setting setting=settingMapper.get("open_area");
+        JSONArray openAreaRaw=JSONArray.parseArray(setting.getValue());
+        JSONArray openArea=new JSONArray();
+        for(int i=0;i<openAreaRaw.size();i++){
+            JSONObject areaOld=openAreaRaw.getJSONObject(i);
+            JSONObject areaNew=new JSONObject();
+            areaNew.put("label",areaOld.getString("value"));
+            areaNew.put("value",areaOld.getString("value"));
+            JSONArray chileOld=areaOld.getJSONArray("children");
+            JSONArray chileNew=new JSONArray();
+            for(int j=0;j<chileOld.size();j++){
+                JSONObject c1=chileOld.getJSONObject(j);
+                JSONObject c2=new JSONObject();
+                c2.put("label",c1.getString("value"));
+                c2.put("value",c1.getString("value"));
+                c2.put("children",new JSONArray());
+                chileNew.add(c2);
+            }
+            areaNew.put("children",chileNew);
+            openArea.add(areaNew);
+        }
+        data.put("openArea",openArea);
+        res.put("data",data);
         return res;
     }
 }

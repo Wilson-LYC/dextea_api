@@ -122,4 +122,120 @@ public class StoreServiceImpl implements StoreService {
         }
         return res;
     }
+
+    /**
+     * 获取店铺信息
+     * @param id 店铺id
+     * @return 店铺信息
+     */
+    @Override
+    public JSONObject getStoreById(int id) {
+        JSONObject res=new JSONObject();
+        Store store=storeMapper.getStoreById(id);
+        if(store==null){
+            res.put("code",500);
+            res.put("msg","门店ID不存在");
+            return res;
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("store",store2json(store));
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * Store转json
+     * @param store
+     * @return
+     */
+    @Override
+    public JSONObject store2json(Store store) {
+        JSONObject res=new JSONObject();
+        res.put("id",store.getId());
+        res.put("name",store.getName());
+        JSONArray area=JSONArray.parseArray(store.getArea());
+        res.put("area",area);
+        res.put("address",store.getAddress());
+        res.put("phone",store.getPhone());
+        res.put("openTime",store.getOpenTime());
+        res.put("openState",store.getOpenState());
+        return res;
+    }
+
+    /**
+     * 修改单个营业状态
+     * @param id
+     * @param openState
+     * @return
+     */
+    @Override
+    public JSONObject updateOpenState(int id, String openState) {
+        JSONObject res=new JSONObject();
+        Store store=storeMapper.getStoreById(id);
+        if(store==null){
+            res.put("code",500);
+            res.put("msg","门店ID不存在");
+            return res;
+        }
+        store.setOpenState(openState);
+        int result=storeMapper.updateOpenState(store);
+        if(result==1){
+            res.put("code",200);
+            res.put("msg","成功");
+        }else{
+            res.put("code",500);
+            res.put("msg","修改失败");
+        }
+        return res;
+    }
+
+    /**
+     * 修改多个营业状态
+     * @param idList
+     * @param openState
+     * @return
+     */
+    @Override
+    public JSONObject updateOpenState(List<Integer> idList, String openState) {
+        JSONObject res=new JSONObject();
+        for(int id:idList){
+            Store store=storeMapper.getStoreById(id);
+            if(store==null){
+                res.put("code",500);
+                res.put("msg","门店ID:"+id+",不存在");
+                return res;
+            }
+            store.setOpenState(openState);
+            int result=storeMapper.updateOpenState(store);
+            if(result!=1){
+                res.put("code",500);
+                res.put("msg","门店ID:"+id+",修改失败");
+                return res;
+            }
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        return res;
+    }
+
+    /**
+     * 删除店铺
+     * @param id
+     * @return 删除结果
+     */
+    @Override
+    public JSONObject deleteStoreById(int id) {
+        JSONObject res=new JSONObject();
+        int result=storeMapper.deleteStoreById(id);
+        if(result==1){
+            res.put("code",200);
+            res.put("msg","成功");
+        }else{
+            res.put("code",500);
+            res.put("msg","删除失败");
+        }
+        return res;
+    }
 }

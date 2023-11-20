@@ -13,4 +13,13 @@
     <insert id="add" parameterType="Store">
         insert into store(`name`,`area`,`address`,`phone`,`open_time`,`open_state`) value (#{name},#{area},#{address},#{phone},#{openTime},#{openState})
     </insert>
+    <select id="getStoreById" resultMap="storeResultMap">
+        select * from store where id=#{id}
+    </select>
+    <update id="updateOpenState" parameterType="Store">
+        update store set open_state=#{openState} where id=#{id}
+    </update>
+    <delete id="deleteStoreById">
+        delete from store where id=#{id}
+    </delete>
 </mapper>

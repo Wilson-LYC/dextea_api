@@ -10,4 +10,7 @@
     <select id="getAllStore" resultMap="storeResultMap">
         select * from store
     </select>
+    <insert id="add" parameterType="Store">
+        insert into store(`name`,`area`,`address`,`phone`,`open_time`,`open_state`) value (#{name},#{area},#{address},#{phone},#{openTime},#{openState})
+    </insert>
 </mapper>

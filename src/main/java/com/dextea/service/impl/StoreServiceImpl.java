@@ -7,6 +7,7 @@ import com.dextea.mapper.StoreMapper;
 import com.dextea.pojo.Setting;
 import com.dextea.pojo.Store;
 import com.dextea.service.StoreService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -100,6 +101,25 @@ public class StoreServiceImpl implements StoreService {
         }
         data.put("openArea",openArea);
         res.put("data",data);
+        return res;
+    }
+
+    /**
+     * 添加店铺
+     * @param store 店铺
+     * @return 添加结果
+     */
+    @Override
+    public JSONObject addStore(Store store) {
+        JSONObject res=new JSONObject();
+        int result=storeMapper.add(store);
+        if(result==1){
+            res.put("code",200);
+            res.put("msg","成功");
+        }else{
+            res.put("code",500);
+            res.put("msg","添加失败");
+        }
         return res;
     }
 }

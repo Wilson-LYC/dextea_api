@@ -2,6 +2,7 @@ package com.dextea.service;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.dextea.pojo.Store;
 
 
 public interface StoreService {
@@ -11,4 +12,6 @@ public interface StoreService {
     JSONObject updateOpenArea(JSONArray openArea);
     //获取所有店铺
     JSONObject getAllStore();
+    //添加店铺
+    JSONObject addStore(Store store);
 }

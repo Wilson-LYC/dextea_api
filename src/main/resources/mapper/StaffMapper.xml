@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dextea.mapper.StaffMapper">
+    <resultMap id="staffMap" type="Staff">
+        <result property="storeId" column="store_id"/>
+    </resultMap>
+    <insert id="add" parameterType="Staff">
+        insert into staff(`account`,`password`,`role`,`store_id`,`auth`) value (#{account},#{password},#{role},#{storeId},#{auth})
+    </insert>
+    <select id="getAllStaff" resultMap="staffMap">
+        select * from staff
+    </select>
+</mapper>

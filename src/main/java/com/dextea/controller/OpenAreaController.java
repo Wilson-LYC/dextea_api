@@ -28,9 +28,8 @@ public class OpenAreaController {
      * @return 更新结果
      */
     @PostMapping("/update")
-    //从body中获取JSON
     public JSONObject update(@RequestBody JSONObject data){
-        JSONArray openArea=data.getJSONArray("newOpenArea");
+        JSONArray openArea=data.getJSONArray("data");
         return storeService.updateOpenArea(openArea);
     }
 }

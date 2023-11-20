@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.dextea.mapper")
+@MapperScan(basePackages = {"com.dextea.mapper"})
 public class DexteaApplication {
 
     public static void main(String[] args) {

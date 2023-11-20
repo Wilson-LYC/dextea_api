@@ -5,10 +5,7 @@ import com.dextea.mapper.StoreMapper;
 import com.dextea.pojo.Store;
 import com.dextea.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +21,16 @@ public class StoreController {
         return storeService.getAllStore();
     }
 
-
+    @PostMapping("/add")
+    public JSONObject add(@RequestBody JSONObject json){
+        JSONObject data=json.getJSONObject("data");
+        Store store=new Store();
+        store.setName(data.getString("name"));
+        store.setArea(data.getString("area"));
+        store.setAddress(data.getString("address"));
+        store.setPhone(data.getString("phone"));
+        store.setOpenTime(data.getString("openTime"));
+        store.setOpenState(data.getString("openState"));
+        return storeService.addStore(store);
+    }
 }

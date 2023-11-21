@@ -76,7 +76,7 @@ public class StoreServiceImpl implements StoreService {
         //获取所有店铺
         List<Store> stores=storeMapper.getAllStore();
         JSONObject data=new JSONObject();
-        data.put("stores",stores);
+        data.put("stores",storeList2json(stores));
         //获取营业区域
         Setting setting=settingMapper.get("open_area");
         JSONArray openAreaRaw=JSONArray.parseArray(setting.getValue());
@@ -165,6 +165,20 @@ public class StoreServiceImpl implements StoreService {
     }
 
     /**
+     * List<Store>转json
+     * @param storeList
+     * @return json
+     */
+    @Override
+    public JSONArray storeList2json(List<Store> storeList) {
+        JSONArray res=new JSONArray();
+        for(Store store:storeList){
+            res.add(store2json(store));
+        }
+        return res;
+    }
+
+    /**
      * 修改单个营业状态
      * @param id
      * @param openState
@@ -236,6 +250,49 @@ public class StoreServiceImpl implements StoreService {
             res.put("code",500);
             res.put("msg","删除失败");
         }
+        return res;
+    }
+
+    /**
+     * 获取营业区域选项
+     * @return json
+     */
+    @Override
+    public JSONObject getOpenAreaOption() {
+        JSONObject res=new JSONObject();
+        Setting setting=settingMapper.get("open_area");
+        //判断是否获取到营业区域
+        if(setting==null){
+            res.put("code",500);
+            res.put("msg","失败");
+            return res;
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        //获取营业区域
+        JSONArray openAreaRaw=JSONArray.parseArray(setting.getValue());
+        JSONArray openArea=new JSONArray();
+        for(int i=0;i<openAreaRaw.size();i++){
+            JSONObject areaOld=openAreaRaw.getJSONObject(i);
+            JSONObject areaNew=new JSONObject();
+            areaNew.put("label",areaOld.getString("value"));
+            areaNew.put("value",areaOld.getString("value"));
+            JSONArray chileOld=areaOld.getJSONArray("children");
+            JSONArray chileNew=new JSONArray();
+            for(int j=0;j<chileOld.size();j++){
+                JSONObject c1=chileOld.getJSONObject(j);
+                JSONObject c2=new JSONObject();
+                c2.put("label",c1.getString("value"));
+                c2.put("value",c1.getString("value"));
+                c2.put("children",new JSONArray());
+                chileNew.add(c2);
+            }
+            areaNew.put("children",chileNew);
+            openArea.add(areaNew);
+        }
+        data.put("openArea",openArea);
+        res.put("data",data);
         return res;
     }
 }

@@ -32,4 +32,13 @@ public class OpenAreaController {
         JSONArray openArea=data.getJSONArray("data");
         return storeService.updateOpenArea(openArea);
     }
+
+    /**
+     * 获取营业区域选项
+     * @return 营业区域选项
+     */
+    @GetMapping("/option")
+    public JSONObject option(){
+        return storeService.getOpenAreaOption();
+    }
 }

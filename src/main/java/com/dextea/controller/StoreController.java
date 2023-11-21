@@ -62,4 +62,5 @@ public class StoreController {
     public JSONObject delete(@RequestParam("id") int id){
         return storeService.deleteStoreById(id);
     }
+
 }

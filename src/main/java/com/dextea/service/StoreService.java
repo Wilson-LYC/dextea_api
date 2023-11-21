@@ -20,11 +20,13 @@ public interface StoreService {
     JSONObject addStore(Store store);
 
     JSONObject store2json(Store store);
+    JSONArray storeList2json(List<Store> storeList);
 
     JSONObject updateOpenState(int id, String openState);
-
 
     JSONObject updateOpenState(List<Integer> idList, String openState);
 
     JSONObject deleteStoreById(int id);
+
+    JSONObject getOpenAreaOption();
 }

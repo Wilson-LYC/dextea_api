@@ -295,4 +295,23 @@ public class StoreServiceImpl implements StoreService {
         res.put("data",data);
         return res;
     }
+
+    /**
+     * 修改店铺信息
+     * @param store
+     * @return
+     */
+    @Override
+    public JSONObject updateStore(Store store) {
+        JSONObject res=new JSONObject();
+        int result=storeMapper.updateStore(store);
+        if(result==1){
+            res.put("code",200);
+            res.put("msg","成功");
+        }else{
+            res.put("code",500);
+            res.put("msg","修改失败");
+        }
+        return res;
+    }
 }

@@ -16,4 +16,6 @@ public interface StoreMapper {
     int updateOpenState(Store store);
     //删除店铺
     int deleteStoreById(int id);
+    //修改店铺信息
+    int updateStore(Store store);
 }

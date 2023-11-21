@@ -22,4 +22,7 @@
     <delete id="deleteStoreById">
         delete from store where id=#{id}
     </delete>
+    <update id="updateStore" parameterType="Store">
+        update store set `name`=#{name},`area`=#{area},`address`=#{address},`phone`=#{phone},`open_time`=#{openTime},`open_state`=#{openState} where id=#{id}
+    </update>
 </mapper>

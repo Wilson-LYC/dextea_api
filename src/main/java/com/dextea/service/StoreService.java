@@ -29,4 +29,6 @@ public interface StoreService {
     JSONObject deleteStoreById(int id);
 
     JSONObject getOpenAreaOption();
+
+    JSONObject updateStore(Store store);
 }

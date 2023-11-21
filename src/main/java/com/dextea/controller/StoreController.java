@@ -16,12 +16,12 @@ import java.util.List;
 public class StoreController {
     @Autowired
     StoreService storeService;
-
+    //获取所有店铺
     @GetMapping("/get")
     public JSONObject all(){
         return storeService.getAllStore();
     }
-
+    //添加店铺
     @PostMapping("/add")
     public JSONObject add(@RequestBody JSONObject json){
         JSONObject data=json.getJSONObject("data");
@@ -35,6 +35,7 @@ public class StoreController {
         return storeService.addStore(store);
     }
 
+    //获取店铺信息
     @GetMapping("/info")
     public JSONObject info(@RequestParam("id") int id){
         return storeService.getStoreById(id);
@@ -62,5 +63,18 @@ public class StoreController {
     public JSONObject delete(@RequestParam("id") int id){
         return storeService.deleteStoreById(id);
     }
-
+    //修改店铺信息
+    @PostMapping("/update")
+    public JSONObject update(@RequestBody JSONObject json){
+        JSONObject data=json.getJSONObject("data");
+        Store store=new Store();
+        store.setId(data.getInteger("id"));
+        store.setName(data.getString("name"));
+        store.setArea(data.getString("area"));
+        store.setAddress(data.getString("address"));
+        store.setPhone(data.getString("phone"));
+        store.setOpenTime(data.getString("openTime"));
+        store.setOpenState(data.getString("openState"));
+        return storeService.updateStore(store);
+    }
 }

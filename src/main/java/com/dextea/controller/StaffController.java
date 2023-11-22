@@ -7,28 +7,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/staff")
-@CrossOrigin(origins = "*")//允许跨域
+@RequestMapping("/company/staff")
+@CrossOrigin(origins = "*")
 public class StaffController {
     @Autowired
     StaffService staffService;
+    //添加员工
     @PostMapping("/add")
-    public JSONObject add(@RequestBody JSONObject data){
+    public JSONObject add(@RequestBody JSONObject json){
+        JSONObject data=json.getJSONObject("data");
         Staff staff=new Staff();
         staff.setAccount(data.getString("account"));
         staff.setPassword(data.getString("password"));
-        staff.setRole(data.getInteger("role"));
+        staff.setRole(data.getString("role"));
         if(data.getInteger("storeId")==null){
             staff.setStoreId(0);
         }else {
             staff.setStoreId(data.getInteger("storeId"));
         }
-        staff.setAuth(data.getString("auth"));
+        staff.setName(data.getString("name"));
         return staffService.addStaff(staff);
     }
-
-    @GetMapping("/get/all")
+    //获取所有员工
+    @GetMapping("/get")
     public JSONObject getAllStaff(){
         return staffService.getAllStaff();
+    }
+    //判断账号是否存在
+    @GetMapping("/account/exist")
+    public JSONObject accountExist(@RequestParam("account") String account){
+        return staffService.accountExist(account);
     }
 }

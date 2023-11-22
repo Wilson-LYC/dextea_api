@@ -9,4 +9,6 @@ import java.util.List;
 public interface StaffMapper{
     int add(Staff staff);
     List<Staff> getAllStaff();
+
+    Staff getStaffByAccount(String account);
 }

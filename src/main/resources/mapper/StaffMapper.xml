@@ -7,9 +7,12 @@
         <result property="storeId" column="store_id"/>
     </resultMap>
     <insert id="add" parameterType="Staff">
-        insert into staff(`account`,`password`,`role`,`store_id`,`auth`) value (#{account},#{password},#{role},#{storeId},#{auth})
+        insert into staff(`account`,`password`,`role`,`store_id`,`name`) value (#{account},#{password},#{role},#{storeId},#{name})
     </insert>
     <select id="getAllStaff" resultMap="staffMap">
         select * from staff
+    </select>
+    <select id="getStaffByAccount" resultMap="staffMap">
+        select * from staff where account=#{account}
     </select>
 </mapper>

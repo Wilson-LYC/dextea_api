@@ -134,7 +134,7 @@ public class StoreServiceImpl implements StoreService {
         Store store=storeMapper.getStoreById(id);
         if(store==null){
             res.put("code",500);
-            res.put("msg","门店ID不存在");
+            res.put("msg","门店不存在");
             return res;
         }
         res.put("code",200);

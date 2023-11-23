@@ -28,6 +28,7 @@ public class CommodityController {
         commodity.setIntroduce(data.getString("introduce"));
         commodity.setBriefIntro(data.getString("briefIntro"));
         commodity.setState(data.getString("state"));
+        commodity.setCustom(data.getString("custom"));
         return commodityService.addCommodity(commodity);
     }
 }

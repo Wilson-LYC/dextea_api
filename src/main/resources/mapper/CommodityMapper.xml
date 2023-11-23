@@ -7,8 +7,8 @@
         <result property="briefIntro" column="brief_intro"/>
     </resultMap>
     <insert id="addCommodity">
-        insert into commodity (name, brief_intro, price, introduce,state)
-        values (#{name}, #{briefIntro}, #{price}, #{introduce},#{state})
+        insert into commodity (name, brief_intro, price, introduce,state,custom)
+        values (#{name}, #{briefIntro}, #{price}, #{introduce},#{state},#{custom})
     </insert>
     <select id="getAllCommodityBrief" resultMap="commodityMap">
         select * from commodity

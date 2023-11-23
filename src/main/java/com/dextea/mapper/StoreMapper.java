@@ -18,4 +18,9 @@ public interface StoreMapper {
     int deleteStoreById(int id);
     //修改店铺信息
     int updateStore(Store store);
+    //统计营业区域门店数量
+    int countStoreByArea(String area);
+
+    List<Store> searchStore(Store store);
+
 }

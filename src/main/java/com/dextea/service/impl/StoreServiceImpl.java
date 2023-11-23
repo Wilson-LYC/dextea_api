@@ -7,7 +7,6 @@ import com.dextea.mapper.StoreMapper;
 import com.dextea.pojo.Setting;
 import com.dextea.pojo.Store;
 import com.dextea.service.StoreService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +36,29 @@ public class StoreServiceImpl implements StoreService {
         res.put("code",200);
         res.put("msg","成功");
         JSONObject data=new JSONObject();
-        data.put("openArea",JSONArray.parseArray(setting.getValue()));
+        JSONArray openArea=JSONArray.parseArray(setting.getValue());
+        JSONArray openAreaNew=new JSONArray();
+        for (int i=0;i<openArea.size();i++){
+            JSONObject area1= openArea.getJSONObject(i);
+            JSONObject area2=new JSONObject();
+            int num1=storeMapper.countStoreByArea(area1.getString("value"));
+            area2.put("num",num1);
+            area2.put("value",area1.getString("value"));
+            JSONArray children1=area1.getJSONArray("children");
+            JSONArray children2=new JSONArray();
+            for(int j=0;j<children1.size();j++){
+                JSONObject c1=children1.getJSONObject(j);
+                JSONObject c2=new JSONObject();
+                c2.put("value",c1.getString("value"));
+                c2.put("children",new JSONArray());
+                int num2=storeMapper.countStoreByArea(c1.getString("value"));
+                c2.put("num",num2);
+                children2.add(c2);
+            }
+            area2.put("children",children2);
+            openAreaNew.add(area2);
+        }
+        data.put("openArea",openAreaNew);
         res.put("data",data);
         return res;
     }
@@ -311,6 +332,56 @@ public class StoreServiceImpl implements StoreService {
         }else{
             res.put("code",500);
             res.put("msg","修改失败");
+        }
+        return res;
+    }
+
+    /**
+     * 搜索店铺
+     * @param store
+     * @return
+     */
+    @Override
+    public JSONObject searchStore(Store store) {
+        JSONObject res=new JSONObject();
+        List<Store> storeList=storeMapper.searchStore(store);
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data1=new JSONObject();
+        data1.put("stores",storeList2json(storeList));
+        res.put("data",data1);
+        return res;
+    }
+
+    /**
+     * 获取店铺选项
+     * @return json
+     */
+    @Override
+    public JSONObject getStoreOption() {
+        JSONObject res=new JSONObject();
+        List<Store> storeList=storeMapper.getAllStore();
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("stores",store2Option(storeList));
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * List<Store>转option
+     * @param storeList
+     * @return
+     */
+    @Override
+    public JSONArray store2Option(List<Store> storeList) {
+        JSONArray res=new JSONArray();
+        for(Store store:storeList){
+            JSONObject store1=new JSONObject();
+            store1.put("label",store.getName());
+            store1.put("value",store.getId());
+            res.add(store1);
         }
         return res;
     }

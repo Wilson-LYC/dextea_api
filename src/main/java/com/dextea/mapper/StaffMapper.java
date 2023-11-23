@@ -9,6 +9,13 @@ import java.util.List;
 public interface StaffMapper{
     int add(Staff staff);
     List<Staff> getAllStaff();
-
     Staff getStaffByAccount(String account);
+    //修改员工信息
+    int updateStaff(Staff staff);
+
+    int deleteStaffById(int id);
+
+    List<Staff> getStaffByStoreId(int storeId);
+
+    List<Staff> searchStaff(Staff staff);
 }

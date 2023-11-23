@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dextea.mapper.CommodityMapper">
+    <resultMap id="commodityMap" type="Commodity">
+        <result property="briefIntro" column="brief_intro"/>
+    </resultMap>
+    <insert id="addCommodity">
+        insert into commodity (name, brief_intro, price, introduce,state)
+        values (#{name}, #{briefIntro}, #{price}, #{introduce},#{state})
+    </insert>
+    <select id="getAllCommodityBrief" resultMap="commodityMap">
+        select * from commodity
+    </select>
+</mapper>

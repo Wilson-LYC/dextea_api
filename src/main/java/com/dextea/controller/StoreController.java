@@ -77,4 +77,32 @@ public class StoreController {
         store.setOpenState(data.getString("openState"));
         return storeService.updateStore(store);
     }
+
+    //搜索店铺
+    @PostMapping("/search")
+    public JSONObject search(@RequestBody JSONObject json){
+        JSONObject data=json.getJSONObject("data");
+        Store store=new Store();
+        if (data.getInteger("id")!=null){
+            store.setId(data.getInteger("id"));
+        }
+        if(data.getString("name")!=null){
+            store.setName(data.getString("name"));
+        }
+        if(data.getString("area")!=null){
+            store.setArea(data.getString("area"));
+        }
+        if(data.getString("phone")!=null){
+            store.setPhone(data.getString("phone"));
+        }
+        if(data.getString("openState")!=null){
+            store.setOpenState(data.getString("openState"));
+        }
+        return storeService.searchStore(store);
+    }
+    //获取店铺选项
+    @GetMapping("/option")
+    public JSONObject option(){
+        return storeService.getStoreOption();
+    }
 }

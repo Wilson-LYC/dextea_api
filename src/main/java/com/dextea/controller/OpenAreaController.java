@@ -28,9 +28,9 @@ public class OpenAreaController {
      * @return 更新结果
      */
     @PostMapping("/update")
-    public JSONObject update(@RequestBody JSONObject data){
-        JSONArray openArea=data.getJSONArray("data");
-        return storeService.updateOpenArea(openArea);
+    public JSONObject update(@RequestBody JSONObject json){
+        JSONArray data=json.getJSONArray("data");
+        return storeService.updateOpenArea(data);
     }
 
     /**

@@ -31,4 +31,10 @@ public interface StoreService {
     JSONObject getOpenAreaOption();
 
     JSONObject updateStore(Store store);
+
+    JSONObject searchStore(Store data);
+
+    JSONObject getStoreOption();
+
+    JSONArray store2Option(List<Store> storeList);
 }

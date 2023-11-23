@@ -9,10 +9,39 @@
     <insert id="add" parameterType="Staff">
         insert into staff(`account`,`password`,`role`,`store_id`,`name`) value (#{account},#{password},#{role},#{storeId},#{name})
     </insert>
+    <update id="updateStaff">
+        update staff set `account`=#{account},`password`=#{password},`role`=#{role},`store_id`=#{storeId},`name`=#{name} where id=#{id}
+    </update>
+    <delete id="deleteStaffById">
+        delete from staff where id=#{id}
+    </delete>
     <select id="getAllStaff" resultMap="staffMap">
         select * from staff
     </select>
     <select id="getStaffByAccount" resultMap="staffMap">
         select * from staff where account=#{account}
+    </select>
+    <select id="getStaffByStoreId" resultMap="staffMap">
+        select * from staff where store_id=#{storeId}
+    </select>
+    <select id="searchStaff" resultMap="staffMap">
+        select * from staff
+        <where>
+            <if test="id!=null and id!=''">
+                and id = #{id}
+            </if>
+            <if test="account!=null and account!=''">
+                and account like concat('%',#{account},'%')
+            </if>
+            <if test="role!=null and role!=''">
+                and role=#{role}
+            </if>
+            <if test="storeId!=null and storeId!=''">
+                and store_id=#{storeId}
+            </if>
+            <if test="name!=null and name!=''">
+                and name like concat('%',#{name},'%')
+            </if>
+        </where>
     </select>
 </mapper>

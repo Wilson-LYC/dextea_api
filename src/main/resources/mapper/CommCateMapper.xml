@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dextea.mapper.CommCateMapper">
+    <resultMap id="commCateMap" type="CommCate">
+        <result property="commId" column="comm_id"/>
+        <result property="cateId" column="cate_id"/>
+    </resultMap>
+    <insert id="addCommToCate">
+        INSERT INTO cate2comm (comm_id, cate_id) VALUES (#{comm_id}, #{cate_id})
+    </insert>
+    <select id="getCateByCommId" resultMap="commCateMap">
+        SELECT * FROM cate2comm WHERE comm_id = #{commId}
+    </select>
+</mapper>

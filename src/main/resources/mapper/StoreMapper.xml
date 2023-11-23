@@ -16,6 +16,29 @@
     <select id="getStoreById" resultMap="storeResultMap">
         select * from store where id=#{id}
     </select>
+    <select id="countStoreByArea" resultType="java.lang.Integer">
+        select count(*) from store where area like concat('%',#{area},'%')
+    </select>
+    <select id="searchStore" resultMap="storeResultMap">
+        select * from store
+        <where>
+            <if test="id!=null and id!=''">
+                and id = #{id}
+            </if>
+            <if test="name!=null and name!=''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="area!=null and area!='' and area!='[]'">
+                and area=#{area}
+            </if>
+            <if test="phone!=null and phone!=''">
+                and phone=#{phone}
+            </if>
+            <if test="openState!=null and openState!=''">
+                and open_state=#{openState}
+            </if>
+        </where>
+    </select>
     <update id="updateOpenState" parameterType="Store">
         update store set open_state=#{openState} where id=#{id}
     </update>

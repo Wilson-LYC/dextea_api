@@ -1,5 +1,6 @@
 package com.dextea.service;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.pojo.Category;
@@ -24,4 +25,12 @@ public interface CommodityService {
     JSONArray commCateList2json(List<CommCate> commCateList);
     //新增商品
     JSONObject addCommodity(Commodity commodity);
+
+    JSONObject getCommCate();
+    //category转换为option
+    JSONArray categoryList2option(List<Category> categoryList);
+
+    JSONObject getCommInfo(int id);
+
+    JSONObject getCateOptionMultiple();
 }

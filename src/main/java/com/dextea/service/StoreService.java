@@ -8,33 +8,36 @@ import java.util.List;
 
 
 public interface StoreService {
-    //获取营业区域
-    public JSONObject getOpenArea();
-    //更新营业区域
-    JSONObject updateOpenArea(JSONArray openArea);
-    //获取所有店铺
-    JSONObject getAllStore();
-    //获取店铺信息
-    JSONObject getStoreById(int id);
+    //store转换为json
+    JSONObject toJson(Store store);
+
+    //storeList转换为
+    JSONArray toJson(List<Store> storeList);
+
+    //storeList转换为下拉框选项
+    JSONArray toSelectOption(List<Store> storeList);
+
     //添加店铺
     JSONObject addStore(Store store);
 
-    JSONObject store2json(Store store);
-    JSONArray storeList2json(List<Store> storeList);
-
-    JSONObject updateOpenState(int id, String openState);
-
-    JSONObject updateOpenState(List<Integer> idList, String openState);
-
+    //删除店铺
     JSONObject deleteStoreById(int id);
 
-    JSONObject getOpenAreaOption();
+    //获取所有店铺
+    JSONObject getAllStore();
 
+    //通过ID获取店铺
+    JSONObject getStoreById(int id);
+
+    //搜索店铺
+    JSONObject searchStore(Store store);
+
+    //修改店铺信息
     JSONObject updateStore(Store store);
-
-    JSONObject searchStore(Store data);
-
-    JSONObject getStoreOption();
-
-    JSONArray store2Option(List<Store> storeList);
+    //修改单个门店的营业状态
+    JSONObject updateOpenState(int id, String openState);
+    //修改多个门店的营业状态
+    JSONObject updateOpenState(List<Integer> idList, String openState);
+    //获取门店下拉选项
+    JSONObject getStoreAsSelectOption();
 }

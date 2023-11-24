@@ -3,22 +3,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.dextea.mapper.StoreMapper">
+
     <resultMap id="storeResultMap" type="Store">
         <result property="openState" column="open_state"></result>
         <result property="openTime" column="open_time"></result>
     </resultMap>
+
     <select id="getAllStore" resultMap="storeResultMap">
         select * from store
     </select>
+
     <insert id="add" parameterType="Store">
         insert into store(`name`,`area`,`address`,`phone`,`open_time`,`open_state`) value (#{name},#{area},#{address},#{phone},#{openTime},#{openState})
     </insert>
+
     <select id="getStoreById" resultMap="storeResultMap">
         select * from store where id=#{id}
     </select>
+
     <select id="countStoreByArea" resultType="java.lang.Integer">
         select count(*) from store where area like concat('%',#{area},'%')
     </select>
+
     <select id="searchStore" resultMap="storeResultMap">
         select * from store
         <where>
@@ -39,13 +45,17 @@
             </if>
         </where>
     </select>
+
     <update id="updateOpenState" parameterType="Store">
         update store set open_state=#{openState} where id=#{id}
     </update>
+
     <delete id="deleteStoreById">
         delete from store where id=#{id}
     </delete>
+
     <update id="updateStore" parameterType="Store">
         update store set `name`=#{name},`area`=#{area},`address`=#{address},`phone`=#{phone},`open_time`=#{openTime},`open_state`=#{openState} where id=#{id}
     </update>
+
 </mapper>

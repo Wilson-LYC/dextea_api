@@ -7,10 +7,13 @@
         <result property="briefIntro" column="brief_intro"/>
     </resultMap>
     <insert id="addCommodity">
-        insert into commodity (name, brief_intro, price, introduce,state,custom)
-        values (#{name}, #{briefIntro}, #{price}, #{introduce},#{state},#{custom})
+        insert into commodity (name,price,state)
+        values (#{name},#{price},#{state})
     </insert>
-    <select id="getAllCommodityBrief" resultMap="commodityMap">
+    <select id="getAllCommodity" resultMap="commodityMap">
         select * from commodity
+    </select>
+    <select id="getCommById" resultMap="commodityMap">
+        select * from commodity where id = #{id}
     </select>
 </mapper>

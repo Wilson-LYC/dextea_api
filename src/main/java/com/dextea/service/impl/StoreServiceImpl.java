@@ -20,67 +20,84 @@ public class StoreServiceImpl implements StoreService {
     SettingMapper settingMapper;
 
     /**
-     * 获取营业区域
-     * @return 营业区域
+     * store转换为json
+     * @return JSONObject
      */
     @Override
-    public JSONObject getOpenArea() {
+    public JSONObject toJson(Store store) {
         JSONObject res=new JSONObject();
-        Setting setting=settingMapper.get("open_area");
-        //判断是否获取到营业区域
-        if(setting==null){
-            res.put("code",500);
-            res.put("msg","失败");
-            return res;
-        }
-        res.put("code",200);
-        res.put("msg","成功");
-        JSONObject data=new JSONObject();
-        JSONArray openArea=JSONArray.parseArray(setting.getValue());
-        JSONArray openAreaNew=new JSONArray();
-        for (int i=0;i<openArea.size();i++){
-            JSONObject area1= openArea.getJSONObject(i);
-            JSONObject area2=new JSONObject();
-            int num1=storeMapper.countStoreByArea(area1.getString("value"));
-            area2.put("num",num1);
-            area2.put("value",area1.getString("value"));
-            JSONArray children1=area1.getJSONArray("children");
-            JSONArray children2=new JSONArray();
-            for(int j=0;j<children1.size();j++){
-                JSONObject c1=children1.getJSONObject(j);
-                JSONObject c2=new JSONObject();
-                c2.put("value",c1.getString("value"));
-                c2.put("children",new JSONArray());
-                int num2=storeMapper.countStoreByArea(c1.getString("value"));
-                c2.put("num",num2);
-                children2.add(c2);
-            }
-            area2.put("children",children2);
-            openAreaNew.add(area2);
-        }
-        data.put("openArea",openAreaNew);
-        res.put("data",data);
+        res.put("id",store.getId());
+        res.put("name",store.getName());
+        JSONArray area=JSONArray.parseArray(store.getArea());
+        res.put("area",area);
+        res.put("address",store.getAddress());
+        res.put("phone",store.getPhone());
+        res.put("openTime",store.getOpenTime());
+        res.put("openState",store.getOpenState());
         return res;
     }
 
     /**
-     * 更新营业区域
-     * @param data 营业区域
-     * @return 更新结果
+     * storeList转换为json
+     * @return JSONArray
      */
     @Override
-    public JSONObject updateOpenArea(JSONArray data) {
+    public JSONArray toJson(List<Store> storeList) {
+        JSONArray res=new JSONArray();
+        for(Store store:storeList){
+            res.add(toJson(store));
+        }
+        return res;
+    }
+
+    /**
+     * storeList转换为下拉框选项
+     * @return JSONArray
+     */
+    @Override
+    public JSONArray toSelectOption(List<Store> storeList) {
+        JSONArray res=new JSONArray();
+        for(Store store:storeList){
+            JSONObject storeJson=new JSONObject();
+            storeJson.put("label",store.getName());
+            storeJson.put("value",store.getId());
+            res.add(storeJson);
+        }
+        return res;
+    }
+
+    /**
+     * 添加店铺
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject addStore(Store store) {
         JSONObject res=new JSONObject();
-        Setting setting=new Setting();
-        setting.setKey("open_area");
-        setting.setValue(data.toJSONString());
-        int result=settingMapper.update(setting);
+        int result=storeMapper.add(store);
+        if(result==1){
+            res.put("code",200);
+            res.put("msg","新增门店成功");
+        }else{
+            res.put("code",500);
+            res.put("msg","新增门店失败");
+        }
+        return res;
+    }
+
+    /**
+     * 删除店铺
+     * @return 删除结果
+     */
+    @Override
+    public JSONObject deleteStoreById(int id) {
+        JSONObject res=new JSONObject();
+        int result=storeMapper.deleteStoreById(id);
         if(result==1){
             res.put("code",200);
             res.put("msg","成功");
         }else{
             res.put("code",500);
-            res.put("msg","失败");
+            res.put("msg","删除失败");
         }
         return res;
     }
@@ -92,60 +109,18 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public JSONObject getAllStore() {
         JSONObject res=new JSONObject();
+        //获取所有店铺
+        List<Store> storeList=storeMapper.getAllStore();
+        JSONObject data=new JSONObject();
+        data.put("stores",toJson(storeList));
         res.put("code",200);
         res.put("msg","成功");
-        //获取所有店铺
-        List<Store> stores=storeMapper.getAllStore();
-        JSONObject data=new JSONObject();
-        data.put("stores",storeList2json(stores));
-        //获取营业区域
-        Setting setting=settingMapper.get("open_area");
-        JSONArray openAreaRaw=JSONArray.parseArray(setting.getValue());
-        JSONArray openArea=new JSONArray();
-        for(int i=0;i<openAreaRaw.size();i++){
-            JSONObject areaOld=openAreaRaw.getJSONObject(i);
-            JSONObject areaNew=new JSONObject();
-            areaNew.put("label",areaOld.getString("value"));
-            areaNew.put("value",areaOld.getString("value"));
-            JSONArray chileOld=areaOld.getJSONArray("children");
-            JSONArray chileNew=new JSONArray();
-            for(int j=0;j<chileOld.size();j++){
-                JSONObject c1=chileOld.getJSONObject(j);
-                JSONObject c2=new JSONObject();
-                c2.put("label",c1.getString("value"));
-                c2.put("value",c1.getString("value"));
-                c2.put("children",new JSONArray());
-                chileNew.add(c2);
-            }
-            areaNew.put("children",chileNew);
-            openArea.add(areaNew);
-        }
-        data.put("openArea",openArea);
         res.put("data",data);
         return res;
     }
 
     /**
-     * 添加店铺
-     * @param store 店铺
-     * @return 添加结果
-     */
-    @Override
-    public JSONObject addStore(Store store) {
-        JSONObject res=new JSONObject();
-        int result=storeMapper.add(store);
-        if(result==1){
-            res.put("code",200);
-            res.put("msg","成功");
-        }else{
-            res.put("code",500);
-            res.put("msg","添加失败");
-        }
-        return res;
-    }
-
-    /**
-     * 获取店铺信息
+     * 通过ID获取店铺
      * @param id 店铺id
      * @return 店铺信息
      */
@@ -161,49 +136,58 @@ public class StoreServiceImpl implements StoreService {
         res.put("code",200);
         res.put("msg","成功");
         JSONObject data=new JSONObject();
-        data.put("store",store2json(store));
+        data.put("store",toJson(store));
+        res.put("data",data);
+        return res;
+    }
+
+
+
+
+
+
+
+    /**
+     * 搜索店铺
+     * @param store 店铺信息
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject searchStore(Store store) {
+        JSONObject res=new JSONObject();
+        List<Store> storeList=storeMapper.searchStore(store);
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("stores",toJson(storeList));
         res.put("data",data);
         return res;
     }
 
     /**
-     * Store转json
-     * @param store
-     * @return
+     * 修改店铺信息
+     * @param store 店铺信息
+     * @return JSONObject
      */
     @Override
-    public JSONObject store2json(Store store) {
+    public JSONObject updateStore(Store store) {
         JSONObject res=new JSONObject();
-        res.put("id",store.getId());
-        res.put("name",store.getName());
-        JSONArray area=JSONArray.parseArray(store.getArea());
-        res.put("area",area);
-        res.put("address",store.getAddress());
-        res.put("phone",store.getPhone());
-        res.put("openTime",store.getOpenTime());
-        res.put("openState",store.getOpenState());
-        return res;
-    }
-
-    /**
-     * List<Store>转json
-     * @param storeList
-     * @return json
-     */
-    @Override
-    public JSONArray storeList2json(List<Store> storeList) {
-        JSONArray res=new JSONArray();
-        for(Store store:storeList){
-            res.add(store2json(store));
+        int result=storeMapper.updateStore(store);
+        if(result==1){
+            res.put("code",200);
+            res.put("msg","修改成功");
+        }else{
+            res.put("code",500);
+            res.put("msg","修改失败");
         }
         return res;
     }
 
     /**
-     * 修改单个营业状态
-     * @param id
-     * @param openState
-     * @return
+     * 修改单个门店的营业状态
+     * @param id 门店id
+     * @param openState 营业状态
+     * @return json
      */
     @Override
     public JSONObject updateOpenState(int id, String openState) {
@@ -227,10 +211,10 @@ public class StoreServiceImpl implements StoreService {
     }
 
     /**
-     * 修改多个营业状态
-     * @param idList
-     * @param openState
-     * @return
+     * 修改多个门店的营业状态
+     * @param idList 门店id列表
+     * @param openState 营业状态
+     * @return json
      */
     @Override
     public JSONObject updateOpenState(List<Integer> idList, String openState) {
@@ -256,133 +240,18 @@ public class StoreServiceImpl implements StoreService {
     }
 
     /**
-     * 删除店铺
-     * @param id
-     * @return 删除结果
-     */
-    @Override
-    public JSONObject deleteStoreById(int id) {
-        JSONObject res=new JSONObject();
-        int result=storeMapper.deleteStoreById(id);
-        if(result==1){
-            res.put("code",200);
-            res.put("msg","成功");
-        }else{
-            res.put("code",500);
-            res.put("msg","删除失败");
-        }
-        return res;
-    }
-
-    /**
-     * 获取营业区域选项
-     * @return json
-     */
-    @Override
-    public JSONObject getOpenAreaOption() {
-        JSONObject res=new JSONObject();
-        Setting setting=settingMapper.get("open_area");
-        //判断是否获取到营业区域
-        if(setting==null){
-            res.put("code",500);
-            res.put("msg","失败");
-            return res;
-        }
-        res.put("code",200);
-        res.put("msg","成功");
-        JSONObject data=new JSONObject();
-        //获取营业区域
-        JSONArray openAreaRaw=JSONArray.parseArray(setting.getValue());
-        JSONArray openArea=new JSONArray();
-        for(int i=0;i<openAreaRaw.size();i++){
-            JSONObject areaOld=openAreaRaw.getJSONObject(i);
-            JSONObject areaNew=new JSONObject();
-            areaNew.put("label",areaOld.getString("value"));
-            areaNew.put("value",areaOld.getString("value"));
-            JSONArray chileOld=areaOld.getJSONArray("children");
-            JSONArray chileNew=new JSONArray();
-            for(int j=0;j<chileOld.size();j++){
-                JSONObject c1=chileOld.getJSONObject(j);
-                JSONObject c2=new JSONObject();
-                c2.put("label",c1.getString("value"));
-                c2.put("value",c1.getString("value"));
-                c2.put("children",new JSONArray());
-                chileNew.add(c2);
-            }
-            areaNew.put("children",chileNew);
-            openArea.add(areaNew);
-        }
-        data.put("openArea",openArea);
-        res.put("data",data);
-        return res;
-    }
-
-    /**
-     * 修改店铺信息
-     * @param store
-     * @return
-     */
-    @Override
-    public JSONObject updateStore(Store store) {
-        JSONObject res=new JSONObject();
-        int result=storeMapper.updateStore(store);
-        if(result==1){
-            res.put("code",200);
-            res.put("msg","成功");
-        }else{
-            res.put("code",500);
-            res.put("msg","修改失败");
-        }
-        return res;
-    }
-
-    /**
-     * 搜索店铺
-     * @param store
-     * @return
-     */
-    @Override
-    public JSONObject searchStore(Store store) {
-        JSONObject res=new JSONObject();
-        List<Store> storeList=storeMapper.searchStore(store);
-        res.put("code",200);
-        res.put("msg","成功");
-        JSONObject data1=new JSONObject();
-        data1.put("stores",storeList2json(storeList));
-        res.put("data",data1);
-        return res;
-    }
-
-    /**
      * 获取店铺选项
      * @return json
      */
     @Override
-    public JSONObject getStoreOption() {
+    public JSONObject getStoreAsSelectOption() {
         JSONObject res=new JSONObject();
         List<Store> storeList=storeMapper.getAllStore();
         res.put("code",200);
         res.put("msg","成功");
         JSONObject data=new JSONObject();
-        data.put("stores",store2Option(storeList));
+        data.put("stores",toSelectOption(storeList));
         res.put("data",data);
-        return res;
-    }
-
-    /**
-     * List<Store>转option
-     * @param storeList
-     * @return
-     */
-    @Override
-    public JSONArray store2Option(List<Store> storeList) {
-        JSONArray res=new JSONArray();
-        for(Store store:storeList){
-            JSONObject store1=new JSONObject();
-            store1.put("label",store.getName());
-            store1.put("value",store.getId());
-            res.add(store1);
-        }
         return res;
     }
 }

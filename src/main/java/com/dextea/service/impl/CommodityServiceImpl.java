@@ -51,7 +51,16 @@ public class CommodityServiceImpl implements CommodityService {
         res.put("code",200);
         res.put("msg","成功");
         List<Category> categoryList=categoryMapper.getAllCategory();
-        res.put("data",categoryList);
+        JSONArray categoryListJson=new JSONArray();
+        for(Category category:categoryList){
+            JSONObject json=new JSONObject();
+            json.put("id",category.getId());
+            json.put("name",category.getName());
+            categoryListJson.add(json);
+        }
+        JSONObject data=new JSONObject();
+        data.put("category",categoryListJson);
+        res.put("data",data);
         return res;
     }
 
@@ -62,7 +71,7 @@ public class CommodityServiceImpl implements CommodityService {
     @Override
     public JSONObject getAllCommodity() {
         JSONObject res=new JSONObject();
-        List<Commodity> commodityList=commodityMapper.getAllCommodityBrief();
+        List<Commodity> commodityList=commodityMapper.getAllCommodity();
         res.put("code",200);
         res.put("msg","成功");
         JSONObject data=new JSONObject();
@@ -131,6 +140,87 @@ public class CommodityServiceImpl implements CommodityService {
             res.put("code",500);
             res.put("msg","新增商品失败");
         }
+        return res;
+    }
+
+    /**
+     * 获取商品列表和品类列表
+     * @return
+     */
+    @Override
+    public JSONObject getCommCate() {
+        JSONObject res=new JSONObject();
+        List<Commodity> commodityList=commodityMapper.getAllCommodity();
+        List<Category> categoryList=categoryMapper.getAllCategory();
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        JSONArray commArray=new JSONArray();
+        for(Commodity commodity:commodityList){
+            JSONObject commJson=commodity2json(commodity);
+            commJson.remove("custom");
+            commJson.remove("introduce");
+            commJson.remove("briefIntro");
+            commJson.remove("img");
+            commArray.add(commJson);
+        }
+        data.put("commodity",commArray);
+        data.put("category",categoryList2option(categoryList));
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * category转换为option
+     * @param categoryList
+     * @return JSONArray
+     */
+    @Override
+    public JSONArray categoryList2option(List<Category> categoryList) {
+        JSONArray res=new JSONArray();
+        for(Category category:categoryList){
+            JSONObject json=new JSONObject();
+            json.put("value",category.getId());
+            json.put("label",category.getName());
+            res.add(json);
+        }
+        return res;
+    }
+
+    /**
+     * 获取单个商品
+     * @param id
+     * @return
+     */
+    @Override
+    public JSONObject getCommInfo(int id) {
+        JSONObject res=new JSONObject();
+        Commodity commodity=commodityMapper.getCommById(id);
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("commodity",commodity2json(commodity));
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * 获取品类多选选项
+     * @return
+     */
+    @Override
+    public JSONObject getCateOptionMultiple() {
+        JSONObject res=new JSONObject();
+        List<Category> categoryList=categoryMapper.getAllCategory();
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        JSONArray options=new JSONArray();
+        for(Category category:categoryList){
+            options.add(category.getName());
+        }
+        data.put("options",options);
+        res.put("data",data);
         return res;
     }
 }

@@ -28,4 +28,9 @@ public class CategoryController {
     public JSONObject all(){
         return commodityService.getAllCategory();
     }
+    //获取品类多选选项
+    @GetMapping("/option/multiple")
+    public JSONObject optionMultiple(){
+        return commodityService.getCateOptionMultiple();
+    }
 }

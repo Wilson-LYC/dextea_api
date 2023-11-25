@@ -1,5 +1,6 @@
 package com.dextea.service.impl;
 
+import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.mapper.StaffMapper;
@@ -52,6 +53,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public JSONObject addStaff(Staff staff) {
         JSONObject res=new JSONObject();
+        staff.setPassword(SecureUtil.md5(staff.getPassword()));
         int resnum=staffMapper.add(staff);
         if(resnum==1){
             res.put("code",200);
@@ -101,6 +103,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public JSONObject updateStaff(Staff staff) {
         JSONObject res=new JSONObject();
+        staff.setPassword(SecureUtil.md5(staff.getPassword()));
         int resnum=staffMapper.updateStaff(staff);
         if(resnum==1){
             res.put("code",200);

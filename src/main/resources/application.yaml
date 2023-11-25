@@ -1,14 +1,26 @@
 # 应用服务 WEB 访问端口
 server:
   port: 6688
-# spring数据库
+
 spring:
+  # mysql相关设置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/dextea?useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: root
+  # redis相关设置
+  redis:
+    host: localhost
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: 100ms
 
+# mybatis相关设置
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   #目的是为了省略resultType里的代码量

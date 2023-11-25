@@ -15,4 +15,8 @@ public interface CommodityMapper {
     Commodity getCommById(int id);
 
     int updateCommodity(Commodity commodity);
+
+    List<Commodity> searchComm(int id,String name,String state,int cateId);
+
+    int deleteComm(int id);
 }

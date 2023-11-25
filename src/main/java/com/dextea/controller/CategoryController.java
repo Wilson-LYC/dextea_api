@@ -50,4 +50,10 @@ public class CategoryController {
         category.setName(data.getString("name"));
         return categotyService.updateCategory(category);
     }
+
+    //删除品类
+    @GetMapping("/delete")
+    public JSONObject delete(@RequestParam("id") int id){
+        return categotyService.deleteCategory(id);
+    }
 }

@@ -10,4 +10,6 @@ public interface CategotyService {
     JSONObject getCateAsSelectOption();
 
     JSONObject updateCategory(Category category);
+
+    JSONObject deleteCategory(int id);
 }

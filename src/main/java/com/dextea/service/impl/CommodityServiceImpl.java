@@ -157,4 +157,45 @@ public class CommodityServiceImpl implements CommodityService {
         res.put("msg","成功");
         return res;
     }
+
+    /**
+     * 搜索商品
+     * @param commodity 商品
+     * @param cateId    品类id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject searchComm(Commodity commodity, int cateId) {
+        JSONObject res=new JSONObject();
+        List<Commodity> commodityList=commodityMapper.searchComm(commodity.getId(),commodity.getName(),commodity.getState(),cateId);
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("commodity",toJson(commodityList));
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * 删除商品
+     * @param id 商品id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject deleteComm(int id) {
+        JSONObject res=new JSONObject();
+        //先删除商品的品类
+        int result=commCateMapper.deleteCateByCommId(id);
+        //再删除商品
+        int flag=commodityMapper.deleteComm(id);
+        if(flag==0){
+            res.put("code",500);
+            res.put("msg","失败");
+            return res;
+        }
+        commCateMapper.deleteCateByCommId(id);
+        res.put("code",200);
+        res.put("msg","成功");
+        return res;
+    }
 }

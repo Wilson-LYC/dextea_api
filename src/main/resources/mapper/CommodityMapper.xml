@@ -22,6 +22,9 @@
         </set>
         where id = #{id}
     </update>
+    <delete id="deleteComm">
+        delete from commodity where id = #{id}
+    </delete>
     <select id="getAllCommodity" resultMap="commodityMap">
         select * from commodity
     </select>
@@ -30,5 +33,23 @@
     </select>
     <select id="getAllCommBrief" resultMap="commodityMap">
         select id, name, price, state from commodity
+    </select>
+    <select id="searchComm" resultMap="commodityMap">
+        select id,name,state,price from comm_search
+        <where>
+            <if test="arg0!=null and arg0!=''">
+                and id = #{arg0}
+            </if>
+            <if test="arg1!=null and arg1!=''">
+                and name like concat('%',#{arg1},'%')
+            </if>
+            <if test="arg2!=null and arg2!=''">
+                and state=#{arg2}
+            </if>
+            <if test="arg3!=null and arg3!=0">
+                and cateId=#{arg3}
+            </if>
+        </where>
+        group by id
     </select>
 </mapper>

@@ -107,4 +107,23 @@ public class CategoryServiceImpl implements CategotyService {
         res.put("msg","成功");
         return res;
     }
+
+    /**
+     * 删除品类
+     * @param id 品类id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject deleteCategory(int id) {
+        JSONObject res=new JSONObject();
+        int flag=categoryMapper.deleteCategory(id);
+        if(flag==0){
+            res.put("code",500);
+            res.put("msg","失败");
+            return res;
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        return res;
+    }
 }

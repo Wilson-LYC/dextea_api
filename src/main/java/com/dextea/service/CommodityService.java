@@ -28,4 +28,8 @@ public interface CommodityService {
     JSONObject getCommInfo(int id);
 
     JSONObject updateCommodity(Commodity commodity, JSONArray categoryArray);
+
+    JSONObject searchComm(Commodity commodity, int cateId);
+
+    JSONObject deleteComm(int id);
 }

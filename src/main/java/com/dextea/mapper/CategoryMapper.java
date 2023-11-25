@@ -18,4 +18,6 @@ public interface CategoryMapper {
     int updateCategory(Category category);
 
     Category getCateByName(String cateName);
+
+    int deleteCategory(int id);
 }

@@ -3,6 +3,7 @@ package com.dextea.controller;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.pojo.Commodity;
+import com.dextea.pojo.Store;
 import com.dextea.service.CommodityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -60,5 +61,30 @@ public class CommodityController {
             commodity.setCustom(data.getString("custom"));
         JSONArray categoryArray=data.getJSONArray("category");
         return commodityService.updateCommodity(commodity,categoryArray);
+    }
+
+    //搜索商品
+    @PostMapping("/search")
+    public JSONObject searchComm(@RequestBody JSONObject json){
+        JSONObject data=json.getJSONObject("data");
+        Commodity commodity=new Commodity();
+        if(data.getInteger("id")!=null)
+            commodity.setId(data.getInteger("id"));
+        if(data.getString("name")!=null)
+            commodity.setName(data.getString("name"));
+        if(data.getString("state")!=null)
+            commodity.setState(data.getString("state"));
+        int cateId;
+        if(data.getInteger("cateId")!=null)
+            cateId=data.getInteger("cateId");
+        else
+            cateId=0;
+        return commodityService.searchComm(commodity,cateId);
+    }
+
+    //删除商品
+    @GetMapping("/delete")
+    public JSONObject deleteComm(@RequestParam("id") int id){
+        return commodityService.deleteComm(id);
     }
 }

@@ -8,7 +8,7 @@ public interface CommodityMapper {
     //获取所有商品（略）
     List<Commodity> getAllCommBrief();
 
-    List<Commodity> getAllCommodity();
+    List<Commodity> getAllCommFull();
 
     int addCommodity(Commodity commodity);
 
@@ -19,4 +19,6 @@ public interface CommodityMapper {
     List<Commodity> searchComm(int id,String name,String state,int cateId);
 
     int deleteComm(int id);
+
+    List<Commodity> getCommByCateId(int cateId);
 }

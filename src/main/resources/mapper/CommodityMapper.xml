@@ -3,13 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.dextea.mapper.CommodityMapper">
+
     <resultMap id="commodityMap" type="Commodity">
         <result property="briefIntro" column="brief_intro"/>
     </resultMap>
+
     <insert id="addCommodity">
         insert into commodity (name,price,state)
         values (#{name},#{price},#{state})
     </insert>
+
     <update id="updateCommodity">
         update commodity
         <set>
@@ -22,20 +25,25 @@
         </set>
         where id = #{id}
     </update>
+
     <delete id="deleteComm">
         delete from commodity where id = #{id}
     </delete>
-    <select id="getAllCommodity" resultMap="commodityMap">
-        select * from commodity
+
+    <select id="getAllCommFull" resultMap="commodityMap">
+        select * from commmodity_view
     </select>
+
     <select id="getCommById" resultMap="commodityMap">
-        select * from commodity where id = #{id}
+        select * from commmodity_view where id = #{id}
     </select>
+
     <select id="getAllCommBrief" resultMap="commodityMap">
-        select id, name, price, state from commodity
+        select id, name, price, state,category from commmodity_view
     </select>
+
     <select id="searchComm" resultMap="commodityMap">
-        select id,name,state,price from comm_search
+        select id,name,state,price from commmodity_unwind
         <where>
             <if test="arg0!=null and arg0!=''">
                 and id = #{arg0}
@@ -47,9 +55,13 @@
                 and state=#{arg2}
             </if>
             <if test="arg3!=null and arg3!=0">
-                and cateId=#{arg3}
+                and cate_id=#{arg3}
             </if>
         </where>
         group by id
+    </select>
+
+    <select id="getCommByCateId" resultMap="commodityMap">
+        select * from commmodity_unwind where cate_id = #{cateId}
     </select>
 </mapper>

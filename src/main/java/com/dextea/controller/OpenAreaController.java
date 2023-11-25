@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/company/openarea")
+@RequestMapping("/openarea")
 @CrossOrigin(origins = "*")
 public class OpenAreaController {
     @Autowired
@@ -18,7 +18,7 @@ public class OpenAreaController {
      * 获取所有开放区域
      * @return 所有开放区域
      */
-    @GetMapping("/get")
+    @GetMapping("/get/all")
     public JSONObject all(){
         return openAreaService.getOpenArea();
     }
@@ -37,7 +37,7 @@ public class OpenAreaController {
      * 获取营业区域选项
      * @return 营业区域选项
      */
-    @GetMapping("/option")
+    @GetMapping("/get/option")
     public JSONObject option(){
         return openAreaService.getOpenAreaAsSelectOption();
     }

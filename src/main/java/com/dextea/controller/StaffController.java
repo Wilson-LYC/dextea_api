@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/company/staff")
+@RequestMapping("/staff")
 @CrossOrigin(origins = "*")
 public class StaffController {
     @Autowired
@@ -31,7 +31,7 @@ public class StaffController {
         return staffService.addStaff(staff);
     }
     //获取所有员工
-    @GetMapping("/get")
+    @GetMapping("/get/all")
     public JSONObject getAllStaff(){
         return staffService.getAllStaff();
     }
@@ -66,7 +66,7 @@ public class StaffController {
         return staffService.deleteStaffById(id);
     }
     //获取指定商店的员工
-    @GetMapping("/store")
+    @GetMapping("/get/samestore")
     public JSONObject getStaffByStoreId(@RequestParam("sid") int storeId){
         return staffService.getStaffByStoreId(storeId);
     }

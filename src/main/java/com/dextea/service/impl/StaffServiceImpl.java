@@ -17,10 +17,37 @@ public class StaffServiceImpl implements StaffService {
     StaffMapper staffMapper;
     @Autowired
     StoreMapper storeMapper;
+
+    /**
+     * 将staff转换为json
+     * @param staff 员工
+     * @return json
+     */
+    @Override
+    public JSONObject toJson(Staff staff) {
+        JSONObject res=JSONObject.from(staff);
+        res.remove("auth");
+        return res;
+    }
+
+    /**
+     * 将list转换为jsonArray
+     * @param list 员工列表
+     * @return jsonArray
+     */
+    @Override
+    public JSONArray toJson(List<Staff> list) {
+        JSONArray res=new JSONArray();
+        for(Staff staff:list){
+            res.add(toJson(staff));
+        }
+        return res;
+    }
+
     /**
      * 添加员工
-     * @param staff
-     * @return
+     * @param staff 员工
+     * @return 添加结果
      */
     @Override
     public JSONObject addStaff(Staff staff) {
@@ -38,7 +65,7 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 获取所有员工
-     * @return
+     * @return 所有员工
      */
     @Override
     public JSONObject getAllStaff() {
@@ -47,51 +74,15 @@ public class StaffServiceImpl implements StaffService {
         res.put("code",200);
         res.put("msg","成功");
         JSONObject data=new JSONObject();
-        data.put("staff",list2jsonArray(staffList));
+        data.put("staff",toJson(staffList));
         res.put("data",data);
         return res;
     }
 
     /**
-     * 将staff转换为json
-     * @param staff
-     * @return
-     */
-    @Override
-    public JSONObject staff2json(Staff staff) {
-        JSONObject res=JSONObject.from(staff);
-        //门店员工获取店铺名
-        if(staff.getRole().equals("2")){
-            String storeName=storeMapper.getStoreById(staff.getStoreId()).getName();
-            res.put("storeName",storeName);
-        }else{
-            res.put("storeName","");
-        }
-        //权限由字符串变json
-        //res.put("auth",JSONObject.parseObject(staff.getAuth()));
-        //删除auth
-        res.remove("auth");
-        return res;
-    }
-
-    /**
-     * 将list转换为jsonArray
-     * @param list
-     * @return
-     */
-    @Override
-    public JSONArray list2jsonArray(List<Staff> list) {
-        JSONArray res=new JSONArray();
-        for(Staff staff:list){
-            res.add(staff2json(staff));
-        }
-        return res;
-    }
-
-    /**
      * 判断账号是否存在
-     * @param account
-     * @return
+     * @param account 账号
+     * @return 判断结果
      */
     @Override
     public JSONObject accountExist(String account) {
@@ -99,7 +90,7 @@ public class StaffServiceImpl implements StaffService {
         Staff staff=staffMapper.getStaffByAccount(account);
         if(staff==null){
             res.put("code",200);
-            res.put("msg","账号不存在");
+            res.put("msg","账号可用");
         }else{
             res.put("code",500);
             res.put("msg","账号已存在");
@@ -152,7 +143,7 @@ public class StaffServiceImpl implements StaffService {
         res.put("code",200);
         res.put("msg","成功");
         JSONObject data=new JSONObject();
-        data.put("staff",list2jsonArray(staffList));
+        data.put("staff",toJson(staffList));
         res.put("data",data);
         return res;
     }
@@ -169,7 +160,7 @@ public class StaffServiceImpl implements StaffService {
         res.put("code",200);
         res.put("msg","成功");
         JSONObject data=new JSONObject();
-        data.put("staff",list2jsonArray(staffList));
+        data.put("staff",toJson(staffList));
         res.put("data",data);
         return res;
     }

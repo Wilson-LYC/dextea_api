@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/company/store")
+@RequestMapping("/store")
 @CrossOrigin(origins = "*")
 public class StoreController {
     @Autowired
@@ -88,7 +88,7 @@ public class StoreController {
 
 
     //修改单个营业状态
-    @PostMapping("/update/openstate/v1")
+    @PostMapping("/update/openstate/single")
     public JSONObject openState1(@RequestBody JSONObject json){
         JSONObject data=json.getJSONObject("data");
         int id=data.getInteger("storeId");
@@ -97,7 +97,7 @@ public class StoreController {
     }
 
     //修改多个营业状态
-    @PostMapping ("/update/openstate/v2")
+    @PostMapping ("/update/openstate/multiple")
     public JSONObject openState2(@RequestBody JSONObject json){
         JSONObject data=json.getJSONObject("data");
         List<Integer> idList=data.getJSONArray("storeIdList").toJavaList(Integer.class);

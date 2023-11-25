@@ -9,8 +9,8 @@ import java.util.List;
 public interface StaffService {
     JSONObject addStaff(Staff staff);
     JSONObject getAllStaff();
-    JSONArray list2jsonArray(List<Staff> list);
-    JSONObject staff2json(Staff staff);
+    JSONArray toJson(List<Staff> list);
+    JSONObject toJson(Staff staff);
     JSONObject accountExist(String account);
     JSONObject updateStaff(Staff staff);
 

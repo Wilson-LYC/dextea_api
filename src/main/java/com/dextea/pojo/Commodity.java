@@ -17,5 +17,6 @@ public class Commodity {
     private String state;//商品状态 0不可售 1可售
     private String createtime;//创建时间
     private String updatetime;//更新时间
+    private String category;//商品所属品类
     private double price;//商品价格
 }

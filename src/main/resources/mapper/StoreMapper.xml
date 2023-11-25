@@ -54,8 +54,17 @@
         delete from store where id=#{id}
     </delete>
 
-    <update id="updateStore" parameterType="Store">
-        update store set `name`=#{name},`area`=#{area},`address`=#{address},`phone`=#{phone},`open_time`=#{openTime},`open_state`=#{openState} where id=#{id}
+    <update id="updateStore">
+        update store
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="openTime != null">open_time = #{openTime},</if>
+            <if test="openState != null">open_state = #{openState},</if>
+        </set>
+        where id = #{id}
     </update>
 
 </mapper>

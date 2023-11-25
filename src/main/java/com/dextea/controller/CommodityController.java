@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/company/commodity")
+@RequestMapping("/commodity")
 @CrossOrigin(origins = "*")
 public class CommodityController {
     @Autowired
@@ -86,5 +86,18 @@ public class CommodityController {
     @GetMapping("/delete")
     public JSONObject deleteComm(@RequestParam("id") int id){
         return commodityService.deleteComm(id);
+    }
+    //通过cateId获取商品
+    @GetMapping("/get/samecate")
+    public JSONObject getCommByCateId(@RequestParam("cateId") int cateId){
+        return commodityService.getCommByCateId(cateId);
+    }
+    //修改商品状态
+    @PostMapping("/update/state")
+    public JSONObject updateCommState(@RequestBody JSONObject json){
+        JSONObject data=json.getJSONObject("data");
+        JSONArray idList=data.getJSONArray("idList");
+        String state=data.getString("state");
+        return commodityService.updateCommState(idList,state);
     }
 }

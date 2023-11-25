@@ -12,6 +12,7 @@ import com.dextea.service.CommodityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -31,15 +32,14 @@ public class CommodityServiceImpl implements CommodityService {
     @Override
     public JSONObject toJson(Commodity commodity) {
         JSONObject res= JSONObject.from(commodity);
-        if(commodity.getCustom()!=null && !commodity.getCustom().isEmpty())
-            res.put("custom", JSONArray.parseArray(commodity.getCustom()));
-        List<CommCate> commCateList=commCateMapper.getCateByCommId(commodity.getId());
-        JSONArray cateList=new JSONArray();
-        for(CommCate commCate:commCateList){
-            String cateName=commCate.getCateName();
-            cateList.add(cateName);
+        String custom=commodity.getCustom();
+        if(custom!=null && !custom.isEmpty())
+            res.put("custom", JSONArray.parseArray(custom));
+        String category=commodity.getCategory();
+        if(category!=null && !category.isEmpty()){
+            String[] categorys = category.split(",");
+            res.put("category", categorys);
         }
-        res.put("category",cateList);
         return res;
     }
 
@@ -82,7 +82,7 @@ public class CommodityServiceImpl implements CommodityService {
     @Override
     public JSONObject getAllCommFull() {
         JSONObject res=new JSONObject();
-        List<Commodity> commodityList=commodityMapper.getAllCommodity();
+        List<Commodity> commodityList=commodityMapper.getAllCommFull();
         res.put("code",200);
         res.put("msg","成功");
         JSONObject data=new JSONObject();
@@ -194,6 +194,43 @@ public class CommodityServiceImpl implements CommodityService {
             return res;
         }
         commCateMapper.deleteCateByCommId(id);
+        res.put("code",200);
+        res.put("msg","成功");
+        return res;
+    }
+
+    /**
+     * 通过品类id获取商品
+     * @param cateId 品类id
+     * @return  JSONObject
+     */
+    @Override
+    public JSONObject getCommByCateId(int cateId) {
+        JSONObject res=new JSONObject();
+        List<Commodity> commodityList=commodityMapper.getCommByCateId(cateId);
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("commodity",toJson(commodityList));
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * 修改商品状态
+     * @param idList 商品id列表
+     * @param state 状态
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject updateCommState(JSONArray idList, String state) {
+        JSONObject res=new JSONObject();
+        for(int i=0;i<idList.size();i++){
+            int id=idList.getInteger(i);
+            Commodity commodity=commodityMapper.getCommById(id);
+            commodity.setState(state);
+            commodityMapper.updateCommodity(commodity);
+        }
         res.put("code",200);
         res.put("msg","成功");
         return res;

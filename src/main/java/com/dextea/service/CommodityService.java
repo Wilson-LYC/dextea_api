@@ -32,4 +32,8 @@ public interface CommodityService {
     JSONObject searchComm(Commodity commodity, int cateId);
 
     JSONObject deleteComm(int id);
+
+    JSONObject getCommByCateId(int cateId);
+
+    JSONObject updateCommState(JSONArray idList, String state);
 }

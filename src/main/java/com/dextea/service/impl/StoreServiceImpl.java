@@ -192,14 +192,10 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public JSONObject updateOpenState(int id, String openState) {
         JSONObject res=new JSONObject();
-        Store store=storeMapper.getStoreById(id);
-        if(store==null){
-            res.put("code",500);
-            res.put("msg","门店ID不存在");
-            return res;
-        }
+        Store store=new Store();
+        store.setId(id);
         store.setOpenState(openState);
-        int result=storeMapper.updateOpenState(store);
+        int result=storeMapper.updateStore(store);
         if(result==1){
             res.put("code",200);
             res.put("msg","成功");
@@ -220,14 +216,10 @@ public class StoreServiceImpl implements StoreService {
     public JSONObject updateOpenState(List<Integer> idList, String openState) {
         JSONObject res=new JSONObject();
         for(int id:idList){
-            Store store=storeMapper.getStoreById(id);
-            if(store==null){
-                res.put("code",500);
-                res.put("msg","门店ID:"+id+",不存在");
-                return res;
-            }
+            Store store=new Store();
+            store.setId(id);
             store.setOpenState(openState);
-            int result=storeMapper.updateOpenState(store);
+            int result=storeMapper.updateStore(store);
             if(result!=1){
                 res.put("code",500);
                 res.put("msg","门店ID:"+id+",修改失败");

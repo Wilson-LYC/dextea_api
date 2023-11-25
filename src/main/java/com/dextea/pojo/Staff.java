@@ -16,6 +16,7 @@ public class Staff {
     private String password;
     private String role;//0：超级管理员 1：公司 2：门店
     private int storeId;
+    private String storeName;
     private String auth;
     private String createtime;
     private String updatetime;

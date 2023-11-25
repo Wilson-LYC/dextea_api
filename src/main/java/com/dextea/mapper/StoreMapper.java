@@ -20,8 +20,6 @@ public interface StoreMapper {
     List<Store> searchStore(Store store);
     //修改店铺信息
     int updateStore(Store store);
-    //修改营业状态
-    int updateOpenState(Store store);
     //统计营业区域门店数量
     int countStoreByArea(String area);
 }

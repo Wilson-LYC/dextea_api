@@ -15,7 +15,4 @@
     <delete id="deleteCateByCommId">
         DELETE FROM cate2comm WHERE comm_id = #{commId}
     </delete>
-    <select id="getCateByCommId" resultMap="commCateMap">
-        SELECT * FROM comm_cate WHERE comm_id = #{commId}
-    </select>
 </mapper>

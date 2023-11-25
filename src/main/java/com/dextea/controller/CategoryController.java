@@ -3,6 +3,7 @@ package com.dextea.controller;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.pojo.Category;
+import com.dextea.service.CategotyService;
 import com.dextea.service.CommodityService;
 import com.dextea.service.StoreService;
 import org.apache.ibatis.annotations.Param;
@@ -15,22 +16,38 @@ import org.springframework.web.bind.annotation.*;
 public class CategoryController {
     @Autowired
     CommodityService commodityService;
+    @Autowired
+    CategotyService categotyService;
     //新增品类
     @PostMapping("/add")
     public JSONObject add(@RequestBody JSONObject json){
         JSONObject data=json.getJSONObject("data");
         Category category=new Category();
         category.setName(data.getString("name"));
-        return commodityService.addCategory(category);
+        return categotyService.addCategory(category);
     }
     //获取所有品类
-    @GetMapping("/get")
+    @GetMapping("/get/all")
     public JSONObject all(){
-        return commodityService.getAllCategory();
+        return categotyService.getAllCategory();
     }
     //获取品类多选选项
-    @GetMapping("/option/multiple")
+    @GetMapping("/get/option/multiple")
     public JSONObject optionMultiple(){
-        return commodityService.getCateOptionMultiple();
+        return categotyService.getCateAsMultipleOption();
+    }
+    //获取品类下拉选项
+    @GetMapping("/get/option/select")
+    public JSONObject optionSelect(){
+        return categotyService.getCateAsSelectOption();
+    }
+    //更新品类
+    @PostMapping("/update")
+    public JSONObject update(@RequestBody JSONObject json){
+        JSONObject data=json.getJSONObject("data");
+        Category category=new Category();
+        category.setId(data.getInteger("id"));
+        category.setName(data.getString("name"));
+        return categotyService.updateCategory(category);
     }
 }

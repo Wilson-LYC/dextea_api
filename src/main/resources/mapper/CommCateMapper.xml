@@ -6,11 +6,10 @@
     <resultMap id="commCateMap" type="CommCate">
         <result property="commId" column="comm_id"/>
         <result property="cateId" column="cate_id"/>
+        <result property="cateName" column="category"/>
+        <result property="commName" column="name"/>
     </resultMap>
-    <insert id="addCommToCate">
-        INSERT INTO cate2comm (comm_id, cate_id) VALUES (#{comm_id}, #{cate_id})
-    </insert>
     <select id="getCateByCommId" resultMap="commCateMap">
-        SELECT * FROM cate2comm WHERE comm_id = #{commId}
+        SELECT * FROM comm_cate WHERE comm_id = #{commId}
     </select>
 </mapper>

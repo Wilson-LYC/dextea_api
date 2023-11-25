@@ -16,4 +16,7 @@
     <select id="getCommById" resultMap="commodityMap">
         select * from commodity where id = #{id}
     </select>
+    <select id="getAllCommBrief" resultMap="commodityMap">
+        select id, name, price, state from commodity
+    </select>
 </mapper>

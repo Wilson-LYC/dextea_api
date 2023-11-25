@@ -3,14 +3,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.dextea.mapper.CategoryMapper">
-
     <insert id="addCategory">
         INSERT INTO category (name) VALUES (#{name})
     </insert>
+    <update id="updateCategory">
+        UPDATE category SET name = #{name} WHERE id = #{id}
+    </update>
+
     <select id="getAllCategory" resultType="Category">
-        SELECT * FROM category
+        SELECT * FROM category_view
     </select>
-    <select id="getCateNameById" resultType="java.lang.String">
-        SELECT name FROM category WHERE id = #{id}
+
+    <select id="getCateNameById" resultType="String">
+        SELECT name FROM category_view WHERE id = #{id}
     </select>
+
 </mapper>

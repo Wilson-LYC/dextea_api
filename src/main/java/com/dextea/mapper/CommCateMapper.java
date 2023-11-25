@@ -7,9 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface CommCateMapper {
-    //给品类添加商品
-    int addCommToCate(int cateId, int commId);
 
-    //通过commid查询品类
     List<CommCate> getCateByCommId(int commId);
 }

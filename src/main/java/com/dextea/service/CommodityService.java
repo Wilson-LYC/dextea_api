@@ -10,27 +10,27 @@ import com.dextea.pojo.Commodity;
 import java.util.List;
 
 public interface CommodityService {
-    //新增品类
-    JSONObject addCategory(Category category);
-    //获取所有品类
-    JSONObject getAllCategory();
+    //commodity转换为json
+    JSONObject toJson(Commodity commodity);
+    //commodityList转换为json
+    JSONArray toJson(List<Commodity> commodityList);
+
+    //获取所有商品（简略）
+    JSONObject getCommBrief();
+
+
+
+
+
+
 
     //获取所有商品
     JSONObject getAllCommodity();
-    //commodity转换为json
-    JSONObject commodity2json(Commodity commodity);
-    //commodityList转换为json
-    JSONArray commodityList2json(List<Commodity> commodityList);
-    //CommCateList转换为json
-    JSONArray commCateList2json(List<CommCate> commCateList);
+
     //新增商品
     JSONObject addCommodity(Commodity commodity);
 
-    JSONObject getCommCate();
-    //category转换为option
-    JSONArray categoryList2option(List<Category> categoryList);
 
     JSONObject getCommInfo(int id);
 
-    JSONObject getCateOptionMultiple();
 }

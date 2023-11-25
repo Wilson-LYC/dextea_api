@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommCate {
-    private int id;
-    private int cateId;
     private int commId;
-    private String updatetime;
+    private String commName;
+    private int cateId;
+    private String cateName;
 }

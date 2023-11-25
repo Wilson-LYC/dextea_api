@@ -13,6 +13,11 @@ public class CommodityController {
     @Autowired
     CommodityService commodityService;
     //获取所有商品（略）
+    @GetMapping("/get/brief")
+    public JSONObject getCommBrief(){
+        return commodityService.getCommBrief();
+    }
+
     @GetMapping("/get")
     public JSONObject getComm(){
         return commodityService.getAllCommodity();
@@ -29,11 +34,7 @@ public class CommodityController {
         return commodityService.addCommodity(commodity);
     }
 
-    //获取商品列表和品类列表
-    @GetMapping("/commcate")
-    public JSONObject getCommCate(){
-        return commodityService.getCommCate();
-    }
+
 
     //获取单个商品
     @GetMapping("/info")

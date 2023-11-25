@@ -14,4 +14,5 @@ public interface CommodityMapper {
 
     Commodity getCommById(int id);
 
+    int updateCommodity(Commodity commodity);
 }

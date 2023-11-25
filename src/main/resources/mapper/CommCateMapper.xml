@@ -9,6 +9,12 @@
         <result property="cateName" column="category"/>
         <result property="commName" column="name"/>
     </resultMap>
+    <insert id="addCateToComm">
+        INSERT INTO cate2comm (comm_id, cate_id) VALUES (#{commId}, #{cateId})
+    </insert>
+    <delete id="deleteCateByCommId">
+        DELETE FROM cate2comm WHERE comm_id = #{commId}
+    </delete>
     <select id="getCateByCommId" resultMap="commCateMap">
         SELECT * FROM comm_cate WHERE comm_id = #{commId}
     </select>

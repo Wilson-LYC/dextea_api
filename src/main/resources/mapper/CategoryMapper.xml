@@ -17,5 +17,8 @@
     <select id="getCateNameById" resultType="String">
         SELECT name FROM category_view WHERE id = #{id}
     </select>
+    <select id="getCateByName" resultType="Category">
+        SELECT * FROM category_view WHERE name = #{name}
+    </select>
 
 </mapper>

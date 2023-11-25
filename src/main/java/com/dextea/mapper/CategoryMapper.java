@@ -16,4 +16,6 @@ public interface CategoryMapper {
     int addCategory(Category category);
 
     int updateCategory(Category category);
+
+    Category getCateByName(String cateName);
 }

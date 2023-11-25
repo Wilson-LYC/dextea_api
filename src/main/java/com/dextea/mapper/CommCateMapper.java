@@ -9,4 +9,8 @@ import java.util.List;
 public interface CommCateMapper {
 
     List<CommCate> getCateByCommId(int commId);
+
+    int deleteCateByCommId(int id);
+
+    int addCateToComm(CommCate commCate);
 }

@@ -63,7 +63,7 @@ public class CommodityServiceImpl implements CommodityService {
      * @return JSONObject
      */
     @Override
-    public JSONObject getCommBrief() {
+    public JSONObject getAllCommBrief() {
         JSONObject res=new JSONObject();
         List<Commodity> commodityList=commodityMapper.getAllCommBrief();
         res.put("code",200);
@@ -80,7 +80,7 @@ public class CommodityServiceImpl implements CommodityService {
      * @return JSONObject
      */
     @Override
-    public JSONObject getAllCommodity() {
+    public JSONObject getAllCommFull() {
         JSONObject res=new JSONObject();
         List<Commodity> commodityList=commodityMapper.getAllCommodity();
         res.put("code",200);
@@ -127,4 +127,34 @@ public class CommodityServiceImpl implements CommodityService {
         return res;
     }
 
+    /**
+     * 更新商品
+     * @param commodity 商品
+     * @param categoryArray 品类列表
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject updateCommodity(Commodity commodity, JSONArray categoryArray) {
+        JSONObject res=new JSONObject();
+        int flag=commodityMapper.updateCommodity(commodity);
+        if(flag==0){
+            res.put("code",500);
+            res.put("msg","失败");
+            return res;
+        }
+        //删除原有品类
+        commCateMapper.deleteCateByCommId(commodity.getId());
+        //添加新品类
+        for(int i=0;i<categoryArray.size();i++){
+            String cateName=categoryArray.getString(i);
+            Category category=categoryMapper.getCateByName(cateName);
+            CommCate commCate=new CommCate();
+            commCate.setCommId(commodity.getId());
+            commCate.setCateId(category.getId());
+            commCateMapper.addCateToComm(commCate);
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        return res;
+    }
 }

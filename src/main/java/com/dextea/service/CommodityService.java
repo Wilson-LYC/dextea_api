@@ -16,16 +16,10 @@ public interface CommodityService {
     JSONArray toJson(List<Commodity> commodityList);
 
     //获取所有商品（简略）
-    JSONObject getCommBrief();
+    JSONObject getAllCommBrief();
 
-
-
-
-
-
-
-    //获取所有商品
-    JSONObject getAllCommodity();
+    //获取所有商品（完整）
+    JSONObject getAllCommFull();
 
     //新增商品
     JSONObject addCommodity(Commodity commodity);
@@ -33,4 +27,5 @@ public interface CommodityService {
 
     JSONObject getCommInfo(int id);
 
+    JSONObject updateCommodity(Commodity commodity, JSONArray categoryArray);
 }

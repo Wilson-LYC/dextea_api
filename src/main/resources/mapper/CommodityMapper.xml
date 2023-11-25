@@ -10,6 +10,18 @@
         insert into commodity (name,price,state)
         values (#{name},#{price},#{state})
     </insert>
+    <update id="updateCommodity">
+        update commodity
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="briefIntro != null">brief_intro = #{briefIntro},</if>
+            <if test="introduce != null">introduce = #{introduce},</if>
+            <if test="custom != null">custom = #{custom},</if>
+        </set>
+        where id = #{id}
+    </update>
     <select id="getAllCommodity" resultMap="commodityMap">
         select * from commodity
     </select>

@@ -11,7 +11,15 @@
         insert into staff(`account`,`password`,`role`,`store_id`,`name`) value (#{account},#{password},#{role},#{storeId},#{name})
     </insert>
     <update id="updateStaff">
-        update staff set `account`=#{account},`password`=#{password},`role`=#{role},`store_id`=#{storeId},`name`=#{name} where id=#{id}
+        update staff
+        <set>
+            <if test="account != null"> account=#{account}, </if>
+            <if test="password != null"> password=#{password}, </if>
+            <if test="role != null"> role=#{role}, </if>
+            <if test="storeId != null"> store_id=#{storeId}, </if>
+            <if test="name != null"> name=#{name}, </if>
+        </set>
+        where id=#{id}
     </update>
     <delete id="deleteStaffById">
         delete from staff where id=#{id}

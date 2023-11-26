@@ -53,7 +53,7 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public JSONObject addStaff(Staff staff) {
         JSONObject res=new JSONObject();
-        staff.setPassword(SecureUtil.md5(staff.getPassword()));
+        staff.setPassword(SecureUtil.md5(staff.getPassword()));//密码MD5加密
         int resnum=staffMapper.add(staff);
         if(resnum==1){
             res.put("code",200);
@@ -103,7 +103,11 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public JSONObject updateStaff(Staff staff) {
         JSONObject res=new JSONObject();
-        staff.setPassword(SecureUtil.md5(staff.getPassword()));
+        if(staff.getPassword()==null||staff.getPassword().equals("")){
+            staff.setPassword(null);
+        }else {
+            staff.setPassword(SecureUtil.md5(staff.getPassword()));//密码MD5加密
+        }
         int resnum=staffMapper.updateStaff(staff);
         if(resnum==1){
             res.put("code",200);

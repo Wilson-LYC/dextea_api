@@ -1,12 +1,11 @@
 package com.dextea.service.impl;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
-import at.favre.lib.crypto.bcrypt.BCrypt.Verifyer;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.mapper.StaffMapper;
 import com.dextea.pojo.Staff;
+import com.dextea.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class LoginServiceImpl implements com.dextea.service.LoginService {
+public class LoginServiceImpl implements LoginService {
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired
@@ -86,5 +85,23 @@ public class LoginServiceImpl implements com.dextea.service.LoginService {
         //将token和员工信息存入Redis
         saveTokenToRedis(token,staff);
         return res;
+    }
+
+    /**
+     * 判断是否登录
+     * @param token token
+     * @return 信息
+     */
+    @Override
+    public boolean isLogin(String token) {
+        //设置key=Token:token
+        String key="Token:"+token;
+        //判断key是否存在
+        boolean isExist=redisTemplate.hasKey(key);
+        if(isExist){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

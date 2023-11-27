@@ -14,4 +14,6 @@ public interface LoginService {
     public JSONObject logoutStaff(String token);
     //判断是否登录
     public boolean isLogin(String token);
+    //判断IP短时间内访问次数
+    public int isAccess(String ip);
 }

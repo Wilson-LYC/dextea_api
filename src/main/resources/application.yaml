@@ -41,6 +41,12 @@ spring:
           config:
             drop-table-allow: false
 
+  #文件上传大小
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
   # redis相关设置
   redis:
     host: localhost
@@ -51,6 +57,7 @@ spring:
         max-idle: 8
         min-idle: 0
         max-wait: 100ms
+    database: 0
 
 # mybatis相关设置
 mybatis:

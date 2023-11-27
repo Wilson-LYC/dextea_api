@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dextea.mapper.BlackIpMapper">
+
+    <resultMap id="blackIpMap" type="BlackIp">
+        <result property="createTime" column="createtime"/>
+    </resultMap>
+    <insert id="add">
+        INSERT INTO black_ip (ip)
+        VALUES (#{ip})
+    </insert>
+    <select id="getByIp" resultMap="blackIpMap">
+        SELECT * FROM black_ip WHERE ip = #{ip}
+    </select>
+</mapper>

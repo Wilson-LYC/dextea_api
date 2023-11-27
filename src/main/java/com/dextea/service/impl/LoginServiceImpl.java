@@ -3,7 +3,9 @@ package com.dextea.service.impl;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson2.JSONObject;
+import com.dextea.mapper.BlackIpMapper;
 import com.dextea.mapper.StaffMapper;
+import com.dextea.pojo.BlackIp;
 import com.dextea.pojo.Staff;
 import com.dextea.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import java.util.concurrent.TimeUnit;
 public class LoginServiceImpl implements LoginService {
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    BlackIpMapper blackIpMapper;
     @Autowired
     StaffMapper staffMapper;
     /**
@@ -128,6 +132,50 @@ public class LoginServiceImpl implements LoginService {
             return true;
         }else{
             return false;
+        }
+    }
+
+    /**
+     * 判断IP短时间内访问次数
+     * @param ip ip
+     * @return 信息
+     */
+    @Override
+    public int isAccess(String ip) {
+        //判断是否在黑名单中
+        BlackIp blackIp=blackIpMapper.getByIp(ip);
+        if(blackIp!=null){
+            return 2;//在黑名单
+        }
+        //设置key=Access:ip
+        String key="IP:"+ip;
+        //判断key是否存在
+        boolean isExist=redisTemplate.hasKey(key);
+        if(isExist){
+            //获取key的值,即访问次数
+            int count=(int)redisTemplate.opsForValue().get(key);
+            //判断访问次数是否超过10次
+            if(count>=2){
+                if(count>=5){
+                    //加入黑名单
+                    BlackIp newblackIp=new BlackIp();
+                    newblackIp.setIp(ip);
+                    blackIpMapper.add(newblackIp);
+                    return 2;//加入黑名单
+                }
+                count++;
+                redisTemplate.opsForValue().set(key,count,10,TimeUnit.SECONDS);
+                return 1;//拒绝访问
+            }else{
+                //访问次数加1
+                count++;
+                redisTemplate.opsForValue().set(key,count,10,TimeUnit.SECONDS);
+                return 0;//允许访问
+            }
+        }else{
+            //设置key的值为1,有效期10s
+            redisTemplate.opsForValue().set(key,1,10,TimeUnit.SECONDS);
+            return 0;//允许访问
         }
     }
 }

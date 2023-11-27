@@ -43,11 +43,11 @@ public class ImgServiceImpl implements ImgService {
             }
             else{
                 res.put("code",500);
-                res.put("msg","上传失败");
+                res.put("msg","链接获取失败");
             }
         } catch (Exception e) {
             res.put("code",500);
-            res.put("msg","上传失败");
+            res.put("msg","腾讯云服务器异常");
         }
         return res;
     }

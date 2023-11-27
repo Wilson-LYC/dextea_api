@@ -11,5 +11,4 @@ public class DexteaApplication {
     public static void main(String[] args) {
         SpringApplication.run(DexteaApplication.class, args);
     }
-
 }

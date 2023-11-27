@@ -11,11 +11,26 @@
  Target Server Version : 80034
  File Encoding         : 65001
 
- Date: 27/11/2023 13:11:36
+ Date: 27/11/2023 19:28:28
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for black_ip
+-- ----------------------------
+DROP TABLE IF EXISTS `black_ip`;
+CREATE TABLE `black_ip`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `ip` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of black_ip
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for cate2comm
@@ -138,24 +153,7 @@ CREATE TABLE `img_db`  (
 -- ----------------------------
 -- Records of img_db
 -- ----------------------------
-INSERT INTO `img_db` VALUES (1, 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65636bbce11ba92538c592ea-HKUST.jpg', '2023-11-27 00:01:02');
-
--- ----------------------------
--- Table structure for login_log
--- ----------------------------
-DROP TABLE IF EXISTS `login_log`;
-CREATE TABLE `login_log`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `account` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `ip_attribution` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of login_log
--- ----------------------------
+INSERT INTO `img_db` VALUES (1, 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65645b99e11b0213958b447e-HKUST.jpg', '2023-11-27 17:04:25');
 
 -- ----------------------------
 -- Table structure for order

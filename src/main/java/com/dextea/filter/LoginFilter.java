@@ -1,4 +1,5 @@
 package com.dextea.filter;
+import com.alibaba.fastjson2.JSONObject;
 import com.dextea.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,15 +35,13 @@ public class LoginFilter implements Filter {
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "access-control-allow-origin, authority, content-type, version-info, X-Requested-With");
         response.setHeader("Access-Control-Allow-Headers","authorization, content-type");
-        //输出请求方式
-        System.out.println(request.getMethod());
         if ("OPTIONS".equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
             return;
         }
         //放行/login
         String url=request.getRequestURI();
-        if(url.contains("/login")){
+        if(url.contains("/login")||url.contains("/druid")){
             chain.doFilter(req, res);
             return;
         }
@@ -51,7 +50,10 @@ public class LoginFilter implements Filter {
         //判断token是否登为空
         if(token==null || token.equals("")){
             //json返回信息
-            String json="{\"code\":500,\"msg\":\"未登录\"}";
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("code",300);
+            jsonObject.put("msg","未登录");
+            String json=jsonObject.toJSONString();
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(json);
             return;
@@ -60,7 +62,10 @@ public class LoginFilter implements Filter {
         boolean isLogin=loginService.isLogin(token);
         if(!isLogin){
             //json返回信息
-            String json="{\"code\":500,\"msg\":\"登录失效\"}";
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("code",300);
+            jsonObject.put("msg","登录过期，请重新登录");
+            String json=jsonObject.toJSONString();
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(json);
             return;

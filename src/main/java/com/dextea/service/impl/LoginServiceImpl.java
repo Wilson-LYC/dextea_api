@@ -31,8 +31,8 @@ public class LoginServiceImpl implements LoginService {
         redisTemplate.opsForHash().put(key,"role",staff.getRole());
         redisTemplate.opsForHash().put(key,"id",staff.getId());
         redisTemplate.opsForHash().put(key,"storeId",staff.getStoreId());
-        //设置key的过期时间为30分钟
-        redisTemplate.expire(key,1800, TimeUnit.SECONDS);
+        //设置key的过期时间为15分钟
+        redisTemplate.expire(key,900, TimeUnit.SECONDS);
     }
 
     /**
@@ -88,6 +88,30 @@ public class LoginServiceImpl implements LoginService {
     }
 
     /**
+     * 员工登出
+     * @param token token
+     * @return 信息
+     */
+    @Override
+    public JSONObject logoutStaff(String token) {
+        JSONObject res=new JSONObject();
+        //设置key=Token:token
+        String key="Token:"+token;
+        //判断key是否存在
+        boolean isExist=redisTemplate.hasKey(key);
+        if(isExist){
+            //删除key
+            redisTemplate.delete(key);
+            res.put("code",200);
+            res.put("msg","登出成功");
+        }else{
+            res.put("code",500);
+            res.put("msg","登出失败");
+        }
+        return res;
+    }
+
+    /**
      * 判断是否登录
      * @param token token
      * @return 信息
@@ -99,6 +123,8 @@ public class LoginServiceImpl implements LoginService {
         //判断key是否存在
         boolean isExist=redisTemplate.hasKey(key);
         if(isExist){
+            //设置key的过期时间为15分钟
+            redisTemplate.expire(key,900, TimeUnit.SECONDS);
             return true;
         }else{
             return false;

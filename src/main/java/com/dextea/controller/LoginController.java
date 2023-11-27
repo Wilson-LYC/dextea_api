@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/login")
-@CrossOrigin(origins = "*")
 public class LoginController {
     @Autowired
     LoginService loginService;
@@ -18,4 +17,9 @@ public class LoginController {
         String password=data.getString("password");
         return loginService.loginStaff(account,password);
     }
+    @GetMapping("/staffout")
+    public JSONObject logoutStaff(@RequestHeader("Authorization") String token){
+        return loginService.logoutStaff(token);
+    }
+
 }

@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/commodity")
-@CrossOrigin(origins = "*")
 public class CommodityController {
     @Autowired
     CommodityService commodityService;

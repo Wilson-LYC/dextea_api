@@ -9,41 +9,41 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
+import java.sql.SQLException;
+import java.util.Arrays;
+
 @Configuration
 public class DruidConfig{
-    // 配置数据源，将数据源配置属性绑定到 DruidDataSource Bean
-    @ConfigurationProperties(prefix = "spring.datasource")
+    //配置数据库连接池，并注入到容器中
     @Bean
-    public DruidDataSource druidDataSource() {
-        return new DruidDataSource();
+    @ConfigurationProperties("spring.datasource.druid")
+    public DataSource dataSource() throws SQLException {
+        DruidDataSource druidDataSource = new DruidDataSource();
+        //打开监控功能
+        druidDataSource.setFilters("stat,wall");
+        return druidDataSource;
     }
-
-    // 配置 Druid 监控的 Servlet
+    //配置监控页（有关servlet组件都放在这里）
     @Bean
-    public ServletRegistrationBean<StatViewServlet> statViewServlet() {
-        ServletRegistrationBean<StatViewServlet> servletRegistrationBean =
-                new ServletRegistrationBean<>(new StatViewServlet(), "/druid/*");
+    public ServletRegistrationBean statViewServlet(){
+        StatViewServlet statViewServlet = new StatViewServlet();
+        ServletRegistrationBean<StatViewServlet> registrationBean =
+                new ServletRegistrationBean<StatViewServlet>(statViewServlet,"/druid/*");
+        //1.配置登录信息
+        registrationBean.addInitParameter("loginUsername","admin");
+        registrationBean.addInitParameter("loginPassword","123456");
 
-        // 设置监控页面的配置参数
-        servletRegistrationBean.addInitParameter("allow", "127.0.0.1"); // 允许访问的 IP
-        servletRegistrationBean.addInitParameter("deny", "127.0.0.2"); // 拒绝访问的 IP
-        servletRegistrationBean.addInitParameter("loginUsername", "admin"); // 登录用户名
-        servletRegistrationBean.addInitParameter("loginPassword", "123456"); // 登录密码
-        servletRegistrationBean.addInitParameter("resetEnable", "false"); // 是否允许重置数据
-
-        return servletRegistrationBean;
+        return registrationBean;
     }
-
-    // 配置 Druid 过滤器
+    //配置防火墙（有关filter的组件都放在这里）
     @Bean
-    public FilterRegistrationBean<WebStatFilter> statFilter() {
-        FilterRegistrationBean<WebStatFilter> filterRegistrationBean =
-                new FilterRegistrationBean<>(new WebStatFilter());
-
-        // 配置过滤规则
-        filterRegistrationBean.addUrlPatterns("/*");
-        filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
-
+    public FilterRegistrationBean webStatFilter(){
+        WebStatFilter webStatFilter = new WebStatFilter();
+        FilterRegistrationBean<WebStatFilter> filterRegistrationBean = new FilterRegistrationBean<WebStatFilter>(webStatFilter);
+        //设置拦截路径
+        filterRegistrationBean.setUrlPatterns(Arrays.asList("/*"));
+        filterRegistrationBean.addInitParameter("exclusions","*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
         return filterRegistrationBean;
     }
 }

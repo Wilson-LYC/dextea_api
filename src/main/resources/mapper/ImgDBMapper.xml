@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dextea.mapper.ImgDBMapper">
+    <resultMap id="imgMap" type="ImgDB">
+        <result property="createTime" column="createtime"/>
+    </resultMap>
+    <insert id="addImg">
+        insert into img_db (url)
+        values (#{url})
+    </insert>
+    <select id="getAllImg" resultMap="imgMap">
+        select *
+        from img_db
+    </select>
+</mapper>

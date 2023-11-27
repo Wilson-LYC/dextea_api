@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/openarea")
-@CrossOrigin(origins = "*")
 public class OpenAreaController {
     @Autowired
     OpenAreaService openAreaService;

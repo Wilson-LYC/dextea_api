@@ -10,6 +10,8 @@ public interface LoginService {
     public Staff getStaffFromRedis(String token);
     //员工登录
     public JSONObject loginStaff(String account, String password);
+    //员工登出
+    public JSONObject logoutStaff(String token);
     //判断是否登录
     public boolean isLogin(String token);
 }

@@ -7,14 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/img")
 public class ImgController {
     @Autowired
     ImgService imgService;
+    @Autowired
+    HttpServletResponse response;
     @PostMapping("/upload")
     public JSONObject uploadImg(MultipartFile file){
-        return imgService.uploadImg(file);
+        JSONObject res= imgService.uploadImg(file);
+        int code=res.getInteger("code");
+        response.setStatus(code);
+        return res;
     }
     //获取所有图片
     @GetMapping("/get/all")

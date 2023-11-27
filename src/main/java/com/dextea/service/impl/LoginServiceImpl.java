@@ -4,6 +4,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.mapper.BlackIpMapper;
+import com.dextea.mapper.LoginLogMapper;
 import com.dextea.mapper.StaffMapper;
 import com.dextea.pojo.BlackIp;
 import com.dextea.pojo.Staff;
@@ -12,16 +13,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class LoginServiceImpl implements LoginService {
+    static int WARN_COUNT = 20;
+    static int MAX_COUNT = 30;
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired
     BlackIpMapper blackIpMapper;
     @Autowired
     StaffMapper staffMapper;
+    @Autowired
+    LoginLogMapper loginLogMapper;
     /**
      * 将token和员工信息存入Redis
      * @param token token
@@ -57,13 +63,15 @@ public class LoginServiceImpl implements LoginService {
 
     /**
      * 员工登录
-     * @param account 用户名
-     * @param password 密码
+     * @param json 员工信息
+     * @param ip ip
      * @return
      */
     @Override
-    public JSONObject loginStaff(String account, String password) {
+    public JSONObject loginStaff(JSONObject json,String ip) {
         JSONObject res=new JSONObject();
+        String account=json.getString("account");
+        String password=json.getString("password");
         Staff staff=staffMapper.getStaffByAccount(account);
         if(staff==null){
             res.put("code",500);
@@ -78,6 +86,10 @@ public class LoginServiceImpl implements LoginService {
         }
         res.put("code",200);
         res.put("msg","登录成功");
+        JSONObject loginData=new JSONObject();
+        loginData.put("role","staff");
+        loginData.put("account",account);
+        loginLogMapper.add(ip,loginData.toJSONString());
         JSONObject data=new JSONObject();
         JSONObject staffJson= JSONObject.from(staff);
         staffJson.remove("password");
@@ -143,8 +155,9 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public int isAccess(String ip) {
         //判断是否在黑名单中
-        BlackIp blackIp=blackIpMapper.getByIp(ip);
-        if(blackIp!=null){
+        List<BlackIp> blackIp=blackIpMapper.getByIp(ip);
+        System.out.println(blackIp);
+        if(blackIp.size()>0){
             return 2;//在黑名单
         }
         //设置key=Access:ip
@@ -155,14 +168,14 @@ public class LoginServiceImpl implements LoginService {
             //获取key的值,即访问次数
             int count=(int)redisTemplate.opsForValue().get(key);
             //判断访问次数是否超过10次
-            if(count>=2){
-                if(count>=5){
-                    //加入黑名单
-                    BlackIp newblackIp=new BlackIp();
-                    newblackIp.setIp(ip);
-                    blackIpMapper.add(newblackIp);
-                    return 2;//加入黑名单
-                }
+            if(count>=WARN_COUNT){
+//                if(count>=MAX_COUNT){
+//                    //加入黑名单
+//                    BlackIp newblackIp=new BlackIp();
+//                    newblackIp.setIp(ip);
+//                    blackIpMapper.add(newblackIp);
+//                    return 2;//加入黑名单
+//                }
                 count++;
                 redisTemplate.opsForValue().set(key,count,10,TimeUnit.SECONDS);
                 return 1;//拒绝访问

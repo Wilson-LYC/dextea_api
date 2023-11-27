@@ -9,7 +9,7 @@ public interface LoginService {
     //从Redis中获取员工信息
     public Staff getStaffFromRedis(String token);
     //员工登录
-    public JSONObject loginStaff(String account, String password);
+    public JSONObject loginStaff(JSONObject data,String ip);
     //员工登出
     public JSONObject logoutStaff(String token);
     //判断是否登录

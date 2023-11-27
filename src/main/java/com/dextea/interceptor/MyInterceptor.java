@@ -21,7 +21,7 @@ public class MyInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         //访问次数限制
-        String ip=request.getRemoteAddr();
+        /*String ip=request.getRemoteAddr();
         int isAccess=loginService.isAccess(ip);
         if(isAccess>0){
             JSONObject jsonObject=new JSONObject();
@@ -38,7 +38,7 @@ public class MyInterceptor implements HandlerInterceptor {
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(json);
             return false;
-        }
+        }*/
 
         //判断是否登录
         //获取header中的token

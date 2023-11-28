@@ -11,7 +11,7 @@
  Target Server Version : 80034
  File Encoding         : 65001
 
- Date: 27/11/2023 19:28:28
+ Date: 28/11/2023 12:37:48
 */
 
 SET NAMES utf8mb4;
@@ -26,7 +26,7 @@ CREATE TABLE `black_ip`  (
   `ip` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of black_ip
@@ -46,12 +46,12 @@ CREATE TABLE `cate2comm`  (
 -- ----------------------------
 -- Records of cate2comm
 -- ----------------------------
-INSERT INTO `cate2comm` VALUES (1, 1, '2023-11-25 23:43:35');
-INSERT INTO `cate2comm` VALUES (1, 2, '2023-11-25 17:52:36');
-INSERT INTO `cate2comm` VALUES (2, 1, '2023-11-25 23:43:35');
-INSERT INTO `cate2comm` VALUES (2, 2, '2023-11-25 17:52:36');
-INSERT INTO `cate2comm` VALUES (2, 3, '2023-11-25 17:52:31');
-INSERT INTO `cate2comm` VALUES (4, 5, '2023-11-25 21:41:37');
+INSERT INTO `cate2comm` VALUES (1, 1, '2023-11-28 12:34:21');
+INSERT INTO `cate2comm` VALUES (1, 2, '2023-11-28 12:34:41');
+INSERT INTO `cate2comm` VALUES (2, 1, '2023-11-28 12:34:21');
+INSERT INTO `cate2comm` VALUES (2, 2, '2023-11-28 12:34:41');
+INSERT INTO `cate2comm` VALUES (2, 3, '2023-11-28 12:34:51');
+INSERT INTO `cate2comm` VALUES (4, 5, '2023-11-28 12:35:01');
 
 -- ----------------------------
 -- Table structure for category
@@ -93,10 +93,10 @@ CREATE TABLE `commodity`  (
 -- ----------------------------
 -- Records of commodity
 -- ----------------------------
-INSERT INTO `commodity` VALUES (1, '酷黑莓桑', 19.00, '喜茶年度口碑王回归。优选桑茸品种，每日手剥去蒂果肉紧致爆汁。新鲜草莓果肉与粒粒桑果肉口感层次叠加，甄选茶园定制绿妍茶汤与桑茸汁、草莓汁一起融合打成冰沙，酸甜果香与清雅茶香轻柔交织。', '喜茶年度口碑王回归。优选桑茸品种，每日手剥去蒂果肉紧致爆汁。', '[{\"title\":\"杯型\",\"option\":[{\"text\":\"酷黑定制杯\",\"cost\":0},{\"text\":\"常规杯\",\"cost\":0}],\"opt\":0},{\"title\":\"状态\",\"option\":[{\"text\":\"冰沙(推荐)\",\"cost\":0},{\"text\":\"非冰沙\",\"cost\":0}],\"opt\":0},{\"title\":\"冰量\",\"option\":[{\"text\":\"推荐\",\"cost\":0},{\"text\":\"少冰\",\"cost\":0},{\"text\":\"少少冰\",\"cost\":0},{\"text\":\"去冰(不推荐)\",\"cost\":0}],\"opt\":0},{\"title\":\"甜度\",\"option\":[{\"text\":\"推荐甜度(少甜)\",\"cost\":0},{\"text\":\"少少甜\",\"cost\":0},{\"text\":\"少少少甜\",\"cost\":0},{\"text\":\"不另外加糖(不推荐)\",\"cost\":0},{\"text\":\"多甜\",\"cost\":0}],\"opt\":0},{\"title\":\"茶底\",\"option\":[{\"text\":\"绿妍(推荐)\",\"cost\":0},{\"text\":\"去茶底\",\"cost\":0}],\"opt\":0},{\"title\":\"加料\",\"option\":[{\"text\":\"不加料\",\"cost\":0},{\"text\":\"加倍桑葚果肉￥4\",\"cost\":4}],\"opt\":0}]', '1', '2023-11-23 17:11:05', '2023-11-27 00:33:22', 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65636bbce11ba92538c592ea-HKUST.jpg');
-INSERT INTO `commodity` VALUES (2, '喜柿多多', 19.00, '时令喜柿第二年回归。优选当季甜糯柿子，加入无香精绿妍茶与Q弹的脆波波。入口满满真柿子果肉，果肉软糯拉丝，软籽晶莹弹韧，茶香绵延清雅。喝喜柿，喜柿多。', '喜柿第二年回归。优选当季甜糯柿子，加入绿妍茶与Q弹的脆波波。', '[{\"title\":\"状态\",\"option\":[{\"text\":\"冰沙(推荐)\",\"cost\":0},{\"text\":\"非冰沙\",\"cost\":0}],\"opt\":0},{\"title\":\"冰量\",\"option\":[{\"text\":\"推荐\",\"cost\":0},{\"text\":\"少冰\",\"cost\":0},{\"text\":\"少少冰\",\"cost\":0},{\"text\":\"去冰(不推荐)\",\"cost\":0}],\"opt\":0},{\"title\":\"甜度\",\"option\":[{\"text\":\"推荐甜度(少甜)\",\"cost\":0},{\"text\":\"少少甜\",\"cost\":0},{\"text\":\"少少少甜\",\"cost\":0},{\"text\":\"不另外加糖(不推荐)\",\"cost\":0},{\"text\":\"多甜\",\"cost\":0}],\"opt\":0},{\"title\":\"小料\",\"option\":[{\"text\":\"标准（含脆波波）\",\"cost\":0},{\"text\":\"去脆波波\",\"cost\":0}],\"opt\":0},{\"title\":\"加料\",\"option\":[{\"text\":\"不加料\",\"cost\":0},{\"text\":\"加倍柿子果肉￥4\",\"cost\":4}],\"opt\":0}]', '1', '2023-11-23 20:22:54', '2023-11-27 00:37:53', NULL);
-INSERT INTO `commodity` VALUES (3, '轻芝多肉葡萄', 19.00, '2022年首创轻芝多肉葡萄。优选当季巨峰葡萄，来自北纬40度黄金产区。鲜果颗颗手剥软嫩多汁，搭配清雅绿妍茶底及弹嫩葡萄冻，定制无奶精芝士，清爽不腻。默认标准杯500ml，可根据个人喜爱选择加大杯650ml.', '2022年首创轻芝多肉葡萄。优选当季巨峰葡萄，来自北纬40度黄金产区。', NULL, '1', '2023-11-23 20:32:27', '2023-11-27 00:33:23', 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65636bbce11ba92538c592ea-HKUST.jpg');
-INSERT INTO `commodity` VALUES (5, '烤黑糖波波牛乳茶', 19.00, '定制嫣红真茗茶底与无奶精真牛乳灵感特调，加入采用270天自然熟成木薯加工制成的黑糖波波，65分钟慢熬，口感软糯Q弹，不同于普通珍珠;甘醇饱满，入口丝滑。', '定制嫣红真茗茶底与无奶精真牛乳灵感特调', '[{\"title\":\"冰量\",\"option\":[{\"text\":\"推荐\",\"cost\":0},{\"text\":\"少冰\",\"cost\":0},{\"text\":\"少少冰\",\"cost\":0},{\"text\":\"去冰(不推荐)\",\"cost\":0}],\"opt\":0},{\"title\":\"甜度\",\"option\":[{\"text\":\"推荐甜度(少甜)\",\"cost\":0},{\"text\":\"少少甜\",\"cost\":0},{\"text\":\"少少少甜\",\"cost\":0},{\"text\":\"不另外加糖(不推荐)\",\"cost\":0},{\"text\":\"多甜\",\"cost\":0}],\"opt\":0},{\"title\":\"做法\",\"option\":[{\"text\":\"标准(推荐)\",\"cost\":0},{\"text\":\"去芝士(热饮默认去芝士)\",\"cost\":0}],\"opt\":0}]', '1', '2023-11-24 00:19:26', '2023-11-27 00:33:24', 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65636bbce11ba92538c592ea-HKUST.jpg');
+INSERT INTO `commodity` VALUES (1, '酷黑莓桑', 19.00, '喜茶年度口碑王回归。优选桑茸品种，每日手剥去蒂果肉紧致爆汁。新鲜草莓果肉与粒粒桑果肉口感层次叠加，甄选茶园定制绿妍茶汤与桑茸汁、草莓汁一起融合打成冰沙，酸甜果香与清雅茶香轻柔交织。', '喜茶年度口碑王回归。优选桑茸品种，每日手剥去蒂果肉紧致爆汁。', '[{\"title\":\"杯型\",\"option\":[{\"text\":\"酷黑定制杯\",\"cost\":0},{\"text\":\"常规杯\",\"cost\":0}],\"opt\":0},{\"title\":\"状态\",\"option\":[{\"text\":\"冰沙(推荐)\",\"cost\":0},{\"text\":\"非冰沙\",\"cost\":0}],\"opt\":0},{\"title\":\"冰量\",\"option\":[{\"text\":\"推荐\",\"cost\":0},{\"text\":\"少冰\",\"cost\":0},{\"text\":\"少少冰\",\"cost\":0},{\"text\":\"去冰(不推荐)\",\"cost\":0}],\"opt\":0},{\"title\":\"甜度\",\"option\":[{\"text\":\"推荐甜度(少甜)\",\"cost\":0},{\"text\":\"少少甜\",\"cost\":0},{\"text\":\"少少少甜\",\"cost\":0},{\"text\":\"不另外加糖(不推荐)\",\"cost\":0},{\"text\":\"多甜\",\"cost\":0}],\"opt\":0},{\"title\":\"茶底\",\"option\":[{\"text\":\"绿妍(推荐)\",\"cost\":0},{\"text\":\"去茶底\",\"cost\":0}],\"opt\":0},{\"title\":\"加料\",\"option\":[{\"text\":\"不加料\",\"cost\":0},{\"text\":\"加倍桑葚果肉￥4\",\"cost\":4}],\"opt\":0}]', '1', '2023-11-23 17:11:05', '2023-11-28 12:34:21', 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65656db7152cfcac457bff36-酷黑莓桑.png');
+INSERT INTO `commodity` VALUES (2, '喜柿多多', 19.00, '时令喜柿第二年回归。优选当季甜糯柿子，加入无香精绿妍茶与Q弹的脆波波。入口满满真柿子果肉，果肉软糯拉丝，软籽晶莹弹韧，茶香绵延清雅。喝喜柿，喜柿多。', '喜柿第二年回归。优选当季甜糯柿子，加入绿妍茶与Q弹的脆波波。', '[{\"title\":\"状态\",\"option\":[{\"text\":\"冰沙(推荐)\",\"cost\":0},{\"text\":\"非冰沙\",\"cost\":0}],\"opt\":0},{\"title\":\"冰量\",\"option\":[{\"text\":\"推荐\",\"cost\":0},{\"text\":\"少冰\",\"cost\":0},{\"text\":\"少少冰\",\"cost\":0},{\"text\":\"去冰(不推荐)\",\"cost\":0}],\"opt\":0},{\"title\":\"甜度\",\"option\":[{\"text\":\"推荐甜度(少甜)\",\"cost\":0},{\"text\":\"少少甜\",\"cost\":0},{\"text\":\"少少少甜\",\"cost\":0},{\"text\":\"不另外加糖(不推荐)\",\"cost\":0},{\"text\":\"多甜\",\"cost\":0}],\"opt\":0},{\"title\":\"小料\",\"option\":[{\"text\":\"标准（含脆波波）\",\"cost\":0},{\"text\":\"去脆波波\",\"cost\":0}],\"opt\":0},{\"title\":\"加料\",\"option\":[{\"text\":\"不加料\",\"cost\":0},{\"text\":\"加倍柿子果肉￥4\",\"cost\":4}],\"opt\":0}]', '1', '2023-11-23 20:22:54', '2023-11-28 12:34:41', 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65656dde152cfcac457bff37-喜柿多多.png');
+INSERT INTO `commodity` VALUES (3, '轻芝多肉葡萄', 19.00, '2022年首创轻芝多肉葡萄。优选当季巨峰葡萄，来自北纬40度黄金产区。鲜果颗颗手剥软嫩多汁，搭配清雅绿妍茶底及弹嫩葡萄冻，定制无奶精芝士，清爽不腻。默认标准杯500ml，可根据个人喜爱选择加大杯650ml.', '2022年首创轻芝多肉葡萄。优选当季巨峰葡萄，来自北纬40度黄金产区。', NULL, '1', '2023-11-23 20:32:27', '2023-11-28 12:34:51', 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65656db7152cfcac457bff33-轻多肉葡萄.png');
+INSERT INTO `commodity` VALUES (5, '烤黑糖波波牛乳茶', 19.00, '定制嫣红真茗茶底与无奶精真牛乳灵感特调，加入采用270天自然熟成木薯加工制成的黑糖波波，65分钟慢熬，口感软糯Q弹，不同于普通珍珠;甘醇饱满，入口丝滑。', '定制嫣红真茗茶底与无奶精真牛乳灵感特调', '[{\"title\":\"冰量\",\"option\":[{\"text\":\"推荐\",\"cost\":0},{\"text\":\"少冰\",\"cost\":0},{\"text\":\"少少冰\",\"cost\":0},{\"text\":\"去冰(不推荐)\",\"cost\":0}],\"opt\":0},{\"title\":\"甜度\",\"option\":[{\"text\":\"推荐甜度(少甜)\",\"cost\":0},{\"text\":\"少少甜\",\"cost\":0},{\"text\":\"少少少甜\",\"cost\":0},{\"text\":\"不另外加糖(不推荐)\",\"cost\":0},{\"text\":\"多甜\",\"cost\":0}],\"opt\":0},{\"title\":\"做法\",\"option\":[{\"text\":\"标准(推荐)\",\"cost\":0},{\"text\":\"去芝士(热饮默认去芝士)\",\"cost\":0}],\"opt\":0}]', '1', '2023-11-24 00:19:26', '2023-11-28 12:35:01', 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65656db7152cfcac457bff35-烤黑糖波波牛乳.png');
 
 -- ----------------------------
 -- Table structure for commodity_his
@@ -114,7 +114,7 @@ CREATE TABLE `commodity_his`  (
   `updatetime` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `img` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '图片',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of commodity_his
@@ -133,7 +133,7 @@ CREATE TABLE `customer`  (
   `createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of customer
@@ -148,12 +148,49 @@ CREATE TABLE `img_db`  (
   `url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of img_db
 -- ----------------------------
-INSERT INTO `img_db` VALUES (1, 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65645b99e11b0213958b447e-HKUST.jpg', '2023-11-27 17:04:25');
+INSERT INTO `img_db` VALUES (8, 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65656db7152cfcac457bff36-酷黑莓桑.png', '2023-11-28 12:33:59');
+INSERT INTO `img_db` VALUES (9, 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65656db7152cfcac457bff33-轻多肉葡萄.png', '2023-11-28 12:33:59');
+INSERT INTO `img_db` VALUES (10, 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65656db7152cfcac457bff35-烤黑糖波波牛乳.png', '2023-11-28 12:33:59');
+INSERT INTO `img_db` VALUES (11, 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65656db7152cfcac457bff34-多肉桃李.png', '2023-11-28 12:33:59');
+INSERT INTO `img_db` VALUES (12, 'https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65656dde152cfcac457bff37-喜柿多多.png', '2023-11-28 12:34:39');
+
+-- ----------------------------
+-- Table structure for login_log
+-- ----------------------------
+DROP TABLE IF EXISTS `login_log`;
+CREATE TABLE `login_log`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of login_log
+-- ----------------------------
+INSERT INTO `login_log` VALUES (1, '127.0.0.1', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-27 20:13:17');
+INSERT INTO `login_log` VALUES (2, '192.168.205.116', '{\"role\":\"staff\",\"account\":\"lzh\"}', '2023-11-27 21:02:31');
+INSERT INTO `login_log` VALUES (3, '192.168.205.116', '{\"role\":\"staff\",\"account\":\"lzh\"}', '2023-11-27 21:03:13');
+INSERT INTO `login_log` VALUES (4, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-27 22:07:40');
+INSERT INTO `login_log` VALUES (5, '192.168.205.116', '{\"role\":\"staff\",\"account\":\"lzh\"}', '2023-11-27 22:31:03');
+INSERT INTO `login_log` VALUES (6, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-27 22:34:48');
+INSERT INTO `login_log` VALUES (7, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-28 00:29:14');
+INSERT INTO `login_log` VALUES (8, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-28 00:32:29');
+INSERT INTO `login_log` VALUES (9, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-28 00:33:53');
+INSERT INTO `login_log` VALUES (10, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-28 00:34:54');
+INSERT INTO `login_log` VALUES (11, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-28 00:37:24');
+INSERT INTO `login_log` VALUES (12, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-28 00:42:55');
+INSERT INTO `login_log` VALUES (13, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-28 00:49:11');
+INSERT INTO `login_log` VALUES (14, '192.168.205.116', '{\"role\":\"staff\",\"account\":\"lzh\"}', '2023-11-28 00:51:44');
+INSERT INTO `login_log` VALUES (15, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-28 11:46:56');
+INSERT INTO `login_log` VALUES (16, '192.168.205.116', '{\"role\":\"staff\",\"account\":\"lzh\"}', '2023-11-28 12:09:13');
+INSERT INTO `login_log` VALUES (17, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-28 12:27:53');
 
 -- ----------------------------
 -- Table structure for order
@@ -169,7 +206,7 @@ CREATE TABLE `order`  (
   `createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of order
@@ -188,7 +225,7 @@ CREATE TABLE `order2comm`  (
   `num` int NOT NULL COMMENT '数量',
   `updatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of order2comm

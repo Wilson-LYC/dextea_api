@@ -58,6 +58,8 @@ public class CommodityController {
             commodity.setBriefIntro(data.getString("briefIntro"));
         if(data.getString("custom")!=null && !data.getString("custom").isEmpty())
             commodity.setCustom(data.getString("custom"));
+        if(data.getString("img")!=null && !data.getString("img").isEmpty())
+            commodity.setImg(data.getString("img"));
         JSONArray categoryArray=data.getJSONArray("category");
         return commodityService.updateCommodity(commodity,categoryArray);
     }

@@ -10,4 +10,6 @@ public interface ImgDBMapper {
     int addImg(String url);
 
     List<ImgDB> getAllImg();
+
+    int deleteImgByUrl(String url);
 }

@@ -10,6 +10,9 @@
         insert into img_db (url)
         values (#{url})
     </insert>
+    <delete id="deleteImgByUrl">
+        delete from img_db where url = #{url}
+    </delete>
     <select id="getAllImg" resultMap="imgMap">
         select *
         from img_db

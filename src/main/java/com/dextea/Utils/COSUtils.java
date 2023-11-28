@@ -77,4 +77,12 @@ public class COSUtils {
             return null;
         }
     }
+
+    public Boolean delete(String url){
+        String key=url.replace("https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/","");
+        COSClient cosClient = new COSClient(cred, clientConfig);
+        cosClient.deleteObject(bucketName,key);
+        cosClient.shutdown();
+        return true;
+    }
 }

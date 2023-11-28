@@ -7,4 +7,6 @@ public interface ImgService {
     JSONObject uploadImg(MultipartFile img);
 
     JSONObject getAllImg();
+
+    JSONObject deleteImgByUrl(String url);
 }

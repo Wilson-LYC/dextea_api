@@ -67,4 +67,35 @@ public class ImgServiceImpl implements ImgService {
         res.put("data",data);
         return res;
     }
+
+    /**
+     * 通过url删除图片
+     * @param url 图片url
+     * @return 删除结果
+     */
+    @Override
+    public JSONObject deleteImgByUrl(String url) {
+        JSONObject res=new JSONObject();
+        try{
+            COSUtils cosUtils=new COSUtils();
+            Boolean flag=cosUtils.delete(url);
+            if(flag){
+                int flag2=imgDBMapper.deleteImgByUrl(url);
+                if(flag2==0){
+                    res.put("code",500);
+                    res.put("msg","图片成功从腾讯云删除但未从数据库中删除");
+                }else{
+                    res.put("code",200);
+                    res.put("msg","删除成功");
+                }
+            }else{
+                res.put("code",500);
+                res.put("msg","图片删除失败");
+            }
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","腾讯云服务器异常");
+        }
+        return res;
+    }
 }

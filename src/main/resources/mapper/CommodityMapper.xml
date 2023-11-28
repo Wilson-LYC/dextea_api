@@ -22,6 +22,7 @@
             <if test="briefIntro != null">brief_intro = #{briefIntro},</if>
             <if test="introduce != null">introduce = #{introduce},</if>
             <if test="custom != null">custom = #{custom},</if>
+            <if test="img != null">img = #{img},</if>
         </set>
         where id = #{id}
     </update>

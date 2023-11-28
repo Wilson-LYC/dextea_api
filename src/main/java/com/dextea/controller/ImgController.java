@@ -28,4 +28,11 @@ public class ImgController {
     public JSONObject getAllImg(){
         return imgService.getAllImg();
     }
+
+    @PostMapping("/delete")
+    public JSONObject deleteImgByUrl(@RequestBody JSONObject json){
+        JSONObject data=json.getJSONObject("data");
+        String url=data.getString("url");
+        return imgService.deleteImgByUrl(url);
+    }
 }

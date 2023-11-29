@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dextea.mapper.StaffMapper">
+
+    <resultMap id="StaffMap" type="com.dextea.pojo.Staff">
+        <result column="account" property="account"/>
+        <result column="password" property="password"/>
+        <result column="role" property="role"/>
+        <result column="store_id" property="store_id"/>
+        <result column="auth" property="auth"/>
+    </resultMap>
+
+    <insert id="addStaff">
+        insert into staff (account,password,role,store_id,auth)
+        values
+            (#{account},#{password},#{role},#{store_id},#{auth})
+    </insert>
+
+    <delete id="deleteStaffById">
+        delete from staff where id=(#{id})
+    </delete>
+
+    <update id="updateStaffById" >
+        update staff set account = #{account}, password = #{password}, role = #{role} ,store_id =#{store_id} ,auth = #{auth} where id = #{id}
+    </update>
+
+    <select id="getStaff" resultType="com.dextea.pojo.Staff">
+        select * from staff
+    </select>
+
+    <select id="getStaffById" resultType="com.dextea.pojo.Staff">
+        select * from staff where id = #{id}
+    </select>
+
+
+</mapper>

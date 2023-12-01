@@ -124,18 +124,20 @@ public class OrderServiceImpl implements OrderService {
         JSONObject storeJson=new JSONObject();
         storeJson.put("id",order.getStoreId());
         storeJson.put("name",storeMapper.getStoreById(order.getStoreId()).getName());
-        //获取排队人数
-        int queue=orderMapper.getOrderQueue(order.getStoreId(),order.getCreatetime())-order.getNum();
-        storeJson.put("queue",queue);
+        String state=order.getState();
+        orderJson.put("state",state);
+        //如果订单状态为1或2，获取排队人数
+        if(state.equals("1")||state.equals("2")){
+            //获取排队人数
+            int queue=orderMapper.getOrderQueue(order.getStoreId(),order.getCreatetime())-order.getNum();
+            storeJson.put("queue",queue);
+        }
         orderJson.put("store",storeJson);
-
         orderJson.put("price",order.getPrice());
         orderJson.put("num",order.getNum());
-        orderJson.put("state",order.getState());
         orderJson.put("commodity",JSONArray.parseArray(order.getCommodity()));
         orderJson.put("code",order.getCode());
         String time=order.getCreatetime();
-//        time=time.substring(0,4)+"-"+time.substring(4,6)+"-"+time.substring(6,8)+" "+time.substring(8,10)+":"+time.substring(10,12)+":"+time.substring(12,14);
         orderJson.put("time",time);
         orderJson.put("note",order.getNote());
         orderJson.put("phone",order.getPhone());

@@ -11,7 +11,7 @@
  Target Server Version : 80034
  File Encoding         : 65001
 
- Date: 28/11/2023 12:37:48
+ Date: 01/12/2023 15:49:00
 */
 
 SET NAMES utf8mb4;
@@ -69,8 +69,8 @@ CREATE TABLE `category`  (
 -- Records of category
 -- ----------------------------
 INSERT INTO `category` VALUES (1, '🍓 时令上新', '2023-11-23 11:57:41', '2023-11-23 17:09:19');
-INSERT INTO `category` VALUES (2, '🍇 清爽真果茶', '2023-11-23 18:21:55', '2023-11-23 18:21:55');
-INSERT INTO `category` VALUES (4, '🍼真牛乳茶', '2023-11-25 11:33:44', '2023-11-25 11:33:44');
+INSERT INTO `category` VALUES (2, '🍇 清爽果茶', '2023-11-23 18:21:55', '2023-11-30 14:33:46');
+INSERT INTO `category` VALUES (4, '🍼 真牛乳茶', '2023-11-25 11:33:44', '2023-11-30 14:33:22');
 
 -- ----------------------------
 -- Table structure for commodity
@@ -128,16 +128,16 @@ DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '顾客id',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '名称',
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '密码',
-  `open_id` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '微信openid',
+  `open_id` varchar(600) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '微信openid',
   `createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of customer
 -- ----------------------------
+INSERT INTO `customer` VALUES (1, '得闲茶友', 'oblyy6-H1YYvE9MBYV3Kzt9BT_eQ', '2023-11-30 11:34:57', '2023-11-30 11:34:57');
 
 -- ----------------------------
 -- Table structure for img_db
@@ -169,7 +169,7 @@ CREATE TABLE `login_log`  (
   `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of login_log
@@ -191,6 +191,13 @@ INSERT INTO `login_log` VALUES (14, '192.168.205.116', '{\"role\":\"staff\",\"ac
 INSERT INTO `login_log` VALUES (15, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-28 11:46:56');
 INSERT INTO `login_log` VALUES (16, '192.168.205.116', '{\"role\":\"staff\",\"account\":\"lzh\"}', '2023-11-28 12:09:13');
 INSERT INTO `login_log` VALUES (17, '192.168.205.57', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-28 12:27:53');
+INSERT INTO `login_log` VALUES (18, '127.0.0.1', '{\"role\":\"staff\",\"account\":\"gzgogo1\"}', '2023-11-28 23:08:43');
+INSERT INTO `login_log` VALUES (19, '127.0.0.1', '{\"role\":\"staff\",\"account\":\"gzgogo1\"}', '2023-11-28 23:52:17');
+INSERT INTO `login_log` VALUES (20, '127.0.0.1', '{\"role\":\"staff\",\"account\":\"gzgogo1\"}', '2023-11-29 00:42:06');
+INSERT INTO `login_log` VALUES (21, '127.0.0.1', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-30 00:02:04');
+INSERT INTO `login_log` VALUES (22, '127.0.0.1', '{\"role\":\"staff\",\"account\":\"wilson\"}', '2023-11-30 00:49:59');
+INSERT INTO `login_log` VALUES (23, '127.0.0.1', '{\"role\":\"staff\",\"account\":\"gzgogo1\"}', '2023-12-01 13:49:15');
+INSERT INTO `login_log` VALUES (24, '127.0.0.1', '{\"role\":\"staff\",\"account\":\"gzgogo1\"}', '2023-12-01 14:34:09');
 
 -- ----------------------------
 -- Table structure for order
@@ -201,35 +208,21 @@ CREATE TABLE `order`  (
   `cust_id` int NOT NULL COMMENT '顾客id',
   `store_id` int NOT NULL COMMENT '店铺id',
   `state` int NOT NULL COMMENT '订单状态',
-  `total_price` decimal(10, 2) NOT NULL COMMENT '总价',
-  `total_num` int NOT NULL COMMENT '总数量',
-  `createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `price` decimal(10, 2) NOT NULL COMMENT '总价',
+  `num` int NOT NULL COMMENT '总数量',
+  `commodity` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '购物清单',
+  `createtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '手机号',
+  `note` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '备注',
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '取餐码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of order
 -- ----------------------------
-
--- ----------------------------
--- Table structure for order2comm
--- ----------------------------
-DROP TABLE IF EXISTS `order2comm`;
-CREATE TABLE `order2comm`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `order_id` int NOT NULL COMMENT '订单ID',
-  `comm_id` int NOT NULL COMMENT '商品ID',
-  `custom` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品定制要求',
-  `price` decimal(10, 2) NOT NULL COMMENT '价格',
-  `num` int NOT NULL COMMENT '数量',
-  `updatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of order2comm
--- ----------------------------
+INSERT INTO `order` VALUES (1, 1, 1, 4, 42.00, 2, '[{\"briefIntro\":\"喜茶年度口碑王回归。优选桑茸品种，每日手剥去蒂果肉紧致爆汁。\",\"custom\":[{\"title\":\"杯型\",\"option\":[{\"text\":\"酷黑定制杯\",\"cost\":0},{\"text\":\"常规杯\",\"cost\":0}],\"opt\":0},{\"title\":\"状态\",\"option\":[{\"text\":\"冰沙(推荐)\",\"cost\":0},{\"text\":\"非冰沙\",\"cost\":0}],\"opt\":0},{\"title\":\"冰量\",\"option\":[{\"text\":\"推荐\",\"cost\":0},{\"text\":\"少冰\",\"cost\":0},{\"text\":\"少少冰\",\"cost\":0},{\"text\":\"去冰(不推荐)\",\"cost\":0}],\"opt\":1},{\"title\":\"甜度\",\"option\":[{\"text\":\"推荐甜度(少甜)\",\"cost\":0},{\"text\":\"少少甜\",\"cost\":0},{\"text\":\"少少少甜\",\"cost\":0},{\"text\":\"不另外加糖(不推荐)\",\"cost\":0},{\"text\":\"多甜\",\"cost\":0}],\"opt\":0},{\"title\":\"茶底\",\"option\":[{\"text\":\"绿妍(推荐)\",\"cost\":0},{\"text\":\"去茶底\",\"cost\":0}],\"opt\":0},{\"title\":\"加料\",\"option\":[{\"text\":\"不加料\",\"cost\":0},{\"text\":\"加倍桑葚果肉￥4\",\"cost\":4}],\"opt\":1}],\"id\":1,\"img\":\"https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65656db7152cfcac457bff36-酷黑莓桑.png\",\"introduce\":\"喜茶年度口碑王回归。优选桑茸品种，每日手剥去蒂果肉紧致爆汁。新鲜草莓果肉与粒粒桑果肉口感层次叠加，甄选茶园定制绿妍茶汤与桑茸汁、草莓汁一起融合打成冰沙，酸甜果香与清雅茶香轻柔交织。\",\"name\":\"酷黑莓桑\",\"price\":19,\"state\":\"1\",\"num\":1,\"finalPrice\":23},{\"briefIntro\":\"喜茶年度口碑王回归。优选桑茸品种，每日手剥去蒂果肉紧致爆汁。\",\"custom\":[{\"title\":\"杯型\",\"option\":[{\"text\":\"酷黑定制杯\",\"cost\":0},{\"text\":\"常规杯\",\"cost\":0}],\"opt\":0},{\"title\":\"状态\",\"option\":[{\"text\":\"冰沙(推荐)\",\"cost\":0},{\"text\":\"非冰沙\",\"cost\":0}],\"opt\":0},{\"title\":\"冰量\",\"option\":[{\"text\":\"推荐\",\"cost\":0},{\"text\":\"少冰\",\"cost\":0},{\"text\":\"少少冰\",\"cost\":0},{\"text\":\"去冰(不推荐)\",\"cost\":0}],\"opt\":0},{\"title\":\"甜度\",\"option\":[{\"text\":\"推荐甜度(少甜)\",\"cost\":0},{\"text\":\"少少甜\",\"cost\":0},{\"text\":\"少少少甜\",\"cost\":0},{\"text\":\"不另外加糖(不推荐)\",\"cost\":0},{\"text\":\"多甜\",\"cost\":0}],\"opt\":0},{\"title\":\"茶底\",\"option\":[{\"text\":\"绿妍(推荐)\",\"cost\":0},{\"text\":\"去茶底\",\"cost\":0}],\"opt\":0},{\"title\":\"加料\",\"option\":[{\"text\":\"不加料\",\"cost\":0},{\"text\":\"加倍桑葚果肉￥4\",\"cost\":4}],\"opt\":0}],\"id\":1,\"img\":\"https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/customer/65656db7152cfcac457bff36-酷黑莓桑.png\",\"introduce\":\"喜茶年度口碑王回归。优选桑茸品种，每日手剥去蒂果肉紧致爆汁。新鲜草莓果肉与粒粒桑果肉口感层次叠加，甄选茶园定制绿妍茶汤与桑茸汁、草莓汁一起融合打成冰沙，酸甜果香与清雅茶香轻柔交织。\",\"name\":\"酷黑莓桑\",\"price\":19,\"state\":\"1\",\"num\":1,\"finalPrice\":19}]', '2023-12-01 15:33:14', '2023-12-01 15:42:55', '13570790338', '', '8001');
 
 -- ----------------------------
 -- Table structure for setting
@@ -315,21 +308,19 @@ CREATE TABLE `store`  (
   `open_state` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '营业状态',
   `createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `commodity` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '可销售商品',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of store
 -- ----------------------------
-INSERT INTO `store` VALUES (1, '广州gogo新天地店', '[\"广东省\",\"广州市\"]', '小谷围街贝岗村贝岗村大街1号高高新天地商业广场一期一层第103、104、141、142号商铺', '020-85202718', '周一至周日 10:00-22:00', '2', '2023-11-02 23:47:28', '2023-11-26 18:43:22', '');
-INSERT INTO `store` VALUES (2, '广州万胜广场店', '[\"广东省\", \"广州市\"]', '广东省广州市海珠区新港东路1236号101铺', '020-80927484', '周一至周四 10:00-21:00，周五至周日 10:00-22:00', '2', '2023-11-04 02:03:11', '2023-11-25 23:52:37', '');
-INSERT INTO `store` VALUES (3, '广州天环广场LAB店', '[\"广东省\",\"广州市\"]', '广州市天河区天河路218号天环广场地上一层 址L105、地上二层L205号商铺', '020-85201268', '周一至周四 09:00-22:00，周五至周日 09:00-22:30', '2', '2023-11-20 23:55:10', '2023-11-25 23:52:37', '');
-INSERT INTO `store` VALUES (4, '广州琶洲保利广场店', '[\"广东省\",\"广州市\"]', '琶洲蟠龙新街2号保利广 场购物中心1层1005、1006商铺', '020-85208728', '周一至周日 10:00-23:00', '2', '2023-11-21 00:04:25', '2023-11-25 23:52:37', '');
-INSERT INTO `store` VALUES (5, '广州海珠万达店', '[\"广东省\",\"广州市\"]', '逸景路236号、238号、广州大道南976、978号天雄(广场室内步行街一层1021A-1021B号商铺', '020-85202578', '周一至周日 00:00-23:59', '2', '2023-11-21 00:09:17', '2023-11-25 23:52:37', '');
-INSERT INTO `store` VALUES (8, '上海BFC外滩金融中心店', '[\"上海市\"]', '中山东二路588号外滩国际金融服务中心1层S117单元', '021-63670078', '周一至周日 10:00-22:00', '2', '2023-11-21 12:39:49', '2023-11-25 23:52:37', NULL);
-INSERT INTO `store` VALUES (9, '广州海珠万达店', '[\"广东省\",\"广州市\"]', '逸景路236号、238号、广州大道南976、978号天雄(广场室内步行街一层1021A-1021B号商铺', '020-85202578', '周一至周日 00:00-23:59', '2', '2023-11-25 18:44:17', '2023-11-25 23:52:38', NULL);
-INSERT INTO `store` VALUES (10, '韶关百年东街店', '[\"广东省\",\"韶关市\"]', '这是韶关百年东街店的详细地址', '0751-8536966', '周一至周日 00:00-23:59', '2', '2023-11-25 22:58:35', '2023-11-25 23:52:38', NULL);
+INSERT INTO `store` VALUES (1, '广州gogo新天地店', '[\"广东省\",\"广州市\"]', '小谷围街贝岗村贝岗村大街1号高高新天地商业广场一期一层第103、104、141、142号商铺', '020-85202718', '周一至周日 10:00-22:00', '1', '2023-11-02 23:47:28', '2023-11-30 12:24:50');
+INSERT INTO `store` VALUES (2, '广州万胜广场店', '[\"广东省\", \"广州市\"]', '广东省广州市海珠区新港东路1236号101铺', '020-80927484', '周一至周四 10:00-21:00，周五至周日 10:00-22:00', '1', '2023-11-04 02:03:11', '2023-11-30 12:24:53');
+INSERT INTO `store` VALUES (3, '广州天环广场LAB店', '[\"广东省\",\"广州市\"]', '广州市天河区天河路218号天环广场地上一层 址L105、地上二层L205号商铺', '020-85201268', '周一至周四 09:00-22:00，周五至周日 09:00-22:30', '1', '2023-11-20 23:55:10', '2023-11-30 12:24:54');
+INSERT INTO `store` VALUES (4, '广州琶洲保利广场店', '[\"广东省\",\"广州市\"]', '琶洲蟠龙新街2号保利广 场购物中心1层1005、1006商铺', '020-85208728', '周一至周日 10:00-23:00', '1', '2023-11-21 00:04:25', '2023-11-30 12:24:55');
+INSERT INTO `store` VALUES (5, '广州海珠万达店', '[\"广东省\",\"广州市\"]', '逸景路236号、238号、广州大道南976、978号天雄(广场室内步行街一层1021A-1021B号商铺', '020-85202578', '周一至周日 00:00-23:59', '2', '2023-11-21 00:09:17', '2023-11-30 22:37:19');
+INSERT INTO `store` VALUES (8, '上海BFC外滩金融中心店', '[\"上海市\"]', '中山东二路588号外滩国际金融服务中心1层S117单元', '021-63670078', '周一至周日 10:00-22:00', '1', '2023-11-21 12:39:49', '2023-11-30 12:24:57');
+INSERT INTO `store` VALUES (10, '韶关百年东街店', '[\"广东省\",\"韶关市\"]', '这是韶关百年东街店的详细地址', '0751-8536966', '周一至周日 00:00-23:59', '1', '2023-11-25 22:58:35', '2023-11-30 12:24:59');
 
 -- ----------------------------
 -- Table structure for store_comm
@@ -345,7 +336,14 @@ CREATE TABLE `store_comm`  (
 -- ----------------------------
 -- Records of store_comm
 -- ----------------------------
-INSERT INTO `store_comm` VALUES (1, 1, '2023-11-25 21:02:12');
+INSERT INTO `store_comm` VALUES (1, 1, '2023-11-30 00:32:58');
+INSERT INTO `store_comm` VALUES (1, 2, '2023-11-30 00:31:58');
+INSERT INTO `store_comm` VALUES (1, 3, '2023-11-30 00:32:03');
+INSERT INTO `store_comm` VALUES (1, 5, '2023-11-30 00:32:03');
+INSERT INTO `store_comm` VALUES (2, 1, '2023-11-30 00:30:40');
+INSERT INTO `store_comm` VALUES (2, 2, '2023-11-30 00:30:40');
+INSERT INTO `store_comm` VALUES (2, 3, '2023-11-30 00:30:40');
+INSERT INTO `store_comm` VALUES (2, 5, '2023-11-30 00:30:40');
 
 -- ----------------------------
 -- View structure for category_view
@@ -357,7 +355,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `category_view` AS select
 -- View structure for commmodity_unwind
 -- ----------------------------
 DROP VIEW IF EXISTS `commmodity_unwind`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `commmodity_unwind` AS select `commodity`.`id` AS `id`,`commodity`.`name` AS `name`,`commodity`.`price` AS `price`,`commodity`.`state` AS `state`,`commodity`.`introduce` AS `introduce`,`commodity`.`brief_intro` AS `brief_intro`,`commodity`.`custom` AS `custom`,`category`.`id` AS `cate_id`,`category`.`name` AS `cate_name` from ((`commodity` left join `cate2comm` on((`commodity`.`id` = `cate2comm`.`comm_id`))) left join `category` on((`cate2comm`.`cate_id` = `category`.`id`)));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `commmodity_unwind` AS select `commodity`.`id` AS `id`,`commodity`.`name` AS `name`,`commodity`.`price` AS `price`,`commodity`.`state` AS `state`,`commodity`.`introduce` AS `introduce`,`commodity`.`brief_intro` AS `brief_intro`,`commodity`.`custom` AS `custom`,`category`.`id` AS `cate_id`,`category`.`name` AS `cate_name`,`commodity`.`img` AS `img` from ((`commodity` left join `cate2comm` on((`commodity`.`id` = `cate2comm`.`comm_id`))) left join `category` on((`cate2comm`.`cate_id` = `category`.`id`)));
 
 -- ----------------------------
 -- View structure for commmodity_view
@@ -369,7 +367,13 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `commmodity_view` AS sele
 -- View structure for menu
 -- ----------------------------
 DROP VIEW IF EXISTS `menu`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `menu` AS select `store`.`id` AS `store_id`,`store`.`name` AS `store_name`,`commmodity_view`.`id` AS `id`,`commmodity_view`.`name` AS `name`,`commmodity_view`.`price` AS `price`,`commmodity_view`.`introduce` AS `introduce`,`commmodity_view`.`brief_intro` AS `brief_intro`,`commmodity_view`.`custom` AS `custom`,`commmodity_view`.`category` AS `category`,count(`store_comm`.`store_id`) AS `sell_state` from ((`store` join `commmodity_view`) left join `store_comm` on(((`commmodity_view`.`id` = `store_comm`.`comm_id`) and (`store`.`id` = `store_comm`.`store_id`)))) where (`commmodity_view`.`state` = 1) group by `store`.`id`,`commmodity_view`.`id`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `menu` AS select `store`.`id` AS `store_id`,`store`.`name` AS `store_name`,`commmodity_view`.`id` AS `id`,`commmodity_view`.`name` AS `name`,`commmodity_view`.`price` AS `price`,`commmodity_view`.`introduce` AS `introduce`,`commmodity_view`.`brief_intro` AS `brief_intro`,`commmodity_view`.`custom` AS `custom`,`commmodity_view`.`category` AS `category`,count(`store_comm`.`store_id`) AS `sell_state`,`commmodity_view`.`img` AS `img` from ((`store` join `commmodity_view`) left join `store_comm` on(((`commmodity_view`.`id` = `store_comm`.`comm_id`) and (`store`.`id` = `store_comm`.`store_id`)))) where (`commmodity_view`.`state` = 1) group by `store`.`id`,`commmodity_view`.`id`;
+
+-- ----------------------------
+-- View structure for menu_unwind
+-- ----------------------------
+DROP VIEW IF EXISTS `menu_unwind`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `menu_unwind` AS select `menu`.`store_id` AS `store_id`,`menu`.`store_name` AS `store_name`,`menu`.`id` AS `id`,`menu`.`name` AS `name`,`menu`.`price` AS `price`,`menu`.`introduce` AS `introduce`,`menu`.`brief_intro` AS `brief_intro`,`menu`.`custom` AS `custom`,`menu`.`img` AS `img`,`menu`.`sell_state` AS `sell_state`,`category`.`id` AS `cate_id`,`category`.`name` AS `cate_name` from ((`menu` left join `cate2comm` on((`menu`.`id` = `cate2comm`.`comm_id`))) left join `category` on((`cate2comm`.`cate_id` = `category`.`id`)));
 
 -- ----------------------------
 -- View structure for staff_store

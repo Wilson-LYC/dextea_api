@@ -42,7 +42,7 @@
     </select>
     <select id="getOrderQueue" resultType="Integer">
         SELECT
-        SUM(`order`.num) AS num
+            ifnull(SUM(`order`.num),0) AS num
         FROM
         `order`
         WHERE
@@ -55,7 +55,7 @@
     </select>
     <select id="getStoreQueue" resultType="Integer">
         SELECT
-        SUM(`order`.num) AS num
+            ifnull(SUM(`order`.num),0) AS num
         FROM
         `order`
         WHERE

@@ -14,7 +14,7 @@ public interface StoreMapper {
     int deleteStoreById(int id);
     //获取所有店铺
     List<Store> getAllStore();
-    //查找店铺
+    //通过id查找店铺
     Store getStoreById(int id);
     //搜索店铺
     List<Store> searchStore(Store store);
@@ -24,4 +24,5 @@ public interface StoreMapper {
     int countStoreByArea(String area);
 
     List<Store> getStoreForCustomer(String area);
+
 }

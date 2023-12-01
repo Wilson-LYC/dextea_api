@@ -9,13 +9,30 @@
         <result property="openTime" column="open_time"></result>
     </resultMap>
 
+    <insert id="add">
+        insert into store(`name`,`area`,`address`,`phone`,`open_time`,`open_state`) value (#{name},#{area},#{address},#{phone},#{openTime},#{openState})
+    </insert>
+
     <select id="getAllStore" resultMap="storeResultMap">
         select * from store
     </select>
 
-    <insert id="add" parameterType="Store">
-        insert into store(`name`,`area`,`address`,`phone`,`open_time`,`open_state`) value (#{name},#{area},#{address},#{phone},#{openTime},#{openState})
-    </insert>
+    <update id="updateStore">
+        update store
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="openTime != null">open_time = #{openTime},</if>
+            <if test="openState != null">open_state = #{openState},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStoreById">
+        delete from store where id=#{id}
+    </delete>
 
     <select id="getStoreById" resultMap="storeResultMap">
         select * from store where id=#{id}
@@ -53,21 +70,8 @@
         update store set open_state=#{openState} where id=#{id}
     </update>
 
-    <delete id="deleteStoreById">
-        delete from store where id=#{id}
-    </delete>
 
-    <update id="updateStore">
-        update store
-        <set>
-            <if test="name != null">name = #{name},</if>
-            <if test="area != null">area = #{area},</if>
-            <if test="address != null">address = #{address},</if>
-            <if test="phone != null">phone = #{phone},</if>
-            <if test="openTime != null">open_time = #{openTime},</if>
-            <if test="openState != null">open_state = #{openState},</if>
-        </set>
-        where id = #{id}
-    </update>
+
+
 
 </mapper>

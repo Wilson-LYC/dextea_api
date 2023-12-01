@@ -235,4 +235,110 @@ public class CommodityServiceImpl implements CommodityService {
         res.put("msg","成功");
         return res;
     }
+
+    /**
+     * 获取店铺菜单
+     * @param id 店铺id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject getStoreMenu(int id) {
+        JSONObject res=new JSONObject();
+        List<Commodity> commodityList=commodityMapper.getStoreMenu(id);
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("commodity",toJson(commodityList));
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * 商品上架
+     * @param cid 商品id
+     * @param sid 店铺id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject commOnsale(int cid, int sid) {
+        JSONObject res=new JSONObject();
+        int flag=commodityMapper.onsale(cid,sid);
+        if(flag==0){
+            res.put("code",500);
+            res.put("msg","失败");
+            return res;
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        return res;
+    }
+
+    /**
+     * 商品下架
+     * @param cid 商品id
+     * @param sid 店铺id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject commOffsale(int cid, int sid) {
+        JSONObject res=new JSONObject();
+        int flag=commodityMapper.offsale(cid,sid);
+        if(flag==0){
+            res.put("code",500);
+            res.put("msg","失败");
+            return res;
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        return res;
+    }
+
+    @Override
+    public JSONObject commOnsaleList(int sid, JSONArray cidList) {
+        JSONObject res=new JSONObject();
+        for(int i=0;i<cidList.size();i++){
+            int cid=cidList.getInteger(i);
+            commodityMapper.onsale(cid,sid);
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        return res;
+    }
+
+    @Override
+    public JSONObject commOffsaleList(int sid, JSONArray cidList) {
+        JSONObject res=new JSONObject();
+        for(int i=0;i<cidList.size();i++){
+            int cid=cidList.getInteger(i);
+            commodityMapper.offsale(cid,sid);
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        return res;
+    }
+
+    @Override
+    public JSONObject getMenuByStoreId(int id) {
+        JSONObject res=new JSONObject();
+        //获取所有品类
+        List<Category> categoryList=categoryMapper.getAllCategory();
+        //循环品类
+        JSONArray categoryArray=new JSONArray();
+        for (Category category : categoryList) {
+            JSONObject categoryJson = new JSONObject();
+            categoryJson.put("class", category.getName());
+            //获取品类下的商品
+            List<Commodity> commodityList = commodityMapper.getMenuByCateId(id,category.getId());
+            //将商品列表转换为json
+            JSONArray commodityArray = toJson(commodityList);
+            categoryJson.put("commodity", commodityArray);
+            categoryArray.add(categoryJson);
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("menu",categoryArray);
+        res.put("data",data);
+        return res;
+    }
 }

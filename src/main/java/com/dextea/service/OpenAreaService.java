@@ -10,4 +10,6 @@ public interface OpenAreaService {
     JSONObject updateOpenArea(JSONArray openArea);
     //获取营业区域下拉选项
     JSONObject getOpenAreaAsSelectOption();
+
+    JSONObject getOpenAreaForCustomer();
 }

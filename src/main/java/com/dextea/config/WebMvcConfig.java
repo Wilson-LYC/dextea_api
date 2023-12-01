@@ -19,7 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         };
         //排除的路径
         String[] excludePathPatterns = {
-                "/login/*","/druid"
+                "/login/*","/druid","/ws"
         };
         //注册拦截器
         registry.addInterceptor(new MyInterceptor(loginService))

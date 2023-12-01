@@ -1,8 +1,6 @@
 package com.dextea.controller;
 
-import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.dextea.mapper.StoreMapper;
 import com.dextea.pojo.Store;
 import com.dextea.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,5 +106,9 @@ public class StoreController {
     @GetMapping("/get/option/select")
     public JSONObject option(){
         return storeService.getStoreAsSelectOption();
+    }
+
+    public JSONObject getStoreForCustomer(String area) {
+        return storeService.getStoreForCustomer(area);
     }
 }

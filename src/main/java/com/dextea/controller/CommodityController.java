@@ -101,4 +101,27 @@ public class CommodityController {
         String state=data.getString("state");
         return commodityService.updateCommState(idList,state);
     }
+    //获取商店菜单
+    @GetMapping("/store")
+    public JSONObject getStoreMenu(@RequestParam("id") int id){
+        return commodityService.getStoreMenu(id);
+    }
+
+    //修改商品为在售
+    @PostMapping("/store/onsale")
+    public JSONObject updateCommOnSale(@RequestBody JSONObject json){
+        JSONObject data=json.getJSONObject("data");
+        JSONArray cidList=data.getJSONArray("cid");
+        int sid=data.getInteger("sid");
+        return commodityService.commOnsaleList(sid,cidList);
+    }
+    //修改商品为下架
+    @PostMapping("/store/offsale")
+    public JSONObject updateCommOffSale(@RequestBody JSONObject json){
+        JSONObject data=json.getJSONObject("data");
+        JSONArray cidList=data.getJSONArray("cid");
+        int sid=data.getInteger("sid");
+        return commodityService.commOffsaleList(sid,cidList);
+    }
+
 }

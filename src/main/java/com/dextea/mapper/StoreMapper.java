@@ -22,4 +22,6 @@ public interface StoreMapper {
     int updateStore(Store store);
     //统计营业区域门店数量
     int countStoreByArea(String area);
+
+    List<Store> getStoreForCustomer(String area);
 }

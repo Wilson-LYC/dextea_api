@@ -40,4 +40,7 @@ public interface StoreService {
     JSONObject updateOpenState(List<Integer> idList, String openState);
     //获取门店下拉选项
     JSONObject getStoreAsSelectOption();
+
+    JSONObject getStoreForCustomer(String area);
+
 }

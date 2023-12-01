@@ -45,6 +45,9 @@
             </if>
         </where>
     </select>
+    <select id="getStoreForCustomer" resultMap="storeResultMap">
+        select * from store where area like concat('%',#{area},'%')
+    </select>
 
     <update id="updateOpenState" parameterType="Store">
         update store set open_state=#{openState} where id=#{id}

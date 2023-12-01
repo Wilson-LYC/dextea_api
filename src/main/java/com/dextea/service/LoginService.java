@@ -16,4 +16,7 @@ public interface LoginService {
     public boolean isLogin(String token);
     //判断IP短时间内访问次数
     public int isAccess(String ip);
+    //顾客登录
+    JSONObject customerLogin(String code);
+
 }

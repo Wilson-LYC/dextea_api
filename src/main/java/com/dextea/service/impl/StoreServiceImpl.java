@@ -4,7 +4,6 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.mapper.SettingMapper;
 import com.dextea.mapper.StoreMapper;
-import com.dextea.pojo.Setting;
 import com.dextea.pojo.Store;
 import com.dextea.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -243,6 +242,18 @@ public class StoreServiceImpl implements StoreService {
         res.put("msg","成功");
         JSONObject data=new JSONObject();
         data.put("stores",toSelectOption(storeList));
+        res.put("data",data);
+        return res;
+    }
+
+    @Override
+    public JSONObject getStoreForCustomer(String area) {
+        JSONObject res=new JSONObject();
+        List<Store> storeList=storeMapper.getStoreForCustomer(area);
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("stores",toJson(storeList));
         res.put("data",data);
         return res;
     }

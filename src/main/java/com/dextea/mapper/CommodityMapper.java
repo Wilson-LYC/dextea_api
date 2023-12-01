@@ -21,4 +21,12 @@ public interface CommodityMapper {
     int deleteComm(int id);
 
     List<Commodity> getCommByCateId(int cateId);
+
+    List<Commodity> getStoreMenu(int id);
+
+    int onsale(int cid, int sid);
+
+    int offsale(int cid, int sid);
+
+    List<Commodity> getMenuByCateId(int sid, int cateId);
 }

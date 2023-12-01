@@ -1,5 +1,6 @@
 package com.dextea.service.impl;
 
+import cn.hutool.extra.pinyin.PinyinUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.mapper.SettingMapper;
@@ -8,6 +9,11 @@ import com.dextea.pojo.Setting;
 import com.dextea.service.OpenAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class OpenAreaServiceImpl implements OpenAreaService {
@@ -123,6 +129,46 @@ public class OpenAreaServiceImpl implements OpenAreaService {
             res.put("code",500);
             res.put("msg","失败");
         }
+        return res;
+    }
+
+    @Override
+    public JSONObject getOpenAreaForCustomer() {
+        JSONObject res=new JSONObject();
+        Map<String, List<String>> map=new HashMap<>();
+        Setting setting=settingMapper.get("open_area");
+        JSONArray area= JSONArray.parseArray(setting.getValue());
+        for(int i=0;i<area.size();i++){
+            JSONObject area1=area.getJSONObject(i);
+            JSONArray children=area1.getJSONArray("children");
+            for(int j=0;j<children.size();j++){
+                JSONObject area2=children.getJSONObject(j);
+                String name=area2.getString("value");
+                String pinyin= PinyinUtil.getFirstLetter(name, ",");
+                String firstLetter=pinyin.substring(0,1);
+                if (map.containsKey(firstLetter)){
+                    List<String> list=map.get(firstLetter);
+                    list.add(name);
+                    map.put(firstLetter,list);
+                }else{
+                    List<String> list=new ArrayList<>();
+                    list.add(name);
+                    map.put(firstLetter,list);
+                }
+            }
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        JSONArray items=new JSONArray();
+        for(String key:map.keySet()){
+            JSONObject item=new JSONObject();
+            item.put("letter",key);
+            item.put("data",map.get(key));
+            items.add(item);
+        }
+        data.put("area",items);
+        res.put("data",data);
         return res;
     }
 }

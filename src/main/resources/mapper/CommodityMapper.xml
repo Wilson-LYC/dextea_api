@@ -7,10 +7,17 @@
     <resultMap id="commodityMap" type="Commodity">
         <result property="briefIntro" column="brief_intro"/>
     </resultMap>
+    <resultMap id="menuMap" type="Commodity">
+        <result property="briefIntro" column="brief_intro"/>
+        <result property="state" column="sell_state"/>
+    </resultMap>
 
     <insert id="addCommodity">
         insert into commodity (name,price,state)
         values (#{name},#{price},#{state})
+    </insert>
+    <insert id="onsale">
+        insert into store_comm (store_id,comm_id) values (#{arg1},#{arg0})
     </insert>
 
     <update id="updateCommodity">
@@ -29,6 +36,9 @@
 
     <delete id="deleteComm">
         delete from commodity where id = #{id}
+    </delete>
+    <delete id="offsale">
+        delete from store_comm where store_id = #{arg1} and comm_id = #{arg0}
     </delete>
 
     <select id="getAllCommFull" resultMap="commodityMap">
@@ -64,5 +74,11 @@
 
     <select id="getCommByCateId" resultMap="commodityMap">
         select * from commmodity_unwind where cate_id = #{cateId}
+    </select>
+    <select id="getStoreMenu" resultMap="menuMap">
+        select * from menu where store_id = #{storeId}
+    </select>
+    <select id="getMenuByCateId" resultMap="menuMap">
+        select * from menu_unwind where store_id = #{arg0} and cate_id = #{arg1}
     </select>
 </mapper>

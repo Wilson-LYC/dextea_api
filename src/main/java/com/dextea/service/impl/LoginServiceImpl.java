@@ -2,11 +2,14 @@ package com.dextea.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.mapper.BlackIpMapper;
+import com.dextea.mapper.CustomerMapper;
 import com.dextea.mapper.LoginLogMapper;
 import com.dextea.mapper.StaffMapper;
 import com.dextea.pojo.BlackIp;
+import com.dextea.pojo.Customer;
 import com.dextea.pojo.Staff;
 import com.dextea.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,8 @@ public class LoginServiceImpl implements LoginService {
     StaffMapper staffMapper;
     @Autowired
     LoginLogMapper loginLogMapper;
+    @Autowired
+    CustomerMapper customerMapper;
     /**
      * 将token和员工信息存入Redis
      * @param token token
@@ -134,6 +139,12 @@ public class LoginServiceImpl implements LoginService {
      */
     @Override
     public boolean isLogin(String token) {
+        //判断是否是顾客
+        if(token.startsWith("cust")){
+            //是顾客,直接返回true
+            return true;
+        }
+        //员工，判断是否在Redis中
         //设置key=Token:token
         String key="Token:"+token;
         //判断key是否存在
@@ -190,5 +201,51 @@ public class LoginServiceImpl implements LoginService {
             redisTemplate.opsForValue().set(key,1,10,TimeUnit.SECONDS);
             return 0;//允许访问
         }
+    }
+
+    /**
+     * 顾客登录
+     * @param code code
+     * @return 信息
+     */
+    @Override
+    public JSONObject customerLogin(String code) {
+        JSONObject res=new JSONObject();
+        //获取openid
+        String url="https://api.weixin.qq.com/sns/jscode2session?appid=wx0d6173ea488ff2c4&secret=e1c3e65228c7655b6a9bd520217a105f&js_code="+code+"&grant_type=authorization_code";
+        JSONObject loginRes= JSONObject.parseObject(HttpUtil.get(url));
+        //判断是否获取成功
+        if (loginRes.getString("errcode")!=null){
+            res.put("code",500);
+            res.put("msg",loginRes.getString("errmsg"));
+            return res;
+        }
+        String openid=loginRes.getString("openid");
+        //判断openid是否已经注册
+        List<Customer> customerList=customerMapper.getByOpenid(openid);
+        if(customerList.size()==0){
+            //未注册，注册
+            Customer customer=new Customer();
+            customer.setOpenid(openid);
+            customer.setName("得闲茶友");
+            int flag=customerMapper.add(customer);
+            if(flag==0) {
+                res.put("code", 500);
+                res.put("msg", "注册失败");
+                return res;
+            }
+        }
+        //登录获取信息
+        JSONObject customer= JSONObject.from(customerMapper.getByOpenid(openid).get(0));
+        customer.remove("openid");//移除openid
+        //创建token
+        String token= "cust"+IdUtil.simpleUUID();//cust开头表示顾客
+        customer.put("token",token);
+        res.put("code",200);
+        res.put("msg","登录成功");
+        JSONObject data=new JSONObject();
+        data.put("customer",customer);
+        res.put("data",data);
+        return res;
     }
 }

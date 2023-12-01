@@ -26,4 +26,11 @@ public class LoginController {
         return loginService.logoutStaff(token);
     }
 
+    @PostMapping ("/customer")
+    public JSONObject loginCustomer(@RequestBody JSONObject json){
+        JSONObject data=json.getJSONObject("data");
+        String code=data.getString("code");
+        return loginService.customerLogin(code);
+    }
+
 }

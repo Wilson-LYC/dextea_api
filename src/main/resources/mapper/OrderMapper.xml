@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dextea.mapper.OrderMapper">
+
+    <resultMap id="orderMap" type="Order">
+        <result property="custId" column="cust_id"/>
+        <result property="storeId" column="store_id"/>
+    </resultMap>
+    <insert id="addOrder">
+        insert into
+            `order`(cust_id, store_id, state, price, num, commodity, phone, note,code)
+        values
+            (#{custId}, #{storeId}, #{state}, #{price}, #{num}, #{commodity}, #{phone}, #{note},#{code})
+    </insert>
+    <update id="updateState">
+        update
+            `order`
+        set
+            state = #{arg1}
+        where
+            id = #{arg0}
+    </update>
+    <select id="getOrderList" resultMap="orderMap">
+        select
+            *
+        from
+            `order`
+        where
+            cust_id = #{custId}
+        order by
+            createtime DESC
+    </select>
+    <select id="getOrderDetail" resultMap="orderMap">
+        select
+            *
+        from
+            `order`
+        where
+            id = #{id}
+    </select>
+    <select id="getOrderQueue" resultType="Integer">
+        SELECT
+        SUM(`order`.num) AS num
+        FROM
+        `order`
+        WHERE
+        `order`.store_id = #{arg0} AND
+        (
+        `order`.state = 1 OR
+        `order`.state = 2
+        ) AND
+        `order`.createtime &lt;= #{arg1}
+    </select>
+    <select id="getStoreQueue" resultType="Integer">
+        SELECT
+        SUM(`order`.num) AS num
+        FROM
+        `order`
+        WHERE
+        `order`.store_id = #{arg0} AND
+        (
+        `order`.state = 1 OR
+        `order`.state = 2
+        )
+    </select>
+    <select id="getSameState" resultMap="orderMap">
+        SELECT
+        *
+        FROM
+        `order`
+        WHERE
+        `order`.store_id = #{arg0} AND
+        `order`.state = #{arg1}
+    </select>
+</mapper>

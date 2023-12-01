@@ -6,6 +6,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.dextea.pojo.Category;
 import com.dextea.pojo.CommCate;
 import com.dextea.pojo.Commodity;
+import com.dextea.pojo.Order;
 
 import java.util.List;
 
@@ -36,4 +37,17 @@ public interface CommodityService {
     JSONObject getCommByCateId(int cateId);
 
     JSONObject updateCommState(JSONArray idList, String state);
+
+    JSONObject getStoreMenu(int id);
+
+    JSONObject commOnsale(int cid, int sid);
+
+    JSONObject commOffsale(int cid, int sid);
+
+    JSONObject commOnsaleList(int sid, JSONArray cidList);
+
+    JSONObject commOffsaleList(int sid, JSONArray cidList);
+
+    JSONObject getMenuByStoreId(int id);
+
 }

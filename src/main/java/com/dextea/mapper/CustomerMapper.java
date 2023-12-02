@@ -14,4 +14,12 @@ public interface CustomerMapper {
     int add(Customer customer);
 
     Customer getCustomerById(int custId);
+    //获取所有顾客
+    List<Customer> getAllCustomer();
+    //更新顾客信息
+    int update(Customer customer);
+    //搜索顾客
+    List<Customer> search(int id, String name, String phone);
+    //删除顾客
+    int  delete(int id);
 }

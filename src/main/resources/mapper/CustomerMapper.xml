@@ -9,11 +9,34 @@
     <insert id="add">
         insert into customer(open_id,name) values(#{openid},#{name})
     </insert>
+    <update id="update">
+        update customer set name = #{name},phone=#{phone} where id = #{id}
+    </update>
+    <delete id="delete">
+        delete from customer where id = #{id}
+    </delete>
 
     <select id="getByOpenid" resultMap="customerMap">
         select * from customer where open_id = #{openid}
     </select>
     <select id="getCustomerById" resultMap="customerMap">
         select * from customer where id = #{id}
+    </select>
+    <select id="getAllCustomer" resultMap="customerMap">
+        select * from customer
+    </select>
+    <select id="search" resultMap="customerMap">
+        select * from customer
+        <where>
+            <if test="arg0 != null and arg0 != ''">
+                and name like concat('%',#{arg0},'%')
+            </if>
+            <if test="arg1 != null and arg1 != ''">
+                and phone = #{arg1}
+            </if>
+            <if test="arg2 != null and arg2 !=0">
+                and id = #{arg2}
+            </if>
+        </where>
     </select>
 </mapper>

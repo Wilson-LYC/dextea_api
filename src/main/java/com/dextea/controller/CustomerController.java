@@ -15,8 +15,6 @@ public class CustomerController {
     @Autowired
     OpenAreaService openAreaService;
     @Autowired
-    StoreController storeController;
-    @Autowired
     CommodityService commodityService;
     @Autowired
     OrderService orderService;
@@ -30,12 +28,12 @@ public class CustomerController {
     //获取门店
     @GetMapping("/store")
     public JSONObject getStore(@RequestParam("area") String area){
-        return storeController.getStoreForCustomer(area);
+        return storeService.getStoreForCustomer(area);
     }
     //根据ID获取门店详情
     @GetMapping("/store/detail")
     public JSONObject getStoreDetail(@RequestParam("id") int id){
-        return storeController.info(id);
+        return storeService.getStoreById(id);
     }
     //获取菜单
     @GetMapping("/menu")

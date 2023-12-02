@@ -1,15 +1,15 @@
 package com.dextea.mapper;
 
-import com.dextea.pojo.ImgDB;
+import com.dextea.pojo.Img;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
-public interface ImgDBMapper {
+public interface ImgMapper {
     int addImg(String url);
 
-    List<ImgDB> getAllImg();
+    List<Img> getAllImg();
 
     int deleteImgByUrl(String url);
 }

@@ -44,4 +44,14 @@ public class StoreControllerV1 {
         JSONObject data= body.getJSONObject("data");
         return storeService.searchStoreV1(data);
     }
+    //获取店铺下拉选项
+    @GetMapping("/option/select")
+    public JSONObject getStoreOptionSelect() {
+        return storeService.getStoreOptionSelectV1();
+    }
+    //通过ID获取店铺
+    @GetMapping("/detail")
+    public JSONObject getStoreById(@RequestParam int id) {
+        return storeService.getStoreByIdV1(id);
+    }
 }

@@ -83,6 +83,22 @@ public class StoreServiceImpl implements StoreService {
     }
 
     /**
+     * storeList转换为下拉框选项
+     * @return JSONArray
+     */
+    @Override
+    public JSONArray toSelectOption(List<Store> storeList) {
+        JSONArray res=new JSONArray();
+        for(Store store:storeList){
+            JSONObject storeJson=new JSONObject();
+            storeJson.put("label",store.getName());
+            storeJson.put("value",store.getId());
+            res.add(storeJson);
+        }
+        return res;
+    }
+
+    /**
      * 新增门店v1
      * @param body json
      * @return JSONObject
@@ -212,17 +228,44 @@ public class StoreServiceImpl implements StoreService {
     }
 
     /**
-     * storeList转换为下拉框选项
-     * @return JSONArray
+     * 获取店铺下拉选项v1
+     * @return JSONObject
      */
     @Override
-    public JSONArray toSelectOption(List<Store> storeList) {
-        JSONArray res=new JSONArray();
-        for(Store store:storeList){
-            JSONObject storeJson=new JSONObject();
-            storeJson.put("label",store.getName());
-            storeJson.put("value",store.getId());
-            res.add(storeJson);
+    public JSONObject getStoreOptionSelectV1() {
+        JSONObject res=new JSONObject();
+        try{
+            List<Store> storeList=storeMapper.getAllStore();
+            JSONObject data=new JSONObject();
+            data.put("stores",toSelectOption(storeList));
+            res.put("code",200);
+            res.put("msg","成功");
+            res.put("data",data);
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","失败");
+        }
+        return res;
+    }
+
+    /**
+     * 通过ID获取店铺v1
+     * @param id 店铺id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject getStoreByIdV1(int id) {
+        JSONObject res=new JSONObject();
+        try{
+            Store store=storeMapper.getStoreById(id);
+            JSONObject data=new JSONObject();
+            data.put("store",toJson(store));
+            res.put("code",200);
+            res.put("msg","成功");
+            res.put("data",data);
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","失败");
         }
         return res;
     }

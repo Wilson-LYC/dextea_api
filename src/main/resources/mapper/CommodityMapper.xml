@@ -7,9 +7,9 @@
     <resultMap id="commodityMap" type="Commodity">
         <result property="briefIntro" column="brief_intro"/>
     </resultMap>
+
     <resultMap id="menuMap" type="Commodity">
         <result property="briefIntro" column="brief_intro"/>
-        <result property="state" column="sell_state"/>
     </resultMap>
 
     <insert id="addCommodity">
@@ -54,9 +54,9 @@
     </select>
 
     <select id="searchComm" resultMap="commodityMap">
-        select id,name,state,price from commmodity_unwind
+        select id,name,state,price,introduce,brief_intro,createtime,updatetime,custom,img from commmodity_unwind
         <where>
-            <if test="arg0!=null and arg0!=''">
+            <if test="arg0!=null and arg0!=0">
                 and id = #{arg0}
             </if>
             <if test="arg1!=null and arg1!=''">
@@ -75,10 +75,15 @@
     <select id="getCommByCateId" resultMap="commodityMap">
         select * from commmodity_unwind where cate_id = #{cateId}
     </select>
+
     <select id="getStoreMenu" resultMap="menuMap">
         select * from menu where store_id = #{storeId}
     </select>
+
     <select id="getMenuByCateId" resultMap="menuMap">
         select * from menu_unwind where store_id = #{arg0} and cate_id = #{arg1}
+    </select>
+    <select id="getAllCommodity" resultMap="commodityMap">
+        select * from commmodity_view
     </select>
 </mapper>

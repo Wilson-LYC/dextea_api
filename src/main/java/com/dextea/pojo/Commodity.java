@@ -12,7 +12,7 @@ public class Commodity {
     private String name;//商品名称
     private String introduce;//商品介绍
     private String briefIntro;//商品简介
-    private String custom;//商品定制
+    private String custom;//商品个性化定制选项
     private String img;//商品图片
     private String state;//商品状态 0不可售 1可售
     private String createtime;//创建时间

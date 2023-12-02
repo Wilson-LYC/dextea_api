@@ -12,7 +12,6 @@ import com.dextea.service.CommodityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -39,6 +38,8 @@ public class CommodityServiceImpl implements CommodityService {
         if(category!=null && !category.isEmpty()){
             String[] categorys = category.split(",");
             res.put("category", categorys);
+        }else {
+            res.put("category",new JSONArray());
         }
         return res;
     }
@@ -55,6 +56,309 @@ public class CommodityServiceImpl implements CommodityService {
             JSONObject json=toJson(commodity);
             res.add(json);
         }
+        return res;
+    }
+
+    /**
+     * 获取所有商品v1
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject getAllCommodityV1() {
+        JSONObject res=new JSONObject();
+        try {
+            List<Commodity> commodityList=commodityMapper.getAllCommodity();
+            res.put("code",200);
+            res.put("msg","成功");
+            JSONObject data=new JSONObject();
+            data.put("commodity",toJson(commodityList));
+            res.put("data",data);
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+        }
+        return res;
+    }
+
+    /**
+     * 搜索商品v1
+     * @return
+     */
+    @Override
+    public JSONObject searchCommV1(JSONObject json) {
+        JSONObject res=new JSONObject();
+        int id=json.getInteger("id")==null?0:json.getInteger("id");
+        String name=json.getString("name")==null?"":json.getString("name");
+        String state=json.getString("state")==null?"":json.getString("state");
+        int cateId=json.getInteger("cateId")==null?0:json.getInteger("cateId");
+        try {
+            List<Commodity> commodityList=commodityMapper.searchComm(id,name,state,cateId);
+            res.put("code",200);
+            res.put("msg","成功");
+            JSONObject data=new JSONObject();
+            data.put("commodity",toJson(commodityList));
+            res.put("data",data);
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+            System.out.println(e.toString());
+        }
+        return res;
+    }
+
+    /**
+     * 删除商品v1
+     * @param id 商品id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject deleteCommV1(int id) {
+        JSONObject res=new JSONObject();
+        try {
+            //先删除商品的品类
+            commCateMapper.deleteCateByCommId(id);
+            //再删除商品
+            int flag=commodityMapper.deleteComm(id);
+            if(flag==0){
+                res.put("code",500);
+                res.put("msg","删除失败");
+                return res;
+            }
+            res.put("code",200);
+            res.put("msg","删除成功");
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+        }
+        return res;
+    }
+
+    /**
+     * 修改商品信息v1
+     * @param json 商品信息
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject updateCommodityV1(JSONObject json) {
+        JSONObject res=new JSONObject();
+        Commodity commodity=new Commodity();
+        commodity.setId(json.getInteger("id"));
+        commodity.setName(json.getString("name"));
+        commodity.setPrice(json.getDouble("price"));
+        commodity.setState(json.getString("state"));
+        if(json.getString("introduce")!=null && !json.getString("introduce").isEmpty())
+            commodity.setIntroduce(json.getString("introduce"));
+        if(json.getString("briefIntro")!=null && !json.getString("briefIntro").isEmpty())
+            commodity.setBriefIntro(json.getString("briefIntro"));
+        if(json.getString("custom")!=null && !json.getString("custom").isEmpty())
+            commodity.setCustom(json.getString("custom"));
+        if(json.getString("img")!=null && !json.getString("img").isEmpty())
+            commodity.setImg(json.getString("img"));
+        JSONArray categoryArray=json.getJSONArray("category");
+        try {
+            int flag=commodityMapper.updateCommodity(commodity);
+            if(flag==0){
+                res.put("code",500);
+                res.put("msg","更新失败");
+                return res;
+            }
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+        }
+        //删除原有品类
+        try {
+            commCateMapper.deleteCateByCommId(commodity.getId());
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+        }
+        try{
+            //添加新品类
+            for(int i=0;i<categoryArray.size();i++){
+                String cateName=categoryArray.getString(i);
+                Category category=categoryMapper.getCateByName(cateName);
+                CommCate commCate=new CommCate();
+                commCate.setCommId(commodity.getId());
+                commCate.setCateId(category.getId());
+                commCateMapper.addCateToComm(commCate);
+            }
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+        }
+        res.put("code",200);
+        res.put("msg","更新成功");
+        return res;
+    }
+
+    /**
+     * 修改销售状态v1
+     * @param json 商品id列表
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject updateCommStateV1(JSONObject json) {
+        JSONObject res=new JSONObject();
+        try {
+            JSONArray idList=json.getJSONArray("id");
+            String state=json.getString("state");
+            for(int i=0;i<idList.size();i++){
+                int id=idList.getInteger(i);
+                Commodity commodity=commodityMapper.getCommById(id);
+                commodity.setState(state);
+                commodityMapper.updateCommodity(commodity);
+            }
+            res.put("code",200);
+            res.put("msg","修改成功");
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+        }
+        return res;
+    }
+
+    /**
+     * 新增商品v1
+     * @param json 商品信息
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject addCommodityV1(JSONObject json) {
+        JSONObject res=new JSONObject();
+        Commodity commodity=new Commodity();
+        commodity.setName(json.getString("name"));
+        commodity.setPrice(json.getDouble("price"));
+        commodity.setState(json.getString("state"));
+        try {
+            int flag=commodityMapper.addCommodity(commodity);
+            if(flag==0){
+                res.put("code",500);
+                res.put("msg","新增失败");
+                return res;
+            }
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+        }
+        res.put("code",200);
+        res.put("msg","新增成功");
+        return res;
+    }
+
+    /**
+     * 获取同一品类的商品v1
+     * @param id 品类id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject getCommByCateIdV1(int id) {
+        JSONObject res=new JSONObject();
+        try {
+            List<Commodity> commodityList=commodityMapper.getCommByCateId(id);
+            res.put("code",200);
+            res.put("msg","成功");
+            JSONObject data=new JSONObject();
+            data.put("commodity",toJson(commodityList));
+            res.put("data",data);
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+        }
+        return res;
+    }
+
+    /**
+     * 获取门店菜单v1
+     * @param id 店铺id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject getMenuByStoreIdV1(int id) {
+        JSONObject res=new JSONObject();
+        List<Commodity> commodityList=null;
+        try {
+            commodityList=commodityMapper.getStoreMenu(id);
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("commodity",toJson(commodityList));
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * 上架商品v1
+     * @param data json
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject commOnsaleV1(JSONObject data) {
+        JSONObject res=new JSONObject();
+        JSONArray cidList=data.getJSONArray("cid");
+        int sid=data.getInteger("sid");
+        try {
+            for(int i=0;i<cidList.size();i++){
+                int cid=cidList.getInteger(i);
+                commodityMapper.onsale(cid,sid);
+            }
+            res.put("code",200);
+            res.put("msg","成功");
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+        }
+        return res;
+    }
+
+    /**
+     * 下架商品v1
+     * @param data json
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject commOffsaleV1(JSONObject data) {
+        JSONObject res=new JSONObject();
+        JSONArray cidList=data.getJSONArray("cid");
+        int sid=data.getInteger("sid");
+        try {
+            for(int i=0;i<cidList.size();i++){
+                int cid=cidList.getInteger(i);
+                commodityMapper.offsale(cid,sid);
+            }
+            res.put("code",200);
+            res.put("msg","成功");
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+        }
+        return res;
+    }
+
+    /**
+     * 获取单个商品信息v1
+     * @param id 商品id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject getCommByIdV1(int id) {
+        JSONObject res=new JSONObject();
+        Commodity commodity=null;
+        try {
+            commodity=commodityMapper.getCommById(id);
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库异常");
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("commodity",toJson(commodity));
+        res.put("data",data);
         return res;
     }
 

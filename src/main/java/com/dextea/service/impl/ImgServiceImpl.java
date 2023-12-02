@@ -1,12 +1,10 @@
 package com.dextea.service.impl;
 
-import cn.hutool.json.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.Utils.COSUtils;
-import com.dextea.mapper.ImgDBMapper;
-import com.dextea.pojo.ImgDB;
+import com.dextea.mapper.ImgMapper;
+import com.dextea.pojo.Img;
 import com.dextea.service.ImgService;
-import com.qcloud.cos.COS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +14,85 @@ import java.util.List;
 @Service
 public class ImgServiceImpl implements ImgService {
     @Autowired
-    ImgDBMapper imgDBMapper;
+    ImgMapper imgMapper;
+
+    /**
+     * 获取图片列表v1
+     * @return 图片列表
+     */
+    @Override
+    public JSONObject getAllImgV1() {
+        JSONObject res=new JSONObject();
+        try{
+            List<Img> imgList= imgMapper.getAllImg();
+            res.put("code",200);
+            res.put("msg","获取成功");
+            JSONObject data=new JSONObject();
+            data.put("img",imgList);
+            res.put("data",data);
+        }catch (Exception e) {
+            res.put("code", 500);
+            res.put("msg", "数据库异常");
+        }
+        return res;
+    }
+
+    /**
+     * 删除图片v1
+     * @param url 图片url
+     * @return 删除结果
+     */
+    @Override
+    public JSONObject deleteImgByUrlV1(String url) {
+        JSONObject res=new JSONObject();
+        try{
+            COSUtils cosUtils=new COSUtils();
+            cosUtils.delete(url);
+            try{
+                imgMapper.deleteImgByUrl(url);
+                res.put("code",200);
+                res.put("msg","删除成功");
+            }catch (Exception e){
+                res.put("code",500);
+                res.put("msg","数据库异常");
+            }
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","腾讯云服务器异常");
+            res.put("error",e.getMessage());
+        }
+        return res;
+    }
+
+    /**
+     * 上传图片v1
+     * @param file 图片文件
+     * @return 图片url
+     */
+    @Override
+    public JSONObject uploadImgV1(MultipartFile file) {
+        JSONObject res=new JSONObject();
+        try {
+            COSUtils cosUtils = new COSUtils();
+            String url=cosUtils.upload(file,1);
+            try{
+                imgMapper.addImg(url);
+                res.put("code",200);
+                res.put("msg","上传成功");
+                JSONObject data=new JSONObject();
+                data.put("url",url);
+                res.put("data", data);
+            }catch (Exception e){
+                res.put("code",500);
+                res.put("msg","数据库异常");
+            }
+        } catch (Exception e) {
+            res.put("code",500);
+            res.put("msg","腾讯云服务器异常");
+        }
+        return res;
+    }
+
     /**
      * 上传图片
      * @param img 图片文件
@@ -29,7 +105,7 @@ public class ImgServiceImpl implements ImgService {
             COSUtils cosUtils = new COSUtils();
             String url=cosUtils.upload(img,1);
             if(url!=null) {
-                int flag=imgDBMapper.addImg(url);
+                int flag= imgMapper.addImg(url);
                 if(flag==0){
                     res.put("code",500);
                     res.put("msg","图片成功上传至腾讯云但为记录在数据库中");
@@ -59,7 +135,7 @@ public class ImgServiceImpl implements ImgService {
     @Override
     public JSONObject getAllImg() {
         JSONObject res=new JSONObject();
-        List<ImgDB> imgList=imgDBMapper.getAllImg();
+        List<Img> imgList= imgMapper.getAllImg();
         res.put("code",200);
         res.put("msg","获取成功");
         JSONObject data=new JSONObject();
@@ -80,7 +156,7 @@ public class ImgServiceImpl implements ImgService {
             COSUtils cosUtils=new COSUtils();
             Boolean flag=cosUtils.delete(url);
             if(flag){
-                int flag2=imgDBMapper.deleteImgByUrl(url);
+                int flag2= imgMapper.deleteImgByUrl(url);
                 if(flag2==0){
                     res.put("code",500);
                     res.put("msg","图片成功从腾讯云删除但未从数据库中删除");

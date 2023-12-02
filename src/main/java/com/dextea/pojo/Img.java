@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImgDB {
+public class Img {
     private int id;
     private String url;
     private String createTime;

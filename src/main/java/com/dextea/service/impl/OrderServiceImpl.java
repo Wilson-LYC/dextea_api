@@ -27,6 +27,145 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     CustomerMapper customerMapper;
     private ReentrantLock lock = new ReentrantLock();
+
+    /**
+     * 转为json
+     * @param order
+     * @return
+     */
+    @Override
+    public JSONObject toJson(Order order) {
+        JSONObject orderJson= JSONObject.from(order);
+        JSONArray commodity= JSONArray.parseArray(order.getCommodity());
+        orderJson.put("commodity",commodity);
+        return orderJson;
+    }
+
+    /**
+     * 列表转为json
+     * @param orderList
+     * @return
+     */
+    @Override
+    public JSONArray toJson(List<Order> orderList) {
+        JSONArray orderArray=new JSONArray();
+        for(Order order:orderList){
+            JSONObject orderJson=toJson(order);
+            orderArray.add(orderJson);
+        }
+        return orderArray;
+    }
+
+    /**
+     * 添加订单v1
+     * @param json 订单
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject addOrderV1(JSONObject json) {
+        JSONObject res=new JSONObject();
+        Order order=new Order();
+        order.setStoreId(json.getInteger("sid"));
+        order.setCustId(json.getInteger("cid"));
+        order.setPrice(json.getDouble("price"));
+        order.setNum(json.getInteger("num"));
+        JSONArray commodityArray=json.getJSONArray("commodity");
+        order.setCommodity(commodityArray.toJSONString());
+        order.setPhone(json.getString("phone"));
+        order.setNote(json.getString("note"));
+        //获取取餐码
+        String code=getOrderCode(order.getStoreId());
+        order.setCode(code);
+        order.setState("2");
+        try{
+            orderMapper.addOrder(order);
+        }
+        catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库连接错误");
+            return res;
+        }
+        res.put("code",200);
+        res.put("msg","添加成功");
+        return res;
+    }
+
+    /**
+     * 获取所有订单v1
+     * @return
+     */
+    @Override
+    public JSONObject getAllOrderV1() {
+        JSONObject res=new JSONObject();
+        List<Order> list=null;
+        try{
+            list=orderMapper.getAllOrder();
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库连接错误");
+        }
+        JSONArray orderArray=toJson(list);
+        res.put("code",200);
+        res.put("msg","获取成功");
+        JSONObject data=new JSONObject();
+        data.put("order",orderArray);
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * 修改订单v1
+     * @param json 订单
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject updateOrderV1(JSONObject json) {
+        JSONObject res=new JSONObject();
+        Order order=new Order();
+        order.setId(json.getInteger("id"));
+        order.setPhone(json.getString("phone"));
+        order.setState(json.getString("state"));
+        order.setNote(json.getString("note"));
+        try{
+            orderMapper.updateOrder(order);
+            res.put("code",200);
+            res.put("msg","修改成功");
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库连接错误");
+        }
+        return res;
+    }
+
+    /**
+     * 搜索订单v1
+     * @param json 订单
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject searchOrderV1(JSONObject json) {
+        JSONObject res=new JSONObject();
+        int id=json.getInteger("id")==null?0:json.getInteger("id");
+        int storeId=json.getInteger("storeId")==null?0:json.getInteger("storeId");
+        String custName=json.getString("custName")==null?"":json.getString("time");
+        String code=json.getString("code")==null?"":json.getString("code");
+        String state=json.getString("state")==null?"":json.getString("state");
+        String phone=json.getString("phone")==null?"":json.getString("phone");
+        try{
+            List<Order> list=orderMapper.search(id,storeId,custName,code,state,phone);
+            JSONArray orderArray=toJson(list);
+            res.put("code",200);
+            res.put("msg","获取成功");
+            JSONObject data=new JSONObject();
+            data.put("order",orderArray);
+            res.put("data",data);
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库连接错误");
+        }
+        return res;
+    }
+
     /**
      * 添加订单
      * @param order 订单

@@ -7,7 +7,13 @@
     <resultMap id="orderMap" type="Order">
         <result property="custId" column="cust_id"/>
         <result property="storeId" column="store_id"/>
+        <result property="storeName" column="store_name"/>
+        <result property="custName" column="cust_name"/>
     </resultMap>
+    <select id="getAllOrder" resultMap="orderMap">
+        SELECT * FROM `order_view`
+    </select>
+
     <insert id="addOrder">
         insert into
             `order`(cust_id, store_id, state, price, num, commodity, phone, note,code)
@@ -21,6 +27,16 @@
             state = #{arg1}
         where
             id = #{arg0}
+    </update>
+    <update id="updateOrder">
+        update
+            `order`
+        set
+            state = #{state},
+            phone = #{phone},
+            note = #{note}
+        where
+            id = #{id}
     </update>
     <select id="getOrderList" resultMap="orderMap">
         select
@@ -74,4 +90,16 @@
         `order`.store_id = #{arg0} AND
         `order`.state = #{arg1}
     </select>
+    <select id="search" resultMap="orderMap">
+        SELECT * FROM`order_view`
+       <where>
+           <if test="arg0 != null and arg0 != ''"> and id= #{arg0} </if>
+           <if test="arg1 != null and arg1 != ''"> and storeId= #{arg1} </if>
+           <if test="arg2 != null and arg2 != ''"> and custName like CONCAT('%',#{arg2},'%') </if>
+           <if test="arg3 != null and arg3 != ''"> and code= #{arg3} </if>
+           <if test="arg4 != null and arg4 != 0"> and state= #{arg4} </if>
+           <if test="arg5 != null and arg5 != ''"> and phone= #{arg5} </if>
+       </where>
+    </select>
+
 </mapper>

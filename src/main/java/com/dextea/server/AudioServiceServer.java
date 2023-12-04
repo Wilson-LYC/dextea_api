@@ -6,7 +6,6 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import org.springframework.stereotype.Component;
 
-import javax.security.auth.message.MessageInfo;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -15,8 +14,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-@ServerEndpoint("/ws/service/{id}")
-public class StoreServiceServer {
+@ServerEndpoint("/ws/audio/{id}")
+public class AudioServiceServer {
 
 //    public static XxService xxService;
 //

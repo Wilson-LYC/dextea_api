@@ -3,10 +3,12 @@ package com.dextea.service.impl;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.dextea.Utils.AudioUntils;
 import com.dextea.mapper.CustomerMapper;
 import com.dextea.mapper.OrderMapper;
 import com.dextea.mapper.StoreMapper;
 import com.dextea.pojo.Order;
+import com.dextea.server.AudioServiceServer;
 import com.dextea.server.StoreServiceServer;
 import com.dextea.service.OrderService;
 import com.sun.org.apache.xpath.internal.operations.Or;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -259,6 +263,35 @@ public class OrderServiceImpl implements OrderService {
             res.put("code",500);
             res.put("msg","数据库错误");
         }
+        return res;
+    }
+
+    /**
+     * 发送音频v1
+     * @param sid 店铺id
+     * @param code 取餐码
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject sendAudioV1(int sid, String code) {
+        JSONObject res=new JSONObject();
+        String base64Audio = null;
+        try {
+            base64Audio = AudioUntils.createAudio(code);
+        } catch (Exception e) {
+            res.put("code",500);
+            res.put("msg","服务错误");
+            res.put("error",e.getMessage());
+        }
+        JSONObject sendData=new JSONObject();
+        sendData.put("type","audio");
+        JSONObject base64Json=new JSONObject();
+        base64Json.put("base64",base64Audio);
+        base64Json.put("code",code);
+        sendData.put("content",base64Json);
+        AudioServiceServer.sendToStoreBySid(String.valueOf(sid),sendData);
+        res.put("code",200);
+        res.put("msg","发送成功");
         return res;
     }
 

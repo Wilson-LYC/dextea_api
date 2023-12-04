@@ -43,6 +43,6 @@ public interface OrderService {
 
     JSONObject getOrderDetail(int id);
 
-
-
+    //发送音频
+    JSONObject sendAudioV1(int sid, String code);
 }

@@ -44,4 +44,10 @@ public class StoreServiceControllerV1 {
     public JSONObject getStoreState(@RequestParam("id") int id){
         return storeService.getStoreById(id);
     }
+    //生成音频
+    @GetMapping("/audio")
+    public JSONObject getAudio(@RequestParam("sid") int sid,@RequestParam("code") String code){
+        return orderService.sendAudioV1(sid,code);
+    }
+
 }

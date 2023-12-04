@@ -5,17 +5,16 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+//处理跨域问题
 @Component
 public class CORSFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("LoginFilter启动");
+    public void init(FilterConfig filterConfig){
     }
 
 
     @Override
     public void destroy() {
-        System.out.println("LoginFilter关闭");
     }
 
 

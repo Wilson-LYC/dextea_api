@@ -26,4 +26,6 @@ public interface OrderMapper {
     void updateOrder(Order order);
 
     List<Order> search(int id, int storeId, String custName, String code, String state, String phone);
+
+    List<Order> getTodayOrder(int id, int state, String begintime, String endtime, int i);
 }

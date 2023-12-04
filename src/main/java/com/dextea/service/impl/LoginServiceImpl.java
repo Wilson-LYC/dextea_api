@@ -46,8 +46,11 @@ public class LoginServiceImpl implements LoginService {
         redisTemplate.opsForHash().put(key,"role",staff.getRole());
         redisTemplate.opsForHash().put(key,"id",staff.getId());
         redisTemplate.opsForHash().put(key,"storeId",staff.getStoreId());
-        //设置key的过期时间为15分钟
-        redisTemplate.expire(key,900, TimeUnit.SECONDS);
+        //设置超级管理员和公司账号的过期时间为15分钟，店铺账号为24小时。
+        if(staff.getRole().equals("2"))
+            redisTemplate.expire(key,86400, TimeUnit.SECONDS);
+        else
+            redisTemplate.expire(key, 900, TimeUnit.SECONDS);
     }
 
     /**
@@ -80,7 +83,7 @@ public class LoginServiceImpl implements LoginService {
         Staff staff=staffMapper.getStaffByAccount(account);
         if(staff==null){
             res.put("code",500);
-            res.put("msg","用户名不存在");
+            res.put("msg","用户名错误");
             return res;
         }
         boolean isMatch = staff.getPassword().equals(SecureUtil.md5(password));

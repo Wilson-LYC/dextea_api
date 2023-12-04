@@ -52,7 +52,7 @@
         select
             *
         from
-            `order`
+            `order_view`
         where
             id = #{id}
     </select>
@@ -100,6 +100,16 @@
            <if test="arg4 != null and arg4 != 0"> and state= #{arg4} </if>
            <if test="arg5 != null and arg5 != ''"> and phone= #{arg5} </if>
        </where>
+    </select>
+    <select id="getTodayOrder" resultMap="orderMap">
+        SELECT * FROM`order_view`
+        where store_id=#{arg0} and state=#{arg1} and createtime between #{arg2} and #{arg3}
+        <if test="arg4 == 0" >
+            order by createtime ASC
+        </if>
+        <if test="arg4 == 1" >
+            order by createtime DESC
+        </if>
     </select>
 
 </mapper>

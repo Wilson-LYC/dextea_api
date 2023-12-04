@@ -1,7 +1,6 @@
 package com.dextea.interceptor;
 
 import com.dextea.service.LoginService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class MyInterceptor implements HandlerInterceptor {
+public class LoginInterceptor implements HandlerInterceptor {
     private LoginService loginService;
-    public MyInterceptor(LoginService loginService) {
+    public LoginInterceptor(LoginService loginService) {
         this.loginService = loginService;
     }
 
@@ -39,9 +38,8 @@ public class MyInterceptor implements HandlerInterceptor {
             response.getWriter().write(json);
             return false;
         }*/
-
         //判断是否登录
-        //获取header中的token
+        //获取token
         String token=request.getHeader("Authorization");
         //判断token是否登为空
         if(token==null || token.equals("")){
@@ -57,7 +55,6 @@ public class MyInterceptor implements HandlerInterceptor {
         //判断token是否有效
         boolean isLogin=loginService.isLogin(token);
         if(!isLogin){
-            //json返回信息
             JSONObject jsonObject=new JSONObject();
             jsonObject.put("code",300);
             jsonObject.put("msg","登录失效，请重新登录");
@@ -71,11 +68,9 @@ public class MyInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-//        System.out.println("postHandle: " + request.getRequestURI());
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-//        System.out.println("afterCompletion: " + request.getRequestURI());
     }
 }

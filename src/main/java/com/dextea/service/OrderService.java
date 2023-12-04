@@ -20,9 +20,12 @@ public interface OrderService {
     JSONObject updateOrderV1(JSONObject data);
     //搜索订单
     JSONObject searchOrderV1(JSONObject json);
-
-
-
+    //获取今日门店订单
+    JSONObject getTodayOrderV1(int id);
+    //获取单笔订单详情
+    JSONObject getOrderDetailV1(int id);
+    //更新制作进度
+    JSONObject updateOrderStateV1(int sid,int oid,String state);
     //旧版
     JSONObject addOrder(Order order);
 

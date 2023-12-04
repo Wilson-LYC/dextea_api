@@ -1,12 +1,15 @@
 package com.dextea.config;
 
-import com.dextea.interceptor.MyInterceptor;
+import com.dextea.interceptor.LoginInterceptor;
 import com.dextea.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * 权限拦截器配置
+ */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
@@ -22,7 +25,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 "/login/*","/druid","/ws"
         };
         //注册拦截器
-        registry.addInterceptor(new MyInterceptor(loginService))
+        registry.addInterceptor(new LoginInterceptor(loginService))
                 .addPathPatterns(addPathPatterns)
                 .excludePathPatterns(excludePathPatterns);
     }

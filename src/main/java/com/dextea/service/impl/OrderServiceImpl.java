@@ -1,17 +1,20 @@
 package com.dextea.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.mapper.CustomerMapper;
 import com.dextea.mapper.OrderMapper;
 import com.dextea.mapper.StoreMapper;
 import com.dextea.pojo.Order;
+import com.dextea.server.StoreServiceServer;
 import com.dextea.service.OrderService;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -162,6 +165,99 @@ public class OrderServiceImpl implements OrderService {
         }catch (Exception e){
             res.put("code",500);
             res.put("msg","数据库连接错误");
+        }
+        return res;
+    }
+
+    /**
+     * 获取今日门店订单v1
+     * @param id 店铺id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject getTodayOrderV1(int id) {
+        JSONObject res=new JSONObject();
+        JSONObject data=new JSONObject();
+        JSONObject order=new JSONObject();
+        String begintime=DateUtil.today()+" 00:00:00";
+        String endtime=DateUtil.today()+" 23:59:59";
+        for(int state=0;state<=4;state++){
+            int mode=state==4?1:0;//下单时间 0正序 1倒序
+            try{
+                List<Order> list=orderMapper.getTodayOrder(id,state,begintime,endtime,mode);//下单时间 0正序 1倒序
+                JSONArray orderArray=toJson(list);
+                order.put("s"+state,orderArray);
+            } catch (Exception e) {
+                res.put("code", 500);
+                res.put("msg", "数据库错误");
+                return res;
+            }
+        }
+        data.put("order",order);
+        res.put("code",200);
+        res.put("msg","获取成功");
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * 获取单笔订单详情v1
+     * @param id 订单id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject getOrderDetailV1(int id) {
+        JSONObject res=new JSONObject();
+        try{
+            Order order=orderMapper.getOrderDetail(id);
+            if(order==null){
+                res.put("code",500);
+                res.put("msg","订单不存在");
+                return res;
+            }
+            JSONObject orderJson=toJson(order);
+            res.put("code",200);
+            res.put("msg","获取成功");
+            JSONObject data=new JSONObject();
+            data.put("order",orderJson);
+            res.put("data",data);
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库错误");
+            return res;
+        }
+        return res;
+    }
+
+    /**
+     * 更新制作进度v1
+     * @param sid 店铺id
+     * @param oid 订单id
+     * @param state 订单状态
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject updateOrderStateV1(int sid,int oid,String state) {
+        JSONObject res=new JSONObject();
+        try{
+            orderMapper.updateState(oid,state);
+            res.put("code",200);
+            res.put("msg","更新成功");
+            //发送新订单
+            try{
+                JSONObject order=this.getTodayOrderV1(sid).getJSONObject("data").getJSONObject("order");
+                JSONObject sendData=new JSONObject();
+                sendData.put("type","order");
+                sendData.put("content",order);
+                StoreServiceServer.sendToStoreBySid(String.valueOf(sid),sendData);
+            }catch (Exception e){
+                res.put("code",500);
+                res.put("msg","服务错误");
+                return res;
+            }
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库错误");
         }
         return res;
     }

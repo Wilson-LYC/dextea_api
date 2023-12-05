@@ -63,6 +63,7 @@ public class CustomerController {
     //获取订单详情
     @GetMapping("/order/detail")
     public JSONObject getOrderDetail(@RequestParam("id") int id){
+        System.out.println("id:"+id);
         return orderService.getOrderDetailForCustV1(id);
     }
     //获取排队情况

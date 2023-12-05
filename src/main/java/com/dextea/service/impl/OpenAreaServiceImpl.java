@@ -132,8 +132,12 @@ public class OpenAreaServiceImpl implements OpenAreaService {
         return res;
     }
 
+    /**
+     * 获取营业区域v1
+     * @return 营业区域
+     */
     @Override
-    public JSONObject getOpenAreaForCustomer() {
+    public JSONObject getOpenAreaForCustomerV1() {
         JSONObject res=new JSONObject();
         Map<String, List<String>> map=new HashMap<>();
         Setting setting=settingMapper.get("open_area");

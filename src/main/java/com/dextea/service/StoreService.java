@@ -68,7 +68,7 @@ public interface StoreService {
     //获取门店下拉选项
     JSONObject getStoreAsSelectOption();
 
-    JSONObject getStoreForCustomer(String area);
+    JSONObject getStoreForCustomerV1(String area);
     JSONObject deleteStoreById(int id);
 
 

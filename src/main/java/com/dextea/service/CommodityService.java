@@ -33,6 +33,8 @@ public interface CommodityService {
     JSONObject commOffsaleV1(JSONObject data);
     //获取单个商品信息
     JSONObject getCommByIdV1(int id);
+    //小程序获取菜单
+    JSONObject getMenuByStoreIdForCustomer(int id);
     //旧版
 
     //获取所有商品（简略）
@@ -67,7 +69,7 @@ public interface CommodityService {
 
     JSONObject commOffsaleList(int sid, JSONArray cidList);
 
-    JSONObject getMenuByStoreId(int id);
+
 
 
 

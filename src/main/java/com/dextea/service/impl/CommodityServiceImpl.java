@@ -363,6 +363,36 @@ public class CommodityServiceImpl implements CommodityService {
     }
 
     /**
+     * 小程序获取菜单
+     * @param id
+     * @return
+     */
+    @Override
+    public JSONObject getMenuByStoreIdForCustomer(int id) {
+        JSONObject res=new JSONObject();
+        //获取所有品类
+        List<Category> categoryList=categoryMapper.getAllCategory();
+        //循环品类
+        JSONArray categoryArray=new JSONArray();
+        for (Category category : categoryList) {
+            JSONObject categoryJson = new JSONObject();
+            categoryJson.put("class", category.getName());
+            //获取品类下的商品
+            List<Commodity> commodityList = commodityMapper.getMenuByCateId(id,category.getId());
+            //将商品列表转换为json
+            JSONArray commodityArray = toJson(commodityList);
+            categoryJson.put("commodity", commodityArray);
+            categoryArray.add(categoryJson);
+        }
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("menu",categoryArray);
+        res.put("data",data);
+        return res;
+    }
+
+    /**
      * 获取商品列表(略)
      * @return JSONObject
      */
@@ -621,28 +651,5 @@ public class CommodityServiceImpl implements CommodityService {
         return res;
     }
 
-    @Override
-    public JSONObject getMenuByStoreId(int id) {
-        JSONObject res=new JSONObject();
-        //获取所有品类
-        List<Category> categoryList=categoryMapper.getAllCategory();
-        //循环品类
-        JSONArray categoryArray=new JSONArray();
-        for (Category category : categoryList) {
-            JSONObject categoryJson = new JSONObject();
-            categoryJson.put("class", category.getName());
-            //获取品类下的商品
-            List<Commodity> commodityList = commodityMapper.getMenuByCateId(id,category.getId());
-            //将商品列表转换为json
-            JSONArray commodityArray = toJson(commodityList);
-            categoryJson.put("commodity", commodityArray);
-            categoryArray.add(categoryJson);
-        }
-        res.put("code",200);
-        res.put("msg","成功");
-        JSONObject data=new JSONObject();
-        data.put("menu",categoryArray);
-        res.put("data",data);
-        return res;
-    }
+
 }

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/v1/customer")
 public class CustomerController {
     @Autowired
     OpenAreaService openAreaService;
@@ -23,12 +23,12 @@ public class CustomerController {
     //获取营业区域
     @GetMapping("/openarea")
     public JSONObject getOpenArea(){
-        return openAreaService.getOpenAreaForCustomer();
+        return openAreaService.getOpenAreaForCustomerV1();
     }
     //获取门店
     @GetMapping("/store")
     public JSONObject getStore(@RequestParam("area") String area){
-        return storeService.getStoreForCustomer(area);
+        return storeService.getStoreForCustomerV1(area);
     }
     //根据ID获取门店详情
     @GetMapping("/store/detail")
@@ -38,7 +38,7 @@ public class CustomerController {
     //获取菜单
     @GetMapping("/menu")
     public JSONObject getMenu(@RequestParam("id") int id){
-        return commodityService.getMenuByStoreId(id);
+        return commodityService.getMenuByStoreIdForCustomer(id);
     }
     //创建订单
     @PostMapping("/order/add")
@@ -47,27 +47,27 @@ public class CustomerController {
         Order order=new Order();
         order.setStoreId(data.getInteger("sid"));
         order.setCustId(data.getInteger("cid"));
-        order.setState("2");
+        order.setState("1");
         order.setPrice(data.getDouble("price"));
         order.setNum(data.getInteger("num"));
         order.setPhone(data.getString("phone"));
         order.setNote(data.getString("note"));
         order.setCommodity(data.getString("commodity"));
-        return orderService.addOrder(order);
+        return orderService.addOrderV1(order);
     }
     //获取订单列表
     @GetMapping("/order/list")
     public JSONObject getOrderList(@RequestParam("id") int id){
-        return orderService.getOrderList(id);
+        return orderService.getCustOrderListV1(id);
     }
     //获取订单详情
     @GetMapping("/order/detail")
     public JSONObject getOrderDetail(@RequestParam("id") int id){
-        return orderService.getOrderDetailForCust(id);
+        return orderService.getOrderDetailForCustV1(id);
     }
     //获取排队情况
     @GetMapping("/storequeue")
     public JSONObject getStoreQueue(@RequestParam("id") int id){
-        return orderService.getStoreQueue(id);
+        return orderService.getStoreQueueV1(id);
     }
 }

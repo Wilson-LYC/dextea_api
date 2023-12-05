@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
     int addOrder(Order order);
-
-    List<Order> getOrderList(int id);
+    //获取顾客的订单列表
+    List<Order> getCustOrderList(int id);
 
     Order getOrderDetail(int id);
 

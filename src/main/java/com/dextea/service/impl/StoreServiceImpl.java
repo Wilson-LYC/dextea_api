@@ -344,7 +344,17 @@ public class StoreServiceImpl implements StoreService {
         res.put("data",data);
         return res;
     }
-
+    @Override
+    public JSONObject getStoreForCustomerV1(String area) {
+        JSONObject res=new JSONObject();
+        List<Store> storeList=storeMapper.getStoreForCustomer(area);
+        res.put("code",200);
+        res.put("msg","成功");
+        JSONObject data=new JSONObject();
+        data.put("stores",toJson(storeList));
+        res.put("data",data);
+        return res;
+    }
 
 
 
@@ -451,15 +461,5 @@ public class StoreServiceImpl implements StoreService {
         return res;
     }
 
-    @Override
-    public JSONObject getStoreForCustomer(String area) {
-        JSONObject res=new JSONObject();
-        List<Store> storeList=storeMapper.getStoreForCustomer(area);
-        res.put("code",200);
-        res.put("msg","成功");
-        JSONObject data=new JSONObject();
-        data.put("stores",toJson(storeList));
-        res.put("data",data);
-        return res;
-    }
+
 }

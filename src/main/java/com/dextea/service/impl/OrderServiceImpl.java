@@ -296,12 +296,28 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 添加订单
+     * 获取排队情况v1
+     * @param id 店铺id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject getStoreQueueV1(int id) {
+        JSONObject res=new JSONObject();
+        JSONObject data=new JSONObject();
+        data.put("queue",orderMapper.getStoreQueue(id));
+        res.put("code",200);
+        res.put("msg","获取成功");
+        res.put("data",data);
+        return res;
+    }
+
+    /**
+     * 添加订单v1
      * @param order 订单
      * @return JSONObject
      */
     @Override
-    public JSONObject addOrder(Order order) {
+    public JSONObject addOrderV1(Order order) {
         JSONObject res=new JSONObject();
         //获取取餐码
         String code=getOrderCode(order.getStoreId());
@@ -344,14 +360,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 获取订单列表
+     * 获取顾客的订单列表V1
      * @param id 用户id
      * @return JSONObject
      */
     @Override
-    public JSONObject getOrderList(int id) {
+    public JSONObject getCustOrderListV1(int id) {
         JSONObject res=new JSONObject();
-        List<Order> list=orderMapper.getOrderList(id);
+        List<Order> list=orderMapper.getCustOrderList(id);
         JSONArray orderArray=new JSONArray();
         for(Order order:list){
             JSONObject orderJson=new JSONObject();
@@ -383,7 +399,7 @@ public class OrderServiceImpl implements OrderService {
      * @return JSONObject
      */
     @Override
-    public JSONObject getOrderDetailForCust(int id) {
+    public JSONObject getOrderDetailForCustV1(int id) {
         JSONObject res=new JSONObject();
         Order order=orderMapper.getOrderDetail(id);
         JSONObject orderJson=new JSONObject();
@@ -409,7 +425,6 @@ public class OrderServiceImpl implements OrderService {
         orderJson.put("time",time);
         orderJson.put("note",order.getNote());
         orderJson.put("phone",order.getPhone());
-
         res.put("code",200);
         res.put("msg","获取成功");
         JSONObject data=new JSONObject();
@@ -417,23 +432,6 @@ public class OrderServiceImpl implements OrderService {
         res.put("data",data);
         return res;
     }
-
-    /**
-     * 获取排队情况
-     * @param id 店铺id
-     * @return JSONObject
-     */
-    @Override
-    public JSONObject getStoreQueue(int id) {
-        JSONObject res=new JSONObject();
-        JSONObject data=new JSONObject();
-        data.put("queue",orderMapper.getStoreQueue(id));
-        res.put("code",200);
-        res.put("msg","获取成功");
-        res.put("data",data);
-        return res;
-    }
-
     /**
      * 获取指定门店指定状态的订单
      * @param sid 店铺id

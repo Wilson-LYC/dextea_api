@@ -38,7 +38,7 @@
         where
             id = #{id}
     </update>
-    <select id="getOrderList" resultMap="orderMap">
+    <select id="getCustOrderList" resultMap="orderMap">
         select
             *
         from

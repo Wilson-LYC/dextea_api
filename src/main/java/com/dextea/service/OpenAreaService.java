@@ -14,7 +14,7 @@ public interface OpenAreaService {
     JSONObject getOpenAreaAsSelectOption();
     JSONObject getOpenAreaAsSelectOptionV1();
 
-    JSONObject getOpenAreaForCustomer();
+    JSONObject getOpenAreaForCustomerV1();
 
 
 

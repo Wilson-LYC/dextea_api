@@ -26,16 +26,19 @@ public interface OrderService {
     JSONObject getOrderDetailV1(int id);
     //更新制作进度
     JSONObject updateOrderStateV1(int sid,int oid,String state);
-    //旧版
-    JSONObject addOrder(Order order);
-
+    //获取订单排队情况
+    JSONObject getStoreQueueV1(int id);
+    //新增订单
+    JSONObject addOrderV1(Order order);
+    //获取取餐码
     String getOrderCode(int sid);//获取取餐码
+    //获取订单详情
+    JSONObject getOrderDetailForCustV1(int id);
+    //旧版
+    JSONObject getCustOrderListV1(int id);
 
-    JSONObject getOrderList(int id);
 
-    JSONObject getOrderDetailForCust(int id);
 
-    JSONObject getStoreQueue(int id);
 
     JSONObject getSameState(int sid, String state);
 

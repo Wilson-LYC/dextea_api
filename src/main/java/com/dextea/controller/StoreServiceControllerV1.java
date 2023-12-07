@@ -42,7 +42,7 @@ public class StoreServiceControllerV1 {
     //获取门店营业状态
     @GetMapping("/store/state")
     public JSONObject getStoreState(@RequestParam("id") int id){
-        return storeService.getStoreById(id);
+        return storeService.getStoreByIdV1(id);
     }
     //生成音频
     @GetMapping("/audio")

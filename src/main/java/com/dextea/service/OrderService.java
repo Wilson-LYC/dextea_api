@@ -3,8 +3,6 @@ package com.dextea.service;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.pojo.Order;
-import com.sun.org.apache.xpath.internal.operations.Or;
-
 import java.util.List;
 
 public interface OrderService {
@@ -34,18 +32,8 @@ public interface OrderService {
     String getOrderCode(int sid);//获取取餐码
     //获取订单详情
     JSONObject getOrderDetailForCustV1(int id);
-    //旧版
+    //获取用户订单列表
     JSONObject getCustOrderListV1(int id);
-
-
-
-
-    JSONObject getSameState(int sid, String state);
-
-    JSONObject updateState(int id, String state);
-
-    JSONObject getOrderDetail(int id);
-
     //发送音频
     JSONObject sendAudioV1(int sid, String code);
 }

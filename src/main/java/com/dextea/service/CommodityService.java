@@ -35,42 +35,4 @@ public interface CommodityService {
     JSONObject getCommByIdV1(int id);
     //小程序获取菜单
     JSONObject getMenuByStoreIdForCustomer(int id);
-    //旧版
-
-    //获取所有商品（简略）
-    JSONObject getAllCommBrief();
-
-    //获取所有商品（完整）
-    JSONObject getAllCommFull();
-
-    //新增商品
-    JSONObject addCommodity(Commodity commodity);
-
-
-    JSONObject getCommInfo(int id);
-
-    JSONObject updateCommodity(Commodity commodity, JSONArray categoryArray);
-
-    JSONObject searchComm(Commodity commodity, int cateId);
-
-    JSONObject deleteComm(int id);
-
-    JSONObject getCommByCateId(int cateId);
-
-    JSONObject updateCommState(JSONArray idList, String state);
-
-    JSONObject getStoreMenu(int id);
-
-    JSONObject commOnsale(int cid, int sid);
-
-    JSONObject commOffsale(int cid, int sid);
-
-    JSONObject commOnsaleList(int sid, JSONArray cidList);
-
-    JSONObject commOffsaleList(int sid, JSONArray cidList);
-
-
-
-
-
 }

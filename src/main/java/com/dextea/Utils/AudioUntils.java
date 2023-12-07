@@ -1,5 +1,7 @@
 package com.dextea.Utils;
 
+import cn.hutool.core.util.IdUtil;
+
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.FileWriter;
@@ -20,13 +22,18 @@ public class AudioUntils {
         String num3 = code.substring(2,3)+".wav";
         String num4 = code.substring(3,4)+".wav";
         String[] wavFiles = {"welcome.wav","call.wav",num1, num2,num3,num4,"do.wav"}; // 指定要拼接的 WAV 文件列表
-        String outputFilePath = "output.wav"; // 指定输出文件路径
+        String outputFilePath = IdUtil.fastSimpleUUID()+"output.wav"; // 指定输出文件路径
         concatenateWAVFiles(wavFiles, outputFilePath);
         String base64String = null;
         try {
             base64String = convertToBase64(outputFilePath);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        //删除文件
+        File file = new File(outputFilePath);
+        if (file.exists() && file.isFile()) {
+            file.delete();
         }
         return base64String;
     }

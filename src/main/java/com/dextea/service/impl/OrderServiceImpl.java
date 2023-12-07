@@ -11,14 +11,9 @@ import com.dextea.pojo.Order;
 import com.dextea.server.AudioServiceServer;
 import com.dextea.server.StoreServiceServer;
 import com.dextea.service.OrderService;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -37,8 +32,8 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 转为json
-     * @param order
-     * @return
+     * @param order 订单
+     * @return JSONObject
      */
     @Override
     public JSONObject toJson(Order order) {
@@ -50,8 +45,8 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 列表转为json
-     * @param orderList
-     * @return
+     * @param orderList 订单列表
+     * @return JSONArray
      */
     @Override
     public JSONArray toJson(List<Order> orderList) {
@@ -99,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * 获取所有订单v1
-     * @return
+     * @return JSONObject
      */
     @Override
     public JSONObject getAllOrderV1() {
@@ -254,6 +249,10 @@ public class OrderServiceImpl implements OrderService {
                 sendData.put("type","order");
                 sendData.put("content",order);
                 StoreServiceServer.sendToStoreBySid(String.valueOf(sid),sendData);
+                Order order1=orderMapper.getOrderDetail(oid);
+                if(state.equals("3")){
+                    this.sendAudioV1(sid,order1.getCode());
+                }
             }catch (Exception e){
                 res.put("code",500);
                 res.put("msg","服务错误");
@@ -425,100 +424,6 @@ public class OrderServiceImpl implements OrderService {
         orderJson.put("time",time);
         orderJson.put("note",order.getNote());
         orderJson.put("phone",order.getPhone());
-        res.put("code",200);
-        res.put("msg","获取成功");
-        JSONObject data=new JSONObject();
-        data.put("order",orderJson);
-        res.put("data",data);
-        return res;
-    }
-    /**
-     * 获取指定门店指定状态的订单
-     * @param sid 店铺id
-     * @param state 订单状态
-     * @return JSONObject
-     */
-    @Override
-    public JSONObject getSameState(int sid, String state) {
-        JSONObject res=new JSONObject();
-        List<Order> list=orderMapper.getSameState(sid,state);
-        JSONArray orderArray=new JSONArray();
-        for(Order order:list){
-            JSONObject orderJson=new JSONObject();
-            orderJson.put("id",order.getId());
-            orderJson.put("num",order.getNum());
-            orderJson.put("time",order.getCreatetime());
-            orderJson.put("code",order.getCode());
-            orderArray.add(orderJson);
-        }
-        res.put("code",200);
-        res.put("msg","获取成功");
-        JSONObject data=new JSONObject();
-        data.put("order",orderArray);
-        res.put("data",data);
-        return res;
-    }
-
-    /**
-     * 更新订单状态
-     * @param id 订单id
-     * @param state 订单状态
-     * @return JSONObject
-     */
-    @Override
-    public JSONObject updateState(int id, String state) {
-        JSONObject res=new JSONObject();
-        int flag=orderMapper.updateState(id,state);
-        if(flag==1){
-            res.put("code",200);
-            res.put("msg","更新成功");
-        }else{
-            res.put("code",500);
-            res.put("msg","更新失败");
-        }
-        return res;
-    }
-    /**
-     * 获取订单详情
-     */
-    @Override
-    public JSONObject getOrderDetail(int id) {
-        JSONObject res=new JSONObject();
-        Order order=orderMapper.getOrderDetail(id);
-        if (order==null){
-            res.put("code",500);
-            res.put("msg","获取失败");
-            return res;
-        }
-        JSONObject orderJson=new JSONObject();
-        orderJson.put("id",order.getId());
-        orderJson.put("orderTime",order.getCreatetime());
-        orderJson.put("price",order.getPrice());
-        orderJson.put("num",order.getNum());
-        orderJson.put("code",order.getCode());
-        orderJson.put("state",order.getState());
-        String custName=customerMapper.getCustomerById(order.getCustId()).getName();
-        orderJson.put("custName",custName);
-        orderJson.put("custPhone",order.getPhone());
-        orderJson.put("note",order.getNote());
-        JSONArray commodityArray=JSONArray.parseArray(order.getCommodity());
-        JSONArray commodityArrat2=new JSONArray();
-        for (int i=0;i<commodityArray.size();i++){
-            JSONObject commodityJson=commodityArray.getJSONObject(i);
-            JSONObject commodity=new JSONObject();
-            commodity.put("name",commodityJson.getString("name"));
-            commodity.put("num",commodityJson.getInteger("num"));
-            JSONArray customArray=commodityJson.getJSONArray("custom");
-            JSONArray customArray2=new JSONArray();
-            for(int j=0;j<customArray.size();j++){
-                JSONObject customJson=customArray.getJSONObject(j);
-                String custom=customJson.getString("title")+":"+customJson.getJSONArray("option").getJSONObject(customJson.getInteger("opt")).getString("text");
-                customArray2.add(custom);
-            }
-            commodity.put("custom",customArray2);
-            commodityArrat2.add(commodity);
-        }
-        orderJson.put("commodity",commodityArrat2);
         res.put("code",200);
         res.put("msg","获取成功");
         JSONObject data=new JSONObject();

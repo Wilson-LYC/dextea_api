@@ -48,8 +48,8 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * json转staff
-     * @param json
-     * @return
+     * @param json json
+     * @return staff
      */
     @Override
     public Staff toStaff(JSONObject json) {
@@ -208,8 +208,8 @@ public class StaffServiceImpl implements StaffService {
 
     /**
      * 更新员工v1
-     * @param data
-     * @return
+     * @param data 员工信息
+     * @return 更新结果
      */
     @Override
     public JSONObject updateStaffV1(JSONObject data) {
@@ -217,7 +217,7 @@ public class StaffServiceImpl implements StaffService {
         try{
             Staff staff=toStaff(data);
             //密码MD5加密
-            if(staff.getPassword()!=null&&!staff.getPassword().equals("")) {
+            if(staff.getPassword()!=null&& !staff.getPassword().isEmpty()) {
                 staff.setPassword(SecureUtil.md5(staff.getPassword()));
             }
             staffMapper.updateStaff(staff);
@@ -229,133 +229,4 @@ public class StaffServiceImpl implements StaffService {
         }
         return res;
     }
-
-    /**
-     * 添加员工
-     * @param staff 员工
-     * @return 添加结果
-     */
-    @Override
-    public JSONObject addStaff(Staff staff) {
-        JSONObject res=new JSONObject();
-        staff.setPassword(SecureUtil.md5(staff.getPassword()));//密码MD5加密
-        int resnum=staffMapper.add(staff);
-        if(resnum==1){
-            res.put("code",200);
-            res.put("msg","添加成功");
-        }else{
-            res.put("code",500);
-            res.put("msg","添加失败");
-        }
-        return res;
-    }
-
-    /**
-     * 获取所有员工
-     * @return 所有员工
-     */
-    @Override
-    public JSONObject getAllStaff() {
-        JSONObject res=new JSONObject();
-        List<Staff> staffList=staffMapper.getAllStaff();
-        res.put("code",200);
-        res.put("msg","成功");
-        JSONObject data=new JSONObject();
-        data.put("staff",toJson(staffList));
-        res.put("data",data);
-        return res;
-    }
-
-    /**
-     * 判断账号是否存在
-     * @param account 账号
-     * @return 判断结果
-     */
-    @Override
-    public JSONObject accountExist(String account) {
-        JSONObject res=new JSONObject();
-        Staff staff=staffMapper.getStaffByAccount(account);
-        if(staff==null){
-            res.put("code",200);
-            res.put("msg","账号可用");
-        }else{
-            res.put("code",500);
-            res.put("msg","账号已存在");
-        }
-        return res;
-    }
-
-    @Override
-    public JSONObject updateStaff(Staff staff) {
-        JSONObject res=new JSONObject();
-        if(staff.getPassword()==null||staff.getPassword().equals("")){
-            staff.setPassword(null);
-        }else {
-            staff.setPassword(SecureUtil.md5(staff.getPassword()));//密码MD5加密
-        }
-        int resnum=staffMapper.updateStaff(staff);
-        if(resnum==1){
-            res.put("code",200);
-            res.put("msg","修改成功");
-        }else{
-            res.put("code",500);
-            res.put("msg","修改失败");
-        }
-        return res;
-    }
-
-    /**
-     * 删除员工
-     * @param id
-     * @return
-     */
-    @Override
-    public JSONObject deleteStaffById(int id) {
-        JSONObject res=new JSONObject();
-        int resnum=staffMapper.deleteStaffById(id);
-        if(resnum==1){
-            res.put("code",200);
-            res.put("msg","删除成功");
-        }else{
-            res.put("code",500);
-            res.put("msg","删除失败");
-        }
-        return res;
-    }
-
-    /**
-     * 获取指定商店的员工
-     * @param storeId
-     * @return
-     */
-    @Override
-    public JSONObject getStaffByStoreId(int storeId) {
-        JSONObject res=new JSONObject();
-        List<Staff> staffList=staffMapper.getStaffByStoreId(storeId);
-        res.put("code",200);
-        res.put("msg","成功");
-        JSONObject data=new JSONObject();
-        data.put("staff",toJson(staffList));
-        res.put("data",data);
-        return res;
-    }
-
-    /**
-     * 搜索员工
-     * @param staff
-     * @return
-     */
-    @Override
-    public JSONObject searchStaff(Staff staff) {
-        JSONObject res=new JSONObject();
-        List<Staff> staffList=staffMapper.searchStaff(staff);
-        res.put("code",200);
-        res.put("msg","成功");
-        JSONObject data=new JSONObject();
-        data.put("staff",toJson(staffList));
-        res.put("data",data);
-        return res;
-    }
-
-
 }

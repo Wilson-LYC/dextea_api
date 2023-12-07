@@ -33,7 +33,7 @@ public class CustomerController {
     //根据ID获取门店详情
     @GetMapping("/store/detail")
     public JSONObject getStoreDetail(@RequestParam("id") int id){
-        return storeService.getStoreById(id);
+        return storeService.getStoreByIdV1(id);
     }
     //获取菜单
     @GetMapping("/menu")

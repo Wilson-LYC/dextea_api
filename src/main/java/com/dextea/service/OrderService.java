@@ -26,8 +26,6 @@ public interface OrderService {
     JSONObject updateOrderStateV1(int sid,int oid,String state);
     //获取订单排队情况
     JSONObject getStoreQueueV1(int id);
-    //新增订单
-    JSONObject addOrderV1(Order order);
     //获取取餐码
     String getOrderCode(int sid);//获取取餐码
     //获取订单详情
@@ -36,4 +34,6 @@ public interface OrderService {
     JSONObject getCustOrderListV1(int id);
     //发送音频
     JSONObject sendAudioV1(int sid, String code);
+    //获取门店订单
+    JSONObject getStoreOrderV1(int id);
 }

@@ -78,17 +78,29 @@ public class OrderServiceImpl implements OrderService {
         //获取取餐码
         String code=getOrderCode(order.getStoreId());
         order.setCode(code);
-        order.setState("2");
+        order.setState("1");
         try{
             orderMapper.addOrder(order);
+            //发送订单给门店
+            try{
+                JSONObject orderList=getTodayOrderV1(order.getStoreId()).getJSONObject("data").getJSONObject("order");
+                JSONObject sendData=new JSONObject();
+                sendData.put("type","order");
+                sendData.put("content",orderList);
+                StoreServiceServer.sendToStoreBySid(String.valueOf(order.getStoreId()),sendData);
+                res.put("code",200);
+                res.put("msg","添加成功");
+            }catch (Exception e){
+                res.put("code",500);
+                res.put("msg","服务错误");
+                return res;
+            }
         }
         catch (Exception e){
             res.put("code",500);
             res.put("msg","数据库连接错误");
             return res;
         }
-        res.put("code",200);
-        res.put("msg","添加成功");
         return res;
     }
 
@@ -149,12 +161,19 @@ public class OrderServiceImpl implements OrderService {
         JSONObject res=new JSONObject();
         int id=json.getInteger("id")==null?0:json.getInteger("id");
         int storeId=json.getInteger("storeId")==null?0:json.getInteger("storeId");
-        String custName=json.getString("custName")==null?"":json.getString("time");
+        String custName=json.getString("custName")==null?"":json.getString("custName");
         String code=json.getString("code")==null?"":json.getString("code");
         String state=json.getString("state")==null?"":json.getString("state");
         String phone=json.getString("phone")==null?"":json.getString("phone");
+        JSONArray time=json.getJSONArray("time")==null?new JSONArray():json.getJSONArray("time");
+        String begintime="";
+        String endtime="";
+        if (time.size()>0){
+            begintime=time.getString(0)+" 00:00:00";
+            endtime=time.getString(1)+" 23:59:59";
+        }
         try{
-            List<Order> list=orderMapper.search(id,storeId,custName,code,state,phone);
+            List<Order> list=orderMapper.search(id,storeId,custName,code,state,phone,begintime,endtime);
             JSONArray orderArray=toJson(list);
             res.put("code",200);
             res.put("msg","获取成功");
@@ -164,6 +183,7 @@ public class OrderServiceImpl implements OrderService {
         }catch (Exception e){
             res.put("code",500);
             res.put("msg","数据库连接错误");
+            res.put("error",e.getMessage());
         }
         return res;
     }
@@ -310,27 +330,7 @@ public class OrderServiceImpl implements OrderService {
         return res;
     }
 
-    /**
-     * 添加订单v1
-     * @param order 订单
-     * @return JSONObject
-     */
-    @Override
-    public JSONObject addOrderV1(Order order) {
-        JSONObject res=new JSONObject();
-        //获取取餐码
-        String code=getOrderCode(order.getStoreId());
-        order.setCode(code);
-        int flag=orderMapper.addOrder(order);
-        if(flag==1){
-            res.put("code",200);
-            res.put("msg","添加成功");
-        }else{
-            res.put("code",500);
-            res.put("msg","添加失败");
-        }
-        return res;
-    }
+
 
     /**
      * 获取取餐码
@@ -429,6 +429,30 @@ public class OrderServiceImpl implements OrderService {
         JSONObject data=new JSONObject();
         data.put("order",orderJson);
         res.put("data",data);
+        return res;
+    }
+
+    /**
+     * 获取门店订单v1
+     * @param id 店铺id
+     * @return JSONObject
+     */
+    @Override
+    public JSONObject getStoreOrderV1(int id) {
+        JSONObject res=new JSONObject();
+        try{
+            List<Order> list=orderMapper.getStoreOrderById(id);
+            JSONArray orderArray=toJson(list);
+            res.put("code",200);
+            res.put("msg","获取成功");
+            JSONObject data=new JSONObject();
+            data.put("order",orderArray);
+            res.put("data",data);
+        }catch (Exception e){
+            res.put("code",500);
+            res.put("msg","数据库错误");
+            return res;
+        }
         return res;
     }
 }

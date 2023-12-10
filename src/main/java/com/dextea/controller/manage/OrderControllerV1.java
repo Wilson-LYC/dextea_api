@@ -34,4 +34,9 @@ public class OrderControllerV1 {
         JSONObject data = body.getJSONObject("data");
         return orderService.searchOrderV1(data);
     }
+    //获取门店订单
+    @GetMapping("/store")
+    public JSONObject store(@RequestParam("id") int id){
+        return orderService.getStoreOrderV1(id);
+    }
 }

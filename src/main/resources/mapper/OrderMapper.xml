@@ -93,12 +93,13 @@
     <select id="search" resultMap="orderMap">
         SELECT * FROM`order_view`
        <where>
-           <if test="arg0 != null and arg0 != ''"> and id= #{arg0} </if>
-           <if test="arg1 != null and arg1 != ''"> and storeId= #{arg1} </if>
-           <if test="arg2 != null and arg2 != ''"> and custName like CONCAT('%',#{arg2},'%') </if>
+           <if test="arg0 != null and arg0 != 0"> and id= #{arg0} </if>
+           <if test="arg1 != null and arg1 != 0"> and store_id= #{arg1} </if>
+           <if test="arg2 != null and arg2 != ''"> and cust_name like CONCAT('%',#{arg2},'%') </if>
            <if test="arg3 != null and arg3 != ''"> and code= #{arg3} </if>
            <if test="arg4 != null and arg4 != 0"> and state= #{arg4} </if>
            <if test="arg5 != null and arg5 != ''"> and phone= #{arg5} </if>
+           <if test="arg6 != null and arg6 != ''"> and createtime between #{arg6} and #{arg7}</if>
        </where>
     </select>
     <select id="getTodayOrder" resultMap="orderMap">
@@ -111,5 +112,8 @@
             order by createtime DESC
         </if>
     </select>
-
+    <select id="getStoreOrderById" resultMap="orderMap">
+        SELECT * FROM`order_view`
+        where store_id=#{arg0}
+    </select>
 </mapper>

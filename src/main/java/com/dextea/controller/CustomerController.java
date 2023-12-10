@@ -53,7 +53,7 @@ public class CustomerController {
         order.setPhone(data.getString("phone"));
         order.setNote(data.getString("note"));
         order.setCommodity(data.getString("commodity"));
-        return orderService.addOrderV1(order);
+        return orderService.addOrderV1(data);
     }
     //获取订单列表
     @GetMapping("/order/list")

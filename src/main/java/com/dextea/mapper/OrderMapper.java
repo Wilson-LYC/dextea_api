@@ -25,7 +25,9 @@ public interface OrderMapper {
     //修改订单
     void updateOrder(Order order);
 
-    List<Order> search(int id, int storeId, String custName, String code, String state, String phone);
+    List<Order> search(int id, int storeId, String custName, String code, String state, String phone,String begintime,String endtime);
 
     List<Order> getTodayOrder(int id, int state, String begintime, String endtime, int i);
+
+    List<Order> getStoreOrderById(int id);
 }

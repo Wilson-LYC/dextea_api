@@ -9,7 +9,4 @@ import org.springframework.data.redis.core.RedisTemplate;
 @SpringBootTest
 class DexteaApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
 }

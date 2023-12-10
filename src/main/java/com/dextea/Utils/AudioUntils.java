@@ -44,7 +44,7 @@ public class AudioUntils {
         AudioInputStream appendedFilesInputStream = null;
 
         for (String wavFile : wavFiles) {
-            wavFile = "src/main/resources/wav/" + wavFile;
+            wavFile = "wav/" + wavFile;
             File file = new File(wavFile);
             AudioInputStream currentInputStream = AudioSystem.getAudioInputStream(file);
 

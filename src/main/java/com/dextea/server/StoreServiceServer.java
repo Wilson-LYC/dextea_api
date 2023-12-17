@@ -1,5 +1,6 @@
 package com.dextea.server;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson2.JSON;
@@ -59,6 +60,14 @@ public class StoreServiceServer {
 
     @OnMessage//接收到客户端消息时执行
     public void onMessage(String message,Session session) {
+        //收到ping消息后，回复pong
+        if (message.equals("ping")){
+            try {
+                session.getBasicRemote().sendText("pong");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @OnError//连接错误时执行

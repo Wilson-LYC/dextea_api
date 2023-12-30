@@ -8,15 +8,17 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/dextea?useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-#    password: 2bf632e26842c01a
-    password: root
+    password: 2bf632e26842c01a
+#    password: root
+#    password: 12345678
 
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/dextea?useSSL=false&serverTimezone=Asia/Shanghai
       username: root
-#      password: 2bf632e26842c01a
-      password: root
+      password: 2bf632e26842c01a
+#      password: root
+#      password: 12345678
 
       aop-patterns: org.wang.reggie.*  #监控SpringBean
       filters: stat,wall     # 底层开启功能，stat（sql监控），wall（防火墙）

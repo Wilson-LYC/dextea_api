@@ -13,8 +13,8 @@
     </resultMap>
 
     <insert id="addCommodity">
-        insert into commodity (name,price,state)
-        values (#{name},#{price},#{state})
+        insert into commodity (name,price,state,custom)
+        values (#{name},#{price},#{state},#{custom})
     </insert>
     <insert id="onsale">
         insert into store_comm (store_id,comm_id) values (#{arg1},#{arg0})

@@ -230,6 +230,8 @@ public class CommodityServiceImpl implements CommodityService {
         commodity.setName(json.getString("name"));
         commodity.setPrice(json.getDouble("price"));
         commodity.setState(json.getString("state"));
+        JSONArray customArray=json.getJSONArray("custom");
+        commodity.setCustom(customArray.toJSONString());
         try {
             int flag=commodityMapper.addCommodity(commodity);
             if(flag==0){

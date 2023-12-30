@@ -36,3 +36,9 @@ build/
 
 .gitignore
 /src/test/*
+
+#排除所有的target目录
+/target/*
+
+#排除cos配置文件
+src/main/java/com/dextea/Utils/COSSetting.java

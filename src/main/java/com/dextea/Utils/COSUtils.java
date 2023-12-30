@@ -18,16 +18,16 @@ import java.util.List;
 public class COSUtils {
     // 1 初始化用户身份信息（secretId, secretKey）。
     // SECRETID 和 SECRETKEY 请登录访问管理控制台 https://console.cloud.tencent.com/cam/capi 进行查看和管理
-    String secretId = "AKIDiIex9KjttmYOo47uRlvrdDaWDi1CBwTr";//用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
-    String secretKey = "KTN2Vmvuz51kIeldJn22qRs55sRl2B9z";//用户的 SecretKey，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
+    String secretId = "";//用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
+    String secretKey = "";//用户的 SecretKey，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
     COSCredentials cred = new BasicCOSCredentials(secretId, secretKey);
     // 2 设置 bucket 的地域, COS 地域的简称请参见 https://cloud.tencent.com/document/product/436/6224
     // clientConfig 中包含了设置 region, https(默认 http), 超时, 代理等 set 方法, 使用可参见源码或者常见问题 Java SDK 部分。
-    Region region = new Region("ap-guangzhou");
+    Region region = new Region("");
     ClientConfig clientConfig = new ClientConfig(region);
 
     // 指定文件将要存放的存储桶
-    String bucketName = "dextea-1313412108";
+    String bucketName = "";
 
     /**
      * multipartFile转File
@@ -72,14 +72,14 @@ public class COSUtils {
         String flag=putObjectResult.getETag();
         cosClient.shutdown();
         if(flag!=null){
-            return "https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/"+key;
+            return "???"+key;
         }else{
             return null;
         }
     }
 
     public Boolean delete(String url){
-        String key=url.replace("https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/","");
+        String key=url.replace("???","");
         COSClient cosClient = new COSClient(cred, clientConfig);
         cosClient.deleteObject(bucketName,key);
         cosClient.shutdown();

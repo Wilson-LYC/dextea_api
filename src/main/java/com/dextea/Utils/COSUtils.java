@@ -72,14 +72,14 @@ public class COSUtils {
         String flag=putObjectResult.getETag();
         cosClient.shutdown();
         if(flag!=null){
-            return "？？？"+key;
+            return "???"+key;
         }else{
             return null;
         }
     }
 
     public Boolean delete(String url){
-        String key=url.replace("？？？","");
+        String key=url.replace("???","");
         COSClient cosClient = new COSClient(cred, clientConfig);
         cosClient.deleteObject(bucketName,key);
         cosClient.shutdown();

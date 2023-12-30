@@ -8,14 +8,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/dextea?useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-#    password: 2bf632e26842c01a
     password: root
 
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/dextea?useSSL=false&serverTimezone=Asia/Shanghai
       username: root
-#      password: 2bf632e26842c01a
       password: root
 
       aop-patterns: org.wang.reggie.*  #监控SpringBean

@@ -4,30 +4,35 @@ import com.qcloud.cos.*;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
-import com.qcloud.cos.http.HttpProtocol;
-import com.qcloud.cos.model.Bucket;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.region.Region;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
+@Slf4j
 public class COSUtils {
-    // 1 初始化用户身份信息（secretId, secretKey）。
-    // SECRETID 和 SECRETKEY 请登录访问管理控制台 https://console.cloud.tencent.com/cam/capi 进行查看和管理
-    String secretId = COSSetting.SECRET_ID;//用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
-    String secretKey = COSSetting.SECRET_KEY;//用户的 SecretKey，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
-    COSCredentials cred = new BasicCOSCredentials(secretId, secretKey);
-    // 2 设置 bucket 的地域, COS 地域的简称请参见 https://cloud.tencent.com/document/product/436/6224
-    // clientConfig 中包含了设置 region, https(默认 http), 超时, 代理等 set 方法, 使用可参见源码或者常见问题 Java SDK 部分。
-    Region region = new Region(COSSetting.BUCKET_REGION);
-    ClientConfig clientConfig = new ClientConfig(region);
+    //对象存储信息
+    private String BUCKET_NAME = "dextea-1313412108";
+    private String BUCKET_REGION = "ap-guangzhou";
+    private String BUCKET_URL = "https://dextea-1313412108.cos.ap-guangzhou.myqcloud.com/";
+    private String SECRET_ID;
+    private String SECRET_KEY;
+    private COSCredentials cred;
+    private Region region;
+    ClientConfig clientConfig;
 
-    // 指定文件将要存放的存储桶
-    String bucketName = COSSetting.BUCKET_NAME;
+    public COSUtils() {
+        this.SECRET_ID = System.getenv("SecretId");
+        this.SECRET_KEY = System.getenv("SecretKey");
+        this.cred = new BasicCOSCredentials(SECRET_ID, SECRET_KEY);
+        this.region = new Region(BUCKET_REGION);
+        this.clientConfig = new ClientConfig(region);
+    }
 
     /**
      * multipartFile转File
@@ -67,21 +72,21 @@ public class COSUtils {
                 break;
         }
         key+= IdUtil.objectId()+"-"+file.getOriginalFilename();
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, localFile);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET_NAME, key, localFile);
         PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
         String flag=putObjectResult.getETag();
         cosClient.shutdown();
         if(flag!=null){
-            return COSSetting.BUCKET_URL+key;
+            return BUCKET_URL+key;
         }else{
             return null;
         }
     }
 
     public Boolean delete(String url){
-        String key=url.replace(COSSetting.BUCKET_URL,"");
+        String key=url.replace(BUCKET_URL,"");
         COSClient cosClient = new COSClient(cred, clientConfig);
-        cosClient.deleteObject(bucketName,key);
+        cosClient.deleteObject(BUCKET_NAME,key);
         cosClient.shutdown();
         return true;
     }

@@ -1,4 +1,4 @@
-package com.dextea.controller.manage;
+package com.dextea.controller;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.service.CommodityService;

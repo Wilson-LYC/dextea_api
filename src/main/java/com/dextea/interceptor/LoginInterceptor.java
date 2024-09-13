@@ -1,10 +1,10 @@
 package com.dextea.interceptor;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.dextea.service.LoginService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import com.alibaba.fastjson2.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

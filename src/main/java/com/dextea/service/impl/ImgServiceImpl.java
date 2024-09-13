@@ -89,6 +89,7 @@ public class ImgServiceImpl implements ImgService {
         } catch (Exception e) {
             res.put("code",500);
             res.put("msg","腾讯云服务器异常");
+            res.put("error",e.getMessage());
         }
         return res;
     }

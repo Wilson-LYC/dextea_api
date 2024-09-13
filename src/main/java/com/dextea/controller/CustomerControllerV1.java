@@ -1,7 +1,6 @@
-package com.dextea.controller.manage;
+package com.dextea.controller;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.dextea.pojo.Customer;
 import com.dextea.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

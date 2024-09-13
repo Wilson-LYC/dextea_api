@@ -3,7 +3,7 @@ package com.dextea.service;
 import com.alibaba.fastjson2.JSONObject;
 import com.dextea.pojo.Category;
 
-public interface CategotyService {
+public interface CategoryService {
     //json转category
     Category toCategory(JSONObject data);
     //新增分类

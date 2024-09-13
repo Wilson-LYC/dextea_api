@@ -1,7 +1,7 @@
 package com.dextea.service.impl;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.dextea.Utils.COSUtils;
+import com.dextea.util.COSUtil;
 import com.dextea.mapper.ImgMapper;
 import com.dextea.pojo.Img;
 import com.dextea.service.ImgService;
@@ -46,8 +46,8 @@ public class ImgServiceImpl implements ImgService {
     public JSONObject deleteImgByUrlV1(String url) {
         JSONObject res=new JSONObject();
         try{
-            COSUtils cosUtils=new COSUtils();
-            cosUtils.delete(url);
+            COSUtil cosUtil =new COSUtil();
+            cosUtil.delete(url);
             try{
                 imgMapper.deleteImgByUrl(url);
                 res.put("code",200);
@@ -73,8 +73,8 @@ public class ImgServiceImpl implements ImgService {
     public JSONObject uploadImgV1(MultipartFile file) {
         JSONObject res=new JSONObject();
         try {
-            COSUtils cosUtils = new COSUtils();
-            String url=cosUtils.upload(file,1);
+            COSUtil cosUtil = new COSUtil();
+            String url= cosUtil.upload(file,1);
             try{
                 imgMapper.addImg(url);
                 res.put("code",200);

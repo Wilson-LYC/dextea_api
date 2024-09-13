@@ -1,10 +1,9 @@
-package com.dextea.Utils;
+package com.dextea.util;
 
 import cn.hutool.core.util.IdUtil;
 
 import javax.sound.sampled.*;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.SequenceInputStream;
 import java.nio.file.Files;
@@ -12,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 
-public class AudioUntils {
+public class AudioUntil {
     public static String createAudio(String code) throws UnsupportedAudioFileException, IOException {
         if (code.length()!=4){
             return "error";

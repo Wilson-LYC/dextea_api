@@ -1,4 +1,4 @@
-package com.dextea.Utils;
+package com.dextea.util;
 import cn.hutool.core.util.IdUtil;
 import com.qcloud.cos.*;
 import com.qcloud.cos.ClientConfig;
@@ -8,14 +8,13 @@ import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.region.Region;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 
 @Slf4j
-public class COSUtils {
+public class COSUtil {
     //对象存储信息
     private String BUCKET_NAME = "dextea-1313412108";
     private String BUCKET_REGION = "ap-guangzhou";
@@ -26,7 +25,7 @@ public class COSUtils {
     private Region region;
     ClientConfig clientConfig;
 
-    public COSUtils() {
+    public COSUtil() {
         this.SECRET_ID = System.getenv("SecretId");
         this.SECRET_KEY = System.getenv("SecretKey");
         this.cred = new BasicCOSCredentials(SECRET_ID, SECRET_KEY);

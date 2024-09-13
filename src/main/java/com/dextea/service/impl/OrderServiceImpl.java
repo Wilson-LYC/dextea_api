@@ -3,7 +3,7 @@ package com.dextea.service.impl;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.dextea.Utils.AudioUntils;
+import com.dextea.util.AudioUntil;
 import com.dextea.mapper.CustomerMapper;
 import com.dextea.mapper.OrderMapper;
 import com.dextea.mapper.StoreMapper;
@@ -296,7 +296,7 @@ public class OrderServiceImpl implements OrderService {
         JSONObject res=new JSONObject();
         String base64Audio = null;
         try {
-            base64Audio = AudioUntils.createAudio(code);
+            base64Audio = AudioUntil.createAudio(code);
         } catch (Exception e) {
             res.put("code",500);
             res.put("msg","服务错误");

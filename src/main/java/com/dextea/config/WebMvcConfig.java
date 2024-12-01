@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * 权限拦截器配置
  */
+
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired

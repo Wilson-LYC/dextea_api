@@ -13,6 +13,10 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+/**
+ * 数据库连接池配置类
+ */
+
 @Configuration
 public class DruidConfig{
     //配置数据库连接池，并注入到容器中

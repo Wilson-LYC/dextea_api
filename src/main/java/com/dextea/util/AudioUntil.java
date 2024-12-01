@@ -12,6 +12,13 @@ import java.nio.file.Paths;
 import java.util.Base64;
 
 public class AudioUntil {
+    /**
+     * 生成音频
+     * @param code 取餐码
+     * @return 返回base64
+     * @throws UnsupportedAudioFileException 音频类型异常
+     * @throws IOException IO异常
+     */
     public static String createAudio(String code) throws UnsupportedAudioFileException, IOException {
         if (code.length()!=4){
             return "error";
@@ -37,6 +44,13 @@ public class AudioUntil {
         return base64String;
     }
 
+    /**
+     * 拼接wav音频
+     * @param wavFiles wav源文件
+     * @param outputFilePath 输出路径
+     * @throws IOException IO异常
+     * @throws UnsupportedAudioFileException 文件类型异常
+     */
     public static void concatenateWAVFiles(String[] wavFiles, String outputFilePath) throws IOException, UnsupportedAudioFileException {
         AudioFormat audioFormat = null;
         AudioInputStream audioInputStream = null;
@@ -66,6 +80,13 @@ public class AudioUntil {
             audioInputStream.close();
         }
     }
+
+    /**
+     * 音频转为base64
+     * @param filePath 文件路径
+     * @return base64编码
+     * @throws IOException IO异常
+     */
     public static String convertToBase64(String filePath) throws IOException {
         Path path = Paths.get(filePath);
         byte[] fileData = Files.readAllBytes(path);

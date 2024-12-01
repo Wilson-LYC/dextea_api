@@ -26,6 +26,7 @@ public class COSUtil {
     ClientConfig clientConfig;
 
     public COSUtil() {
+        // 从环境变量中获取连接参数
         this.SECRET_ID = System.getenv("SecretId");
         this.SECRET_KEY = System.getenv("SecretKey");
         this.cred = new BasicCOSCredentials(SECRET_ID, SECRET_KEY);
@@ -82,6 +83,11 @@ public class COSUtil {
         }
     }
 
+    /**
+     * 删除文件
+     * @param url 文件的url
+     * @return 删除结果
+     */
     public Boolean delete(String url){
         String key=url.replace(BUCKET_URL,"");
         COSClient cosClient = new COSClient(cred, clientConfig);
